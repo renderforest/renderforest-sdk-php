@@ -21,5 +21,9 @@
     "slideshow maker",
     "video",
     "video maker"
-  ]
+  ],
+  "readme": "https://github.com/renderforest/renderforest-sdk-php/blob/master/README.md",
+  "support": {
+    "issues": "https://github.com/renderforest/renderforest-sdk-php/issues"
+  }
 }
