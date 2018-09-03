@@ -1,0 +1,25 @@
+{
+  "name": "@renderforest/sdk-php",
+  "description": "Renderforest SDK for PHP",
+  "authors": [
+    {
+      "name": "Narek Hovhannisyan",
+      "email": "narekgilmour@gmail.com"
+    }
+  ],
+  "homepage": "https://github.com/renderforest/renderforest-sdk-php",
+  "keywords": [
+    "animation maker",
+    "api",
+    "movie maker",
+    "php",
+    "online video creation",
+    "photo video maker",
+    "renderforest",
+    "sdk",
+    "slideshow",
+    "slideshow maker",
+    "video",
+    "video maker"
+  ]
+}
