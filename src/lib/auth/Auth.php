@@ -13,6 +13,9 @@ class Auth
 {
     private $Auth_util;
 
+    /**
+     * Auth constructor.
+     */
     public function __construct()
     {
         $this->Auth_util = new Auth_util();
