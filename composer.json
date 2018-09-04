@@ -1,6 +1,7 @@
 {
   "name": "@renderforest/sdk-php",
   "description": "Renderforest SDK for PHP",
+  "version": "0.0.1",
   "authors": [
     {
       "name": "Narek Hovhannisyan",
@@ -22,6 +23,9 @@
     "video",
     "video maker"
   ],
+  "require": {
+    "guzzlehttp/guzzle": "6.0"
+  },
   "readme": "https://github.com/renderforest/renderforest-sdk-php/blob/master/README.md",
   "support": {
     "issues": "https://github.com/renderforest/renderforest-sdk-php/issues"
