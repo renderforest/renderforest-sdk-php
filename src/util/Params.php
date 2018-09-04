@@ -7,7 +7,7 @@
  * LICENSE file in the root directory.
  */
 
-include "Error.php";
+require_once "Error.php";
 
 class Params
 {
