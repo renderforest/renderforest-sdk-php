@@ -61,7 +61,7 @@ class Http
             $queryString = $options['qs'];
             $queryParams = parse_url($queryString);
 
-            $options['endpoint'] = $options['endpoint'] . $queryParams;
+            $options['endpoint'] .= $queryParams;
         }
     }
 
