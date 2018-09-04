@@ -1,2 +1,8 @@
+# Webstorm config files
 .idea
+
+# composer
 composer.phar
+
+# modules
+vendor
