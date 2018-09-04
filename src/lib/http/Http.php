@@ -42,7 +42,7 @@ class Http
     /**
      * @param $signKey {string}
      * @param $clientId {number}
-     * @description Set config.
+     * Set config.
      */
     public function setConfig($signKey, $clientId)
     {
@@ -52,8 +52,8 @@ class Http
 
     /**
      * @param $options {Object}
-     * @description Append query params.
-     *  Format object parameters into GET request query string.
+     * Append query params.
+     * Format object parameters into GET request query string.
      */
     public function appendQueryParams($options)
     {
@@ -67,7 +67,7 @@ class Http
 
     /**
      * @param {Object} options
-     * @description Append URI.
+     * Append URI.
      */
     public function appendURI($options)
     {
@@ -77,7 +77,7 @@ class Http
 
     /**
      * @param {Object} options
-     * @description Prepare request.
+     * Prepare request.
      */
     public function prepareRequest($options)
     {
@@ -88,7 +88,7 @@ class Http
     /**
      * @param $options {Object}
      * @return \GuzzleHttp\Promise\PromiseInterface
-     * @description Request.
+     * Request.
      */
     public function request($options)
     {
@@ -104,7 +104,7 @@ class Http
     /**
      * @param $options {Object}
      * @return \GuzzleHttp\Promise\PromiseInterface
-     * @description Unauthorized request.
+     * Unauthorized request.
      */
     public function unauthorizedRequest($options)
     {
@@ -117,7 +117,7 @@ class Http
     /**
      * @param $options {Object}
      * @return \GuzzleHttp\Promise\PromiseInterface
-     * @description Authorized request.
+     * Authorized request.
      */
     public function authorizedRequest($options)
     {
