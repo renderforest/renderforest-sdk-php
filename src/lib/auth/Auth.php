@@ -11,15 +11,7 @@ require_once 'Auth_util.php';
 
 class Auth
 {
-    private $Auth_util;
-
-    /**
-     * Auth constructor.
-     */
-    public function __construct()
-    {
-        $this->Auth_util = new Auth_util();
-    }
+    use Singleton;
 
     /**
      * @param $options
@@ -31,15 +23,17 @@ class Auth
      */
     public function setAuthorization($options, $signKey, $clientId)
     {
+        $Auth_util = Auth_util::getInstance();
+
         $opts = $options ? $options : [];
         $headers = isset($opts['headers']) ? $opts['headers'] : [];
-        $headers['nonce'] = $this->Auth_util->generateNonce();
+        $headers['nonce'] = $Auth_util->generateNonce();
         $headers['clientid'] = $clientId;
-        $headers['timestamp'] = $this->Auth_util->dateNow();
-        $parsedUrl = parse_url($opts['uri']);
+        $headers['timestamp'] = $Auth_util->dateNow();
+        $parsedUrl = parse_url(isset($opts['uri']) ? $opts['uri'] : '');
         $path = $parsedUrl['path'];
         $query = isset($parsedUrl['query']) ? $parsedUrl['query'] : '';
-        $headers['authorization'] = $this->Auth_util->generateHash([
+        $headers['authorization'] = $Auth_util->generateHash([
             'clientId' => $clientId,
             'path' => $path ? $path : '',
             'qs' => $query ? $query : '',

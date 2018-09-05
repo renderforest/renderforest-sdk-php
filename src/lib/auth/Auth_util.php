@@ -7,8 +7,12 @@
  * LICENSE file in the root directory.
  */
 
+require_once(dirname(dirname(__FILE__)) . '/Singleton.php');
+
 class Auth_util
 {
+    use Singleton;
+
     /**
      * Generate timestamp with milliseconds.
      */
@@ -60,7 +64,7 @@ class Auth_util
      */
     public function generateNonce()
     {
-        $timestamp = $this->_dateNow();
+        $timestamp = $this->dateNow();
         $str = substr($timestamp, strlen($timestamp) - 6);
         $suffix = rand(10, 99);
 
