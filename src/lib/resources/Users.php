@@ -12,18 +12,26 @@ require_once(dirname(__FILE__) . '/../http/Http.php');
 class Users
 {
     private $API_PREFIX = '/api/v1';
+    private $Http;
 
     /**
-     * @return mixed
+     * Users constructor.
+     */
+    public function __construct()
+    {
+        $this->Http = Http::getInstance();
+    }
+
+    /**
+     * @return array|null
      * Get Current User.
      */
     public function getCurrentUser()
     {
-        $Http = Http::getInstance();
-        $options = array(
+        $options = [
             'endpoint' => "$this->API_PREFIX/users/current"
-        );
+        ];
 
-        return $Http->authorizedRequest($options);
+        return $this->Http->authorizedRequest($options);
     }
 }
