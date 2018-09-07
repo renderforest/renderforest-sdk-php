@@ -19,8 +19,12 @@ class Http
 
     private $signKey;
     private $clientId;
+
     private $HOST;
     private $DEFAULT_OPTIONS;
+
+    private $Auth;
+    private $requestClient;
 
     /**
      * Http constructor.
@@ -36,17 +40,21 @@ class Http
          */
         $ComposerJson = json_decode(file_get_contents(dirname(__FILE__) . '/../../../composer.json'), true);
         $sdkVersion = $ComposerJson['version'];
-        $this->DEFAULT_OPTIONS = array(
-            'headers' => array(
+        $this->DEFAULT_OPTIONS = [
+            'method' => 'GET',
+            'headers' => [
                 'Accept' => 'application/json',
                 'User-Agent' => "renderforest/sdk-php/$sdkVersion"
-            )
-        );
+            ]
+        ];
+
+        $this->Auth = Auth::getInstance();
+        $this->requestClient = new \GuzzleHttp\Client();
     }
 
     /**
-     * @param $signKey {string}
-     * @param $clientId {number}
+     * @param string $signKey
+     * @param number $clientId
      * Set config.
      */
     public function setConfig($signKey, $clientId)
@@ -56,17 +64,20 @@ class Http
     }
 
     /**
-     * @param $options {Object}
+     * @param array $options
+     * @return array
      * Append query params.
      * Format object parameters into GET request query string.
-     * @return mixed
      */
     public function appendQueryParams($options)
     {
-        if (isset($options['method']) && $options['method'] === 'GET' && isset($options['qs']) && sizeof(get_object_vars($options['qs']))) {
-            $queryString = $options['qs'];
-            $queryParams = parse_url($queryString);
-
+        if (
+            isset($options['method']) &&
+            $options['method'] === 'GET' &&
+            isset($options['qs']) &&
+            sizeof($options['qs'])
+        ) {
+            $queryParams = '?' . http_build_query($options['qs']);
             $options['endpoint'] .= $queryParams;
         }
 
@@ -74,9 +85,9 @@ class Http
     }
 
     /**
-     * @param {Object} options
-     * Append URI.
-     * @return mixed
+     * @param array options
+     * @return array
+     * Append URI in given `$options` array.
      */
     public function appendURI($options)
     {
@@ -87,9 +98,10 @@ class Http
     }
 
     /**
-     * @param {Object} options
+     * @param array options
      * Prepare request.
-     * @return mixed
+     * @return array
+     * Appends query params and URI to given `$options` array.
      */
     public function prepareRequest($options)
     {
@@ -100,14 +112,13 @@ class Http
     }
 
     /**
-     * @param $options {Object}
+     * @param array $options
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * Request.
+     * Make request.
      */
     public function request($options)
     {
-        $client = new \GuzzleHttp\Client();
         $requestMethod = isset($options['method']) ? $options['method'] : 'GET';
         $requestURI = isset($options['uri']) ? $options['uri'] : '';
 
@@ -117,19 +128,20 @@ class Http
         }
 
         try {
-            $response = $client->request($requestMethod, $requestURI, $options);
+            $response = $this->requestClient->request($requestMethod, $requestURI, $options);
             $responseContent = (array)json_decode($response->getBody()->getContents());
         } catch (\GuzzleHttp\Exception\RequestException $e) {
             echo $e;
         }
 
-        return isset($responseContent) ? $responseContent['data'] : NULL;
+        return isset($responseContent) ? (array)$responseContent['data'] : NULL;
     }
 
     /**
-     * @param $options
+     * @param array $options
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * Makes unauthorized request.
      */
     public function unauthorizedRequest($options)
     {
@@ -140,17 +152,17 @@ class Http
     }
 
     /**
-     * @param $options {Object}
-     * @return null
+     * @param array $options
+     * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * Makes authorized request.
      */
     public function authorizedRequest($options)
     {
-        $Auth = Auth::getInstance();
         $options = array_replace_recursive($this->DEFAULT_OPTIONS, $options);
 
         $preparedOptions = $this->prepareRequest($options);
-        $optionsWithAuth = $Auth->setAuthorization($preparedOptions, $this->signKey, $this->clientId);
+        $optionsWithAuth = $this->Auth->setAuthorization($preparedOptions, $this->signKey, $this->clientId);
 
         return $this->request($optionsWithAuth);
     }

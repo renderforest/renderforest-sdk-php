@@ -15,27 +15,36 @@ class Auth
 {
     use Singleton;
 
+    private $Auth_util;
+
     /**
-     * @param $options
-     * @param $signKey
-     * @param $clientId
+     * Auth constructor.
+     */
+    public function __construct()
+    {
+        $this->Auth_util = Auth_util::getInstance();
+    }
+
+    /**
+     * @param array $options
+     * @param string $signKey
+     * @param number $clientId
      * @return array - New options object is returned.
      * Sets authorization.
      *  Sets nonce, clientid, timestamp, authorization headers.
      */
     public function setAuthorization($options, $signKey, $clientId)
     {
-        $Auth_util = Auth_util::getInstance();
-
         $opts = $options ? $options : [];
         $headers = isset($opts['headers']) ? $opts['headers'] : [];
-        $headers['nonce'] = $Auth_util->generateNonce();
+        $headers['nonce'] = $this->Auth_util->generateNonce();
         $headers['clientid'] = $clientId;
-        $headers['timestamp'] = $Auth_util->dateNow();
+        $headers['timestamp'] = $this->Auth_util->dateNow();
         $parsedUrl = parse_url(isset($opts['uri']) ? $opts['uri'] : '');
         $path = $parsedUrl['path'];
         $query = isset($parsedUrl['query']) ? $parsedUrl['query'] : '';
-        $headers['authorization'] = $Auth_util->generateHash([
+
+        $headers['authorization'] = $this->Auth_util->generateHash([
             'clientId' => $clientId,
             'path' => $path ? $path : '',
             'qs' => $query ? $query : '',

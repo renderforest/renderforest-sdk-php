@@ -14,24 +14,29 @@ require_once(dirname(__FILE__) . '/../../util/Params.php');
 class Supports
 {
     private $API_PREFIX = '/api/v1';
+    private $Params;
+    private $Http;
+
+    public function __construct()
+    {
+        $this->Http = Http::getInstance();
+        $this->Params = Params::getInstance();
+    }
 
     /**
-     * @param $payload {Array}
-     * @return mixed
+     * @param array $payload
+     * @return array|null
      * @description Add Supports Ticket.
      */
     public function addSupportsTicket ($payload) {
-        $Params = Params::getInstance();
-        $body = $Params->destructParams($payload, ['message', 'mailType', 'subject']);
+        $body = $this->Params->destructParams($payload, ['message', 'mailType', 'subject']);
 
-        $options = array(
+        $options = [
             'method' => 'POST',
             'endpoint' => "$this->API_PREFIX/supports/ticket",
             'body' => $body
-        );
+        ];
 
-        $Http = Http::getInstance();
-
-        return $Http->authorizedRequest($options);
+        return $this->Http->authorizedRequest($options);
   }
 }

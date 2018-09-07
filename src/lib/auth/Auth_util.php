@@ -22,8 +22,8 @@ class Auth_util
     }
 
     /**
-     * @param $text {string}
-     * @param $key {string}
+     * @param string $text
+     * @param string $key
      * @return string
      * Creates keyed-hash message authentication code (HMAC).
      *  Used core `hash_hmac` module cryptographic hash function.
@@ -36,7 +36,7 @@ class Auth_util
 
     /**
      * @param {{clientId, qs, path, body, nonce, timestamp}} $options
-     * @param {string} $key
+     * @param string $key
      * @return string
      * Generates `HMAC` based on source and key.
      *  Source is defined as combination of clientId, path, qs, body, nonce and timestamp respectively.
@@ -55,7 +55,7 @@ class Auth_util
     }
 
     /**
-     * @returns {string}
+     * @returns string
      * @description Generates nonce.
      *  Creates timestamp
      *  Gets the last 6 chars of the timestamp
