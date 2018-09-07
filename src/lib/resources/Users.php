@@ -14,7 +14,7 @@ class Users
     private $API_PREFIX = '/api/v1';
 
     /**
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @return mixed
      * Get Current User.
      */
     public function getCurrentUser()

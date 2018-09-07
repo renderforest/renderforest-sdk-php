@@ -7,9 +7,6 @@
  * LICENSE file in the root directory.
  */
 
-/**
- * Trait Singleton.
- */
 trait Singleton
 {
     static private $instance = null;

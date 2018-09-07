@@ -8,8 +8,10 @@
  */
 
 require_once(dirname(__FILE__) . '/../Singleton.php');
-require_once(dirname(__FILE__) . '/../auth/Auth.php');
+
 require_once(dirname(__FILE__) . '/../../../vendor/autoload.php');
+
+require_once(dirname(__FILE__) . '/../auth/Auth.php');
 
 class Http
 {
@@ -19,7 +21,6 @@ class Http
     private $clientId;
     private $HOST;
     private $DEFAULT_OPTIONS;
-    private $_options;
 
     /**
      * Http constructor.
@@ -58,6 +59,7 @@ class Http
      * @param $options {Object}
      * Append query params.
      * Format object parameters into GET request query string.
+     * @return mixed
      */
     public function appendQueryParams($options)
     {
@@ -65,28 +67,36 @@ class Http
             $queryString = $options['qs'];
             $queryParams = parse_url($queryString);
 
-            $this->_options['endpoint'] .= $queryParams;
+            $options['endpoint'] .= $queryParams;
         }
+
+        return $options;
     }
 
     /**
      * @param {Object} options
      * Append URI.
+     * @return mixed
      */
     public function appendURI($options)
     {
         $endpoint = $options['endpoint'];
-        $this->_options['uri'] = $this->HOST . $endpoint;
+        $options['uri'] = $this->HOST . $endpoint;
+
+        return $options;
     }
 
     /**
      * @param {Object} options
      * Prepare request.
+     * @return mixed
      */
     public function prepareRequest($options)
     {
-        $this->appendQueryParams($options);
-        $this->appendURI($options);
+        $preparedRequest = $this->appendQueryParams($options);
+        $_options = $this->appendURI($preparedRequest);
+
+        return $_options;
     }
 
     /**
@@ -101,21 +111,20 @@ class Http
         $requestMethod = isset($options['method']) ? $options['method'] : 'GET';
         $requestURI = isset($options['uri']) ? $options['uri'] : '';
 
+        if (isset($options['body'])) {
+            $options['json'] = $options['body'];
+            unset($options['body']);
+        }
+
         try {
             $response = $client->request($requestMethod, $requestURI, $options);
             $responseContent = (array)json_decode($response->getBody()->getContents());
-
-            return $responseContent['data'];
         } catch (\GuzzleHttp\Exception\RequestException $e) {
             echo $e;
         }
-    }
 
-    /**
-     * @param $options {Object}
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     * Unauthorized request.
-     */
+        return isset($responseContent) ? $responseContent['data'] : NULL;
+    }
 
     /**
      * @param $options
@@ -124,10 +133,10 @@ class Http
      */
     public function unauthorizedRequest($options)
     {
-        $_options = array_replace_recursive($this->DEFAULT_OPTIONS, (array)$options);
-        $this->prepareRequest($_options);
+        $_options = array_replace_recursive($this->DEFAULT_OPTIONS, $options);
+        $preparedOptions = $this->prepareRequest($_options);
 
-        return $this->request($_options);
+        return $this->request($preparedOptions);
     }
 
     /**
@@ -138,11 +147,11 @@ class Http
     public function authorizedRequest($options)
     {
         $Auth = Auth::getInstance();
-        $this->_options = array_replace_recursive($this->DEFAULT_OPTIONS, (array)$options);
+        $options = array_replace_recursive($this->DEFAULT_OPTIONS, $options);
 
-        $this->prepareRequest($this->_options);
-        $authorizedRequestOptions = $Auth->setAuthorization($this->_options, $this->signKey, $this->clientId);
+        $preparedOptions = $this->prepareRequest($options);
+        $optionsWithAuth = $Auth->setAuthorization($preparedOptions, $this->signKey, $this->clientId);
 
-        return $this->request($authorizedRequestOptions);
+        return $this->request($optionsWithAuth);
     }
 }
