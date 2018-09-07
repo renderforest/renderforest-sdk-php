@@ -35,7 +35,7 @@ class Params
     }
 
     /**
-     * @param $payload
+     * @param array $payload
      * @param $param
      * @return mixed
      * @throws RenderforestError
@@ -43,7 +43,7 @@ class Params
      */
     public function destructURLParam($payload, $param)
     {
-        if (!isset($payload) || !sizeof(get_object_vars($payload)) || !isset($payload[$param])) {
+        if (!isset($payload) || !sizeof($payload) || !isset($payload[$param])) {
             throw new RenderforestError("Missing required parameter: ${param}.");
         }
 
