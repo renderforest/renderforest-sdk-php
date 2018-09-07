@@ -7,7 +7,9 @@
  * LICENSE file in the root directory.
  */
 
-require_once 'Auth_util.php';
+require_once(dirname(dirname(__FILE__)) . '/Singleton.php');
+
+require_once(dirname(__FILE__) . '/Auth_util.php');
 
 class Auth
 {
