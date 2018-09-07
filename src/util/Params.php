@@ -7,20 +7,22 @@
  * LICENSE file in the root directory.
  */
 
-require_once "Error.php";
+require_once(dirname(__FILE__) . '/Error.php');
 
 class Params
 {
+    use Singleton;
+
     /**
-     * @param $payload
-     * @param $props
-     * @return object
+     * @param $payload {Array}
+     * @param $props {Array}
+     * @return array
      * @description Destruct given properties from the payload.
      */
     public function destructParams($payload, $props)
     {
-        if (!$payload || !sizeof(get_object_vars($payload))) {
-            return (object)array();
+        if (!isset($payload) || !sizeof($payload)) {
+            return array();
         }
 
         return array_reduce($props, function ($acc, $prop) use ($payload) {
@@ -29,7 +31,7 @@ class Params
             }
 
             return $acc;
-        }, (object)array());
+        }, array());
     }
 
     /**
@@ -41,7 +43,7 @@ class Params
      */
     public function destructURLParam($payload, $param)
     {
-        if (isset($payload) || !sizeof(get_object_vars($payload)) || isset($payload[$param])) {
+        if (!isset($payload) || !sizeof(get_object_vars($payload)) || !isset($payload[$param])) {
             throw new RenderforestError("Missing required parameter: ${param}.");
         }
 
