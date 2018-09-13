@@ -32,7 +32,6 @@ class Projects
      * @param array $payload
      * @return array|null
      * Get All Projects.
-     * TODO: Fix getProjects (there is authorization problem).
      */
     public function getProjects($payload)
     {
