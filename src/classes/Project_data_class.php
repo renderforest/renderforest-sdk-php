@@ -7,7 +7,7 @@
  * LICENSE file in the root directory.
  */
 
-class Project_data
+class Project_data_class
 {
     private $generator;
     private $patchProperties;
@@ -22,11 +22,24 @@ class Project_data
         /**
          * Get SDK version from composer.json file and set it in generator`.
          */
-        $ComposerJson = json_decode(file_get_contents(dirname(__FILE__) . '/../../../composer.json'), true);
+        $ComposerJson = json_decode(file_get_contents(dirname(__FILE__) . '/../../composer.json'), true);
         $sdkVersion = $ComposerJson['version'];
         $this->generator = "renderforest/sdk-node/$sdkVersion";
 
-        $this->projectDataJson = $projectDataJson;
+        function objectToArray($objectToConvert)
+        {
+            if (is_object($objectToConvert)) {
+                $objectToConvert = get_object_vars($objectToConvert);
+            }
+
+            if (is_array($objectToConvert)) {
+                return array_map(__FUNCTION__, $objectToConvert);
+            } else {
+                return $objectToConvert;
+            }
+        }
+
+        $this->projectDataJson = objectToArray($projectDataJson);
         $this->patchProperties = [];
         $this->setGenerator();
     }

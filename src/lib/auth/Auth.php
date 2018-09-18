@@ -42,7 +42,7 @@ class Auth
         $headers['timestamp'] = $this->Auth_util->dateNow();
         $parsedUrl = parse_url(isset($opts['uri']) ? $opts['uri'] : '');
         $query = isset($parsedUrl['query']) ? $parsedUrl['query'] : '';
-        $path = $parsedUrl['path'] . '?' . $query;
+        $path = $query ? $parsedUrl['path'] . $query : $parsedUrl['path'];
 
         $headers['authorization'] = $this->Auth_util->generateHash([
             'clientId' => $clientId,
