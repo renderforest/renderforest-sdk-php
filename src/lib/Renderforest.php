@@ -22,8 +22,10 @@ class Renderforest {
     private $Projects;
     private $Sounds;
     private $Supports;
-    private $Templates;
     private $Users;
+
+    private static $staticSounds;
+    private static $staticTemplates;
 
     /**
      * Renderforest constructor.
@@ -36,10 +38,17 @@ class Renderforest {
         $this->Projects = new Projects();
         $this->Sounds = new Sounds();
         $this->Supports = new Supports();
-        $this->Templates = new Templates();
         $this->Users = new Users();
 
         $this->Http->setConfig($options['signKey'], $options['clientId']);
+    }
+
+    /**
+     * Initialize static members of Renderforest class.
+     */
+    public static function init () {
+        self::$staticSounds = new Sounds();
+        self::$staticTemplates = new Templates();
     }
 
     /**
@@ -181,8 +190,8 @@ class Renderforest {
      * @return array|null
      * Get Company Sounds (limited).
      */
-    public function getCompanySoundsLimited ($payload) {
-      return $this->Sounds->getCompanySoundsLimited($payload);
+    public static function getCompanySoundsLimited ($payload) {
+      return self::$staticSounds->getRecommendedSoundsLimited($payload);
     }
 
     /**
@@ -190,8 +199,8 @@ class Renderforest {
      * @return array|null
      * Get Recommended Sounds (limited).
      */
-    public function getRecommendedSoundsLimited ($payload) {
-      return $this->Sounds->getRecommendedSoundsLimited($payload);
+    public static function getRecommendedSoundsLimited ($payload) {
+      return self::$staticSounds->getRecommendedSoundsLimited($payload);
     }
 
     /**
@@ -199,8 +208,8 @@ class Renderforest {
      * @return array|null
      * Get All Templates.
      */
-    public function getTemplates ($payload) {
-      return $this->Templates->getTemplates($payload);
+    public static function getTemplates ($payload) {
+      return self::$staticTemplates->getTemplates($payload);
     }
 
     /**
@@ -208,8 +217,8 @@ class Renderforest {
      * @return array|null
      * Get Templates Categories.
      */
-    public function getTemplatesCategories ($payload) {
-      return $this->Templates->getTemplatesCategories($payload);
+    public static function getTemplatesCategories ($payload) {
+      return self::$staticTemplates->getTemplatesCategories($payload);
     }
 
     /**
@@ -217,8 +226,8 @@ class Renderforest {
      * @return array|null
      * Get a Specific Template.
      */
-    public function getTemplate ($payload) {
-      return $this->Templates->getTemplate($payload);
+    public static function getTemplate ($payload) {
+      return self::$staticTemplates->getTemplate($payload);
     }
 
     /**
@@ -226,8 +235,8 @@ class Renderforest {
      * @return array|null
      * Get Color-Presets of the Template.
      */
-    public function getTemplateColorPresets ($payload) {
-      return $this->Templates->getTemplateColorPresets($payload);
+    public static function getTemplateColorPresets ($payload) {
+      return self::$staticTemplates->getTemplateColorPresets($payload);
     }
 
     /**
@@ -235,8 +244,8 @@ class Renderforest {
      * @return array|null
      * Get Pluggable-Screens of the Template.
      */
-    public function getTemplatePluggableScreens ($payload) {
-      return $this->Templates->getTemplatePluggableScreens($payload);
+    public static function getTemplatePluggableScreens ($payload) {
+      return self::$staticTemplates->getTemplatePluggableScreens($payload);
     }
 
     /**
@@ -244,8 +253,8 @@ class Renderforest {
      * @return array|null
      * Get Recommended-Custom-Colors of the Template.
      */
-    public function getTemplateRecommendedCustomColors ($payload) {
-      return $this->Templates->getTemplateRecommendedCustomColors($payload);
+    public static function getTemplateRecommendedCustomColors ($payload) {
+      return self::$staticTemplates->getTemplateRecommendedCustomColors($payload);
     }
 
     /**
@@ -253,8 +262,8 @@ class Renderforest {
      * @return array|null
      * Get Template-Presets of the Template.
      */
-    public function getTemplatePresets ($payload) {
-      return $this->Templates->getTemplatePresets($payload);
+    public static function getTemplatePresets ($payload) {
+      return self::$staticTemplates->getTemplatePresets($payload);
     }
 
     /**
@@ -262,7 +271,8 @@ class Renderforest {
      * @return array|null
      * Get Template-Presets of the Template.
      */
-    public function getTemplateTheme ($payload) {
-      return $this->Templates->getTemplateTheme($payload);
+    public static function getTemplateTheme ($payload) {
+      return self::$staticTemplates->getTemplateTheme($payload);
     }
 }
+Renderforest::init();
