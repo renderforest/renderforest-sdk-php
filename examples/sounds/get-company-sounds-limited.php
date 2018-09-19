@@ -10,7 +10,7 @@
 require_once(dirname(__FILE__) . '/../../src/lib/Renderforest.php');
 
 $payload = [
-    'duration' => 4
+    'duration' => 5
 ];
 
 try {
