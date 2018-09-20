@@ -19,9 +19,9 @@ $payload = [
 ];
 
 try {
-    $currentUser = $renderforest->getRecommendedSounds($payload);
+    $recommendedSounds = $renderforest->getRecommendedSounds($payload);
 } catch (Exception $e) {
     var_dump($e); // handle the error
 }
 
-var_dump($currentUser); // handle the success
+var_dump($recommendedSounds); // handle the success
