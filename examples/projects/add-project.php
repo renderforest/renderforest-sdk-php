@@ -18,9 +18,9 @@ $payload = [
 ];
 
 try {
-    $currentUser = $renderforest->addProject($payload);
+    $addProject = $renderforest->addProject($payload);
 } catch (Exception $e) {
     var_dump($e); // handle the error
 }
 
-var_dump($currentUser); // handle the success
+var_dump($addProject); // handle the success
