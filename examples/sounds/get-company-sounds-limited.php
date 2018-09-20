@@ -14,9 +14,9 @@ $payload = [
 ];
 
 try {
-    $currentUser = Renderforest::getCompanySoundsLimited($payload);
+    $companySoundsLimited = Renderforest::getCompanySoundsLimited($payload);
 } catch (Exception $e) {
     var_dump($e); // handle the error
 }
 
-var_dump($currentUser); // handle the success
+var_dump($companySoundsLimited); // handle the success
