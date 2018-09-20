@@ -18,9 +18,9 @@ $payload = [
 ];
 
 try {
-    $currentUser = $renderforest->getSounds($payload);
+    $sounds = $renderforest->getSounds($payload);
 } catch (Exception $e) {
     var_dump($e); // handle the error
 }
 
-var_dump($currentUser); // handle the success
+var_dump($sounds); // handle the success
