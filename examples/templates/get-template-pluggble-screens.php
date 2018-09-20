@@ -14,9 +14,9 @@ $payload = [
 ];
 
 try {
-    $currentUser = Renderforest::getTemplatePluggableScreens($payload);
+    $templatePluggableScreens = Renderforest::getTemplatePluggableScreens($payload);
 } catch (Exception $e) {
     var_dump($e); // handle the error
 }
 
-var_dump($currentUser); // handle the success
+var_dump($templatePluggableScreens); // handle the success
