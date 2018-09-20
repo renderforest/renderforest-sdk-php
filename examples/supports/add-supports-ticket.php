@@ -20,9 +20,9 @@ $payload = [
 ];
 
 try {
-    $currentUser = $renderforest->addSupportsTicket($payload);
+    $supportTicket = $renderforest->addSupportsTicket($payload);
 } catch (Exception $e) {
     var_dump($e); // handle the error
 }
 
-var_dump($currentUser); // handle the success
+var_dump($supportTicket); // handle the success

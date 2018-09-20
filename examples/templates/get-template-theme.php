@@ -14,9 +14,9 @@ $payload = [
 ];
 
 try {
-    $currentUser = Renderforest::getTemplateTheme($payload);
+    $templateTheme = Renderforest::getTemplateTheme($payload);
 } catch (Exception $e) {
     var_dump($e); // handle the error
 }
 
-var_dump($currentUser); // handle the success
+var_dump($templateTheme); // handle the success

@@ -19,9 +19,9 @@ $payload = [
 ];
 
 try {
-    $currentUser = $renderforest->applyTemplatePresetOnProject($payload);
+    $applyTemplatePresetOnProject = $renderforest->applyTemplatePresetOnProject($payload);
 } catch (Exception $e) {
     var_dump($e); // handle the error
 }
 
-var_dump($currentUser); // handle the success
+var_dump($applyTemplatePresetOnProject); // handle the success

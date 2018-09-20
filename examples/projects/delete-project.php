@@ -18,9 +18,9 @@ $payload = [
 ];
 
 try {
-    $currentUser = $renderforest->deleteProject($payload);
+    $deleteProject = $renderforest->deleteProject($payload);
 } catch (Exception $e) {
     var_dump($e); // handle the error
 }
 
-var_dump($currentUser); // handle the success
+var_dump($deleteProject); // handle the success

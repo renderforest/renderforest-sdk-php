@@ -19,9 +19,9 @@ $payload = [
 ];
 
 try {
-    $currentUser = $renderforest->updateProjectPartial($payload);
+    $updateProject = $renderforest->updateProjectPartial($payload);
 } catch (Exception $e) {
     var_dump($e); // handle the error
 }
 
-var_dump($currentUser); // handle the success
+var_dump($updateProject); // handle the success
