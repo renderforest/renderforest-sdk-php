@@ -18,9 +18,9 @@ $payload = [
 ];
 
 try {
-    $currentUser = $renderforest->duplicateProject($payload);
+    $duplicateProject = $renderforest->duplicateProject($payload);
 } catch (Exception $e) {
     var_dump($e); // handle the error
 }
 
-var_dump($currentUser); // handle the success
+var_dump($duplicateProject); // handle the success
