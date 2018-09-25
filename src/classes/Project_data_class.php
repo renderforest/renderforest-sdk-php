@@ -45,7 +45,7 @@ class Project_data_class
     }
 
     /**
-     * @description Set the generator.
+     *  Set the generator.
      */
     private function setGenerator()
     {
@@ -54,7 +54,8 @@ class Project_data_class
     }
 
     /**
-     * @description Get patch object.
+     * @return array
+     * Get patch object.
      */
     public function getPatchObject()
     {
@@ -68,7 +69,7 @@ class Project_data_class
     }
 
     /**
-     * @description Reset patch object.
+     * Reset patch object.
      */
     public function resetPatchObject()
     {
@@ -76,8 +77,8 @@ class Project_data_class
     }
 
     /**
-     * @returns {number}
-     * @description Get the project id.
+     * Get the project id.
+     * @return integer
      */
     public function getProjectId()
     {
@@ -85,8 +86,8 @@ class Project_data_class
     }
 
     /**
-     * @returns {number}
-     * @description Get the template id.
+     * Get the template id.
+     * @return integer
      */
     public function getTemplateId()
     {
@@ -94,8 +95,8 @@ class Project_data_class
     }
 
     /**
-     * @returns {boolean}
-     * @description Check whether is equalizer or not.
+     * Check whether is equalizer or not.
+     * @return boolean
      */
     public function isEqualizer()
     {
@@ -103,8 +104,8 @@ class Project_data_class
     }
 
     /**
-     * @returns {boolean}
-     * @description Check whether is lego or not.
+     * Check whether is lego or not.
+     * @return boolean
      */
     public function isLego()
     {
@@ -112,8 +113,8 @@ class Project_data_class
     }
 
     /**
-     * @returns {boolean}
-     * @description Get the project muteMusic property.
+     * Get the project muteMusic property.
+     * @return boolean
      */
     public function getMuteMusic()
     {
@@ -121,8 +122,8 @@ class Project_data_class
     }
 
     /**
-     * @param {boolean} muteMusic
-     * @description Set the project muteMusic property.
+     * Set the project muteMusic property.
+     * @param $muteMusic boolean
      */
     public function setMuteMusic($muteMusic)
     {
@@ -131,8 +132,8 @@ class Project_data_class
     }
 
     /**
-     * @returns {Array}
-     * @description Get the project colors.
+     * Get the project colors.
+     * @return array
      */
     public function getProjectColors()
     {
@@ -140,8 +141,8 @@ class Project_data_class
     }
 
     /**
+     * Set the project colors.
      * @param {Array} projectColors
-     * @description Set the project colors.
      */
     public function setProjectColors($projectColors)
     {
@@ -150,8 +151,8 @@ class Project_data_class
     }
 
     /**
-     * @returns {Object}
-     * @description Get the project theme.
+     * Get the project theme.
+     * @return array
      */
     public function getTheme()
     {
@@ -162,10 +163,8 @@ class Project_data_class
     }
 
     /**
-     * @param {Object} payload
-     * @param {string} payload.themeVariableName
-     * @param {string} payload.themeVariableValue
-     * @description Set the project theme.
+     * Set the project theme.
+     * @param array payload
      */
     public function setTheme($payload)
     {
@@ -176,8 +175,8 @@ class Project_data_class
     }
 
     /**
-     * @returns {Array}
-     * @description Get the project sounds.
+     * Get the project sounds.
+     * @return array
      */
     public function getSounds()
     {
@@ -185,8 +184,8 @@ class Project_data_class
     }
 
     /**
-     * @param {Array} sounds
-     * @description Set the project sounds.
+     * Set the project sounds.
+     * @param array sounds
      */
     public function setSounds($sounds)
     {
@@ -195,8 +194,28 @@ class Project_data_class
     }
 
     /**
-     * @returns {string}
-     * @description Get the project title.
+     * Get the project styles.
+     * @return array
+     */
+    public function getStyles()
+    {
+        return $this->projectDataJson['data']['styles'];
+    }
+
+    /**
+     * Set the project styles.
+     * @param array styles
+     */
+    public function setStyles($styles)
+    {
+        $this->projectDataJson['data']['styles'] = $styles;
+        array_push($this->patchProperties, 'styles');
+    }
+
+
+    /**
+     * Get the project title.
+     * @return string
      */
     public function getTitle()
     {
@@ -204,8 +223,8 @@ class Project_data_class
     }
 
     /**
-     * @returns {Array}
-     * @description Get screens (add methods on screens & screen areas).
+     * Get screens (add methods on screens & screen areas).
+     * @return array
      */
     public function getScreens()
     {
@@ -217,8 +236,8 @@ class Project_data_class
     }
 
     /**
-     * @param {Array} screens
-     * @description Set screens.
+     * Set screens.
+     * @param array screens
      */
     public function setScreens($screens)
     {
@@ -227,9 +246,9 @@ class Project_data_class
     }
 
     /**
+     * Construct screen.
      * @param array $screen
      * @return array
-     * Construct screen.
      */
     public function constructScreen($screen)
     {
@@ -265,9 +284,9 @@ class Project_data_class
     }
 
     /**
+     * Construct area.
      * @param array $area
      * @return array
-     * Construct area.
      */
     public function constructArea($area)
     {
