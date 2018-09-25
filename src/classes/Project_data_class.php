@@ -212,6 +212,24 @@ class Project_data_class
         array_push($this->patchProperties, 'styles');
     }
 
+    /**
+     * Get the project voiceOver.
+     * @return array
+     */
+    public function getVoiceOver()
+    {
+        return $this->projectDataJson['data']['voiceOver'];
+    }
+
+    /**
+     * Set the project voiceOver.
+     * @param array voiceOver
+     */
+    public function setVoiceOver($voiceOver)
+    {
+        $this->projectDataJson['data']['voiceOver'] = $voiceOver;
+        array_push($this->patchProperties, 'voiceOver');
+    }
 
     /**
      * Get the project title.
