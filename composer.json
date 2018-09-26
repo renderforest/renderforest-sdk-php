@@ -24,6 +24,7 @@
     "video maker"
   ],
   "require": {
+    "php": ">=7.1.0",
     "guzzlehttp/guzzle": "6.3.3"
   },
   "readme": "https://github.com/renderforest/renderforest-sdk-php/blob/master/README.md",
