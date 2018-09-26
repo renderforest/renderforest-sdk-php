@@ -45,3 +45,7 @@ echo 'Project colors: ';
 var_dump($projectDataInstance->getProjectColors());
 echo 'Screens: ';
 var_dump($projectDataInstance->getScreens());
+
+$screens = $projectDataInstance->getScreens();
+echo 'Areas: ';
+var_dump($screens[1]['getAreas']());
