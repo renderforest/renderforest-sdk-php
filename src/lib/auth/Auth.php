@@ -48,7 +48,7 @@ class Auth
             'clientId' => $clientId,
             'path' => $path ? $path : '',
             'qs' => $query ? $query : '',
-            'body' => isset($opts['body']) ? json_encode($opts['body']) : '{}',
+            'body' => isset($opts['body']) ? json_encode($opts['body'], JSON_UNESCAPED_SLASHES) : '{}',
             'nonce' => $headers['nonce'],
             'timestamp' => $headers['timestamp']
         ], $signKey);
