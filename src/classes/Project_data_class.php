@@ -45,7 +45,23 @@ class Project_data_class
     }
 
     /**
-     *  Set the generator.
+     * @param $array
+     * @return array
+     * Checks if given array have `NULL` property then unset it, otherwise does noting.
+     */
+    private function unsetNullProperties($array)
+    {
+        foreach ($array as $key => $value) {
+            if ($value === NULL) {
+                unset($array[$key]);
+            }
+        }
+
+        return $array;
+    }
+
+    /**
+     * Set the generator.
      */
     private function setGenerator()
     {
@@ -270,35 +286,33 @@ class Project_data_class
      */
     public function constructScreen($screen)
     {
-        return [
-            'id' => $screen['id'] ?? NULL,
-            'characterBasedDuration' => $screen['characterBasedDuration'] ?? NULL,
-            'compositionName' => $screen['compositionName'] ?? NULL,
-            'duration' => $screen['duration'] ?? NULL,
-            'extraVideoSecond' => $screen['extraVideoSecond'] ?? NULL,
-            'gifBigPath' => $screen['gifBigPath'] ?? NULL,
-            'gifPath' => $screen['gifPath'] ?? NULL,
-            'gifThumbnailPath' => $screen['gifThumbnailPath'] ?? NULL,
-            'hidden' => $screen['hidden'] ?? NULL,
-            'iconAdjustable' => $screen['iconAdjustable'] ?? NULL,
-            'isFull' => $screen['isFull'] ?? NULL,
-            'maxDuration' => $screen['maxDuration'] ?? NULL,
-            'order' => $screen['order'] ?? NULL,
-            'path' => $screen['path'] ?? NULL,
-            'tags' => $screen['tags'] ?? NULL,
-            'title' => $screen['title'] ?? NULL,
-            'type' => $screen['type'] ?? NULL,
-            'areas' => $screen['areas'] ?? NULL,
+        $constructedScreen = [
+            'id' => isset($screen['id']) ? $screen['id'] : NULL,
+            'characterBasedDuration' => isset($screen['characterBasedDuration']) ? $screen['characterBasedDuration'] : NULL,
+            'compositionName' => isset($screen['compositionName']) ? $screen['compositionName'] : NULL,
+            'duration' => isset($screen['duration']) ? $screen['duration'] : NULL,
+            'extraVideoSecond' => isset($screen['extraVideoSecond']) ? $screen['extraVideoSecond'] : NULL,
+            'gifBigPath' => isset($screen['gifBigPath']) ? $screen['gifBigPath'] : NULL,
+            'gifPath' => isset($screen['gifPath']) ? $screen['gifPath'] : NULL,
+            'gifThumbnailPath' => isset($screen['gifThumbnailPath']) ? $screen['gifThumbnailPath'] : NULL,
+            'hidden' => isset($screen['hidden']) ? $screen['hidden'] : NULL,
+            'iconAdjustable' => isset($screen['iconAdjustable']) ? $screen['iconAdjustable'] : NULL,
+            'isFull' => isset($screen['isFull']) ? $screen['isFull'] : NULL,
+            'maxDuration' => isset($screen['maxDuration']) ? $screen['maxDuration'] : NULL,
+            'order' => isset($screen['order']) ? $screen['order'] : NULL,
+            'path' => isset($screen['path']) ? $screen['path'] : NULL,
+            'tags' => isset($screen['tags']) ? $screen['tags'] : NULL,
+            'title' => isset($screen['title']) ? $screen['title'] : NULL,
+            'type' => isset($screen['type']) ? $screen['type'] : NULL,
+            'areas' => isset($screen['areas']) ? $screen['areas'] : NULL,
             'getAreas' => function () use ($screen) {
-                if ($screen['areas'] !== NULL) {
-                    return array_map(function ($area) {
-                        return $this->constructArea($area);
-                    }, $screen['areas']);
-                }
-
-                return NULL;
-            }
+                return array_map(function ($area) {
+                    return $this->constructArea($area);
+                }, $screen['areas']);
+            },
         ];
+
+        return $this->unsetNullProperties($constructedScreen);
     }
 
     /**
@@ -308,16 +322,18 @@ class Project_data_class
      */
     public function constructArea($area)
     {
-        $result = [
-            'id' => $area['id'] ?? NULL,
-            'height' => $area['height'] ?? NULL,
-            'width' => $area['width'] ?? NULL,
-            'value' => $area['value'] ?? NULL,
-            'cords' => $area['cords'] ?? NULL,
-            'title' => $area['wordCount'] ?? NULL,
-            'order' => $area['order'] ?? NULL,
-            'type' => $area['type'] ?? NULL
+        $resultWithNulls = [
+            'id' => isset($area['id']) ? $area['id'] : NULL,
+            'height' => isset($area['height']) ? $area['height'] : NULL,
+            'width' => isset($area['width']) ? $area['width'] : NULL,
+            'value' => isset($area['value']) ? $area['value'] : NULL,
+            'cords' => isset($area['cords']) ? $area['cords'] : NULL,
+            'title' => isset($area['wordCount']) ? $area['wordCount'] : NULL,
+            'order' => isset($area['order']) ? $area['order'] : NULL,
+            'type' => isset($area['type']) ? $area['type'] : NULL
         ];
+
+        $result = $this->unsetNullProperties($resultWithNulls);
 
         if ($area['type'] === 'text') {
             $result['setText'] = function ($text) {
@@ -328,40 +344,40 @@ class Project_data_class
 
         if ($area['type'] === 'image') {
             $imageParams = [
-                'fileName' => $area['fileName'] ?? NULL,
-                'originalHeight' => $area['originalHeight'] ?? NULL,
-                'originalWidth' => $area['originalWidth'] ?? NULL,
-                'mimeType' => $area['mimeType'] ?? NULL,
-                'webpPath' => $area['webpPath'] ?? NULL,
-                'fileType' => $area['fileType'] ?? NULL,
-                'thumbnailPath' => $area['thumbnailPath'] ?? NULL,
-                'imageCropParams' => $area['imageCropParams'] ?? NULL,
+                'fileName' => isset($area['fileName']) ? $area['fileName'] : NULL,
+                'originalHeight' => isset($area['originalHeight']) ? $area['originalHeight'] : NULL,
+                'originalWidth' => isset($area['originalWidth']) ? $area['originalWidth'] : NULL,
+                'mimeType' => isset($area['mimeType']) ? $area['mimeType'] : NULL,
+                'webpPath' => isset($area['webpPath']) ? $area['webpPath'] : NULL,
+                'fileType' => isset($area['fileType']) ? $area['fileType'] : NULL,
+                'thumbnailPath' => isset($area['thumbnailPath']) ? $area['thumbnailPath'] : NULL,
+                'imageCropParams' => isset($area['imageCropParams']) ? $area['imageCropParams'] : NULL,
                 'setImage' => function ($image) use ($area) {
                     $this->setAreaImage($area, $image);
                     array_push($this->patchProperties, 'screens');
                 }
             ];
 
-            array_replace_recursive($result, $imageParams);
+            $result = array_replace_recursive($result, $this->unsetNullProperties($imageParams));
         }
 
         if ($area['type'] === 'video') {
             $areaParams = [
-                'fileName' => $area['fileName'] ?? NULL,
-                'originalHeight' => $area['originalHeight'] ?? NULL,
-                'originalWidth' => $area['originalWidth'] ?? NULL,
-                'mimeType' => $area['mimeType'] ?? NULL,
-                'webpPath' => $area['webpPath'] ?? NULL,
-                'fileType' => $area['fileType'] ?? NULL,
-                'thumbnailPath' => $area['thumbnailPath'] ?? NULL,
-                'videoCropParams' => $area['videoCropParams'] ?? NULL,
+                'fileName' => isset($area['fileName']) ? $area['fileName'] : NULL,
+                'originalHeight' => isset($area['originalHeight']) ? $area['originalHeight'] : NULL,
+                'originalWidth' => isset($area['originalWidth']) ? $area['originalWidth'] : NULL,
+                'mimeType' => isset($area['mimeType']) ? $area['mimeType'] : NULL,
+                'webpPath' => isset($area['webpPath']) ? $area['webpPath'] : NULL,
+                'fileType' => isset($area['fileType']) ? $area['fileType'] : NULL,
+                'thumbnailPath' => isset($area['thumbnailPath']) ? $area['thumbnailPath'] : NULL,
+                'videoCropParams' => isset($area['videoCropParams']) ? $area['videoCropParams'] : NULL,
                 'setVideo' => function ($video) use ($area) {
                     $this->setAreaVideo($area, $video);
                     array_push($this->patchProperties, 'screens');
                 }
             ];
 
-            array_replace_recursive($result, $areaParams);
+            $result = array_replace_recursive($result, $this->unsetNullProperties($areaParams));
         }
 
         return $result;
@@ -376,22 +392,22 @@ class Project_data_class
     public function setAreaImage($area, $image)
     {
         $imageProperties = [
-            'fileName' => $image['fileName'] ?? NULL,
-            'mimeType' => $image['mime'] ?? NULL,
-            'value' => $image['filePath'] ?? NULL,
-            'webpPath' => $image['webpPath'] ?? NULL,
-            'fileType' => $image['fileType'] ?? NULL,
-            'thumbnailPath' => $image['thumbnailPath'] ?? NULL,
+            'fileName' => isset($image['fileName']) ? $image['fileName'] : NULL,
+            'mimeType' => isset($image['mime']) ? $image['mime'] : NULL,
+            'value' => isset($image['filePath']) ? $image['filePath'] : NULL,
+            'webpPath' => isset($image['webpPath']) ? $image['webpPath'] : NULL,
+            'fileType' => isset($image['fileType']) ? $image['fileType'] : NULL,
+            'thumbnailPath' => isset($image['thumbnailPath']) ? $image['thumbnailPath'] : NULL,
             'imageCropParams' => [
-                'tranform' => $image['imageCropParams']['transform'] ?? NULL,
-                'top' => $image['imageCropParams']['top'] ?? NULL,
-                'left' => $image['imageCropParams']['left'] ?? NULL,
-                'width' => $image['imageCropParams']['width'] ?? NULL,
-                'height' => $image['imageCropParams']['height'] ?? NULL
+                'tranform' => isset($image['imageCropParams']['transform']) ? $image['imageCropParams']['transform'] : NULL,
+                'top' => isset($image['imageCropParams']['top']) ? $image['imageCropParams']['top'] : NULL,
+                'left' => isset($image['imageCropParams']['left']) ? $image['imageCropParams']['left'] : NULL,
+                'width' => isset($image['imageCropParams']['width']) ? $image['imageCropParams']['width'] : NULL,
+                'height' => isset($image['imageCropParams']['height']) ? $image['imageCropParams']['height'] : NULL
             ]
         ];
 
-        return array_replace_recursive($area, $imageProperties);
+        return array_replace_recursive($area, $this->unsetNullProperties($imageProperties));
     }
 
     /**
@@ -403,14 +419,14 @@ class Project_data_class
     public function setAreaVideo($area, $video)
     {
         $videoProperties = [
-            'fileName' => $video['fileName'] ?? NULL,
-            'mimeType' => $video['mime'] ?? NULL,
-            'value' => $video['filePath'] ?? NULL,
-            'webpPath' => $video['webpPath'] ?? NULL,
-            'fileType' => $video['fileType'] ?? NULL,
-            'videoCropParams' => $video['videoCropParams'] ?? NULL
+            'fileName' => isset($video['fileName']) ? $video['fileName'] : NULL,
+            'mimeType' => isset($video['mime']) ? $video['mime'] : NULL,
+            'value' => isset($video['filePath']) ? $video['filePath'] : NULL,
+            'webpPath' => isset($video['webpPath']) ? $video['webpPath'] : NULL,
+            'fileType' => isset($video['fileType']) ? $video['fileType'] : NULL,
+            'videoCropParams' => isset($video['videoCropParams']) ? $video['videoCropParams'] : NULL
         ];
 
-        return array_replace_recursive($area, $videoProperties);
+        return array_replace_recursive($area, $this->unsetNullProperties($videoProperties));
     }
 }
