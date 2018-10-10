@@ -53,6 +53,24 @@ class Http
     }
 
     /**
+     * @param array $array
+     * @param string $key
+     * @return array
+     * Removes array entries which have given `key`.
+     */
+    private function recursiveUnset(&$array, $key)
+    {
+        unset($array[$key]);
+        foreach ($array as &$value) {
+            if (is_array($value)) {
+                $this->recursive_unset($value, $key);
+            }
+        }
+
+        return $array;
+    }
+
+    /**
      * @param string $signKey
      * @param number $clientId
      * Set config.
@@ -162,7 +180,9 @@ class Http
         $options = array_replace_recursive($this->DEFAULT_OPTIONS, $options);
 
         $preparedOptions = $this->prepareRequest($options);
-        $optionsWithAuth = $this->Auth->setAuthorization($preparedOptions, $this->signKey, $this->clientId);
+        $cleanGetAreasOptions = $this->recursiveUnset($preparedOptions, 'getAreas');
+
+        $optionsWithAuth = $this->Auth->setAuthorization($cleanGetAreasOptions, $this->signKey, $this->clientId);
 
         return $this->request($optionsWithAuth);
     }
