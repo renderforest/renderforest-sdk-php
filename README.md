@@ -732,6 +732,9 @@ try {
 
 var_dump($companySoundsLimited); // handle the success
 ```
+
+[See example](https://github.com/renderforest/renderforest-sdk-php/blob/master/examples/sounds/get-company-sounds-limited.php)
+
 ```php
 <?php
 
@@ -755,8 +758,6 @@ var_dump($sounds); // handle the success
 ```
 - The sounds will have greater or equal duration to the specified one.
 - Remember — any given value of the duration greater than 180 will be overridden by 180!
-
-[See example](https://github.com/renderforest/renderforest-sdk-php/blob/master/examples/sounds/get-company-sounds-limited.php)
 
 [See example](https://github.com/renderforest/renderforest-sdk-php/blob/master/examples/sounds/get-sounds.php)
 
@@ -784,6 +785,9 @@ try {
 }
 var_dump($recommendedSoundsLimited); // handle the success
 ```
+
+[See example](https://github.com/renderforest/renderforest-sdk-php/blob/master/examples/sounds/get-recommended-sounds-limited.php)
+
 ```php
 <?php
 
@@ -808,8 +812,6 @@ var_dump($recommendedSounds); // handle the success
 ```
 - These sounds will have greater or equal duration to the specified one.
 - Remember — any given value of the duration greater than 180 will be overridden by 180!
-
-[See example](https://github.com/renderforest/renderforest-sdk-php/blob/master/examples/sounds/get-recommended-sounds-limited.php)
 
 [See example](https://github.com/renderforest/renderforest-sdk-php/blob/master/examples/sounds/get-recommended-sounds.php)
 
