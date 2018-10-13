@@ -1,5 +1,5 @@
 {
-  "name": "@renderforest/sdk-php",
+  "name": "renderforest/sdk-php",
   "description": "Renderforest SDK for PHP",
   "version": "0.0.1",
   "authors": [
