@@ -63,7 +63,7 @@ class Http
         unset($array[$key]);
         foreach ($array as &$value) {
             if (is_array($value)) {
-                $this->recursive_unset($value, $key);
+                $this->recursiveUnset($value, $key);
             }
         }
 
