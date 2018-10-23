@@ -27,11 +27,11 @@
     "php": ">=7.1.0",
     "guzzlehttp/guzzle": "6.3.3"
   },
-  "autoload": {
-    "files": [
-      "src/lib/Renderforest.php"
-    ]
-  },
+ "autoload": {
+   "psr-4": {
+     "RenderForest\\": "src/"
+   }
+ },
   "readme": "https://github.com/renderforest/renderforest-sdk-php/blob/master/README.md",
   "support": {
     "issues": "https://github.com/renderforest/renderforest-sdk-php/issues"
