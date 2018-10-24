@@ -7,7 +7,7 @@
  * LICENSE file in the root directory.
  */
 
-require_once(dirname(__FILE__) . '/../../src/lib/Renderforest.php');
+require 'vendor/autoload.php';
 
 $payload = [
     'categoryId' => 3,
@@ -17,8 +17,8 @@ $payload = [
 ];
 
 try {
-    $templates = Renderforest::getTemplates($payload);
-} catch (Exception $e) {
+    $templates = \Renderforest\Client::getTemplates($payload);
+} catch (\GuzzleHttp\Exception\GuzzleException $e) {
     var_dump($e); // handle the error
 }
 

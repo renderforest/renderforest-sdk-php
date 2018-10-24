@@ -7,15 +7,15 @@
  * LICENSE file in the root directory.
  */
 
-require_once(dirname(__FILE__) . '/../../src/lib/Renderforest.php');
+require 'vendor/autoload.php';
 
 $payload = [
     'templateId' => 701
 ];
 
 try {
-    $getTemplateColorPresets = Renderforest::getTemplateColorPresets($payload);
-} catch (Exception $e) {
+    $getTemplateColorPresets = \Renderforest\Client::getTemplateColorPresets($payload);
+} catch (\GuzzleHttp\Exception\GuzzleException $e) {
     var_dump($e); // handle the error
 }
 
