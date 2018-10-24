@@ -7,151 +7,151 @@
  * LICENSE file in the root directory.
  */
 
-require_once(dirname(__FILE__) . '/../http/Http.php');
+namespace Renderforest\Resource;
 
-require_once(dirname(__FILE__) . '/../../util/Params.php');
+use Renderforest;
 
 class Templates
 {
     private $API_PREFIX = '/api/v1';
     private $Params;
-    private $Http;
+    private $Request;
 
     public function __construct()
     {
-        $this->Http = Http::getInstance();
-        $this->Params = Params::getInstance();
+        $this->Params = new Renderforest\Params();
+        $this->Request = Renderforest\Request\Http::getInstance();
     }
 
     /**
-     * @param array $payload
+     * Gets all templates.
+     * @param $payload
      * @return array|null
-     * Get All Templates.
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getTemplates($payload)
     {
         $qs = $this->Params->destructParams($payload, ['categoryId', 'equalizer', 'limit', 'offset']);
-
         $options = [
             'endpoint' => "$this->API_PREFIX/templates",
             'qs' => $qs
         ];
 
-        return $this->Http->unauthorizedRequest($options);
+        return $this->Request->unauthorizedRequest($options);
     }
 
     /**
-     * @param array $payload
+     * Gets templates categories.
+     * @param $payload
      * @return array|null
-     * Get Templates Categories.
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getTemplatesCategories($payload)
     {
         $qs = $this->Params->destructParams($payload, ['language']);
-
         $options = [
             'endpoint' => "$this->API_PREFIX/templates/categories",
             'qs' => $qs
         ];
 
-        return $this->Http->unauthorizedRequest($options);
+        return $this->Request->unauthorizedRequest($options);
     }
 
     /**
-     * @param array $payload
+     * Gets a specific template.
+     * @param $payload
      * @return array|null
-     * Get a Specific Template.
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getTemplate($payload)
     {
         $qs = $this->Params->destructParams($payload, ['language']);
         $templateId = $this->Params->destructURLParam($payload, 'templateId');
-
         $options = [
             'endpoint' => "$this->API_PREFIX/templates/$templateId",
             'qs' => $qs
         ];
 
-        return $this->Http->unauthorizedRequest($options);
+        return $this->Request->unauthorizedRequest($options);
     }
 
     /**
-     * @param array $payload
+     * Gets Color-Presets of the template.
+     * @param $payload
      * @return array|null
-     * Get Color-Presets of the Template.
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getTemplateColorPresets($payload)
     {
         $templateId = $this->Params->destructURLParam($payload, 'templateId');
-
         $options = [
             'endpoint' => "$this->API_PREFIX/templates/$templateId/color-presets"
         ];
 
-        return $this->Http->unauthorizedRequest($options);
+        return $this->Request->unauthorizedRequest($options);
     }
 
     /**
-     * @param array $payload
+     * Gets Pluggable-Screens of the template.
+     * @param $payload
      * @return array|null
-     * Get Pluggable-Screens of the Template.
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getTemplatePluggableScreens($payload)
     {
         $templateId = $this->Params->destructURLParam($payload, 'templateId');
-
         $options = [
             'endpoint' => "$this->API_PREFIX/templates/$templateId/pluggable-screens"
         ];
 
-        return $this->Http->unauthorizedRequest($options);
+        return $this->Request->unauthorizedRequest($options);
     }
 
     /**
-     * @param array $payload
+     * Gets Recommended-Custom-Colors of the template.
+     * @param $payload
      * @return array|null
-     * Get Recommended-Custom-Colors of the Template.
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getTemplateRecommendedCustomColors($payload)
     {
         $templateId = $this->Params->destructURLParam($payload, 'templateId');
-
         $options = [
             'endpoint' => "$this->API_PREFIX/templates/$templateId/recommended-custom-colors"
         ];
 
-        return $this->Http->unauthorizedRequest($options);
+        return $this->Request->unauthorizedRequest($options);
     }
 
     /**
-     * @param array $payload
+     * Gets Template-Presets of the template.
+     * @param $payload
      * @return array|null
-     * Get Template-Presets of the Template.
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getTemplatePresets($payload)
     {
         $templateId = $this->Params->destructURLParam($payload, 'templateId');
-
         $options = [
             'endpoint' => "$this->API_PREFIX/templates/$templateId/template-presets"
         ];
 
-        return $this->Http->unauthorizedRequest($options);
+        return $this->Request->unauthorizedRequest($options);
     }
 
     /**
-     * @param array $payload
+     * Gets Theme of the template.
+     * @param $payload
      * @return array|null
-     * Get Theme of the Template.
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getTemplateTheme($payload)
     {
         $templateId = $this->Params->destructURLParam($payload, 'templateId');
-
         $options = [
             'endpoint' => "$this->API_PREFIX/templates/$templateId/theme"
         ];
 
-        return $this->Http->unauthorizedRequest($options);
+        return $this->Request->unauthorizedRequest($options);
     }
 }
