@@ -7,7 +7,7 @@
  * LICENSE file in the root directory.
  */
 
-require_once(dirname(__FILE__) . '/../../src/lib/Renderforest.php');
+require 'vendor/autoload.php';
 
 $payload = [
     'templateId' => 701,
@@ -15,8 +15,8 @@ $payload = [
 ];
 
 try {
-    $recommendedSoundsLimited = Renderforest::getRecommendedSoundsLimited($payload);
-} catch (Exception $e) {
+    $recommendedSoundsLimited = \Renderforest\Client::getRecommendedSoundsLimited($payload);
+} catch (\GuzzleHttp\Exception\GuzzleException $e) {
     var_dump($e); // handle the error
 }
 

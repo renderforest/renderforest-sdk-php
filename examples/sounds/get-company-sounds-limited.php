@@ -7,15 +7,15 @@
  * LICENSE file in the root directory.
  */
 
-require_once(dirname(__FILE__) . '/../../src/lib/Renderforest.php');
+require 'vendor/autoload.php';
 
 $payload = [
     'duration' => 5
 ];
 
 try {
-    $companySoundsLimited = Renderforest::getCompanySoundsLimited($payload);
-} catch (Exception $e) {
+    $companySoundsLimited = \Renderforest\Client::getCompanySoundsLimited($payload);
+} catch (\GuzzleHttp\Exception\GuzzleException $e) {
     var_dump($e); // handle the error
 }
 
