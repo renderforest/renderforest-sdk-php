@@ -7,9 +7,11 @@
  * LICENSE file in the root directory.
  */
 
-require_once(dirname(__FILE__) . '/../Singleton.php');
+namespace Renderforest\Auth;
 
-class Auth_util
+use Renderforest\Singleton;
+
+class AuthUtil
 {
     use Singleton;
 
@@ -22,12 +24,10 @@ class Auth_util
     }
 
     /**
+     * Creates keyed-hash message authentication code (HMAC) based on given `$text` and `$key`.
      * @param string $text
      * @param string $key
      * @return string
-     * Creates keyed-hash message authentication code (HMAC).
-     *  Used core `hash_hmac` module cryptographic hash function.
-     *  Secret key - sha512.
      */
     public function createHMAC($text, $key)
     {
@@ -35,11 +35,11 @@ class Auth_util
     }
 
     /**
-     * @param {{clientId, qs, path, body, nonce, timestamp}} $options
+     * Generates `HMAC` based on given `$options` and `$key`.
+     * Source is defined as combination of clientId, path, qs, body, nonce and timestamp respectively.
+     * @param array $options
      * @param string $key
      * @return string
-     * Generates `HMAC` based on source and key.
-     *  Source is defined as combination of clientId, path, qs, body, nonce and timestamp respectively.
      */
     public function generateHash($options, $key)
     {
@@ -55,12 +55,12 @@ class Auth_util
     }
 
     /**
-     * @returns string
-     * @description Generates nonce.
+     * Generates nonce.
      *  Creates timestamp
      *  Gets the last 6 chars of the timestamp
      *  Generates random number between 10-99
      *  Combined the last two ones.
+     * @returns string
      */
     public function generateNonce()
     {
