@@ -140,7 +140,7 @@ class Projects
     public function applyTemplatePresetOnProject($payload)
     {
         $body = $this->Params->destructParams($payload, ['presetId']);
-        $projectId = $this->Params->destructURLParam(payload, 'projectId');
+        $projectId = $this->Params->destructURLParam($payload, 'projectId');
 
         $options = [
             'method' => 'POST',
