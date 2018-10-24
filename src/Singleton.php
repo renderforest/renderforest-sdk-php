@@ -7,6 +7,8 @@
  * LICENSE file in the root directory.
  */
 
+namespace Renderforest;
+
 trait Singleton
 {
     static private $instance = null;
