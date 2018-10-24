@@ -6,8 +6,9 @@
  * This source code is licensed under the license found in the
  * LICENSE file in the root directory.
  */
+namespace Renderforest;
 
-class Project_data_class
+class ProjectData
 {
     private $generator;
     private $patchProperties;
@@ -22,7 +23,7 @@ class Project_data_class
         /**
          * Get SDK version from composer.json file and set it in generator`.
          */
-        $ComposerJson = json_decode(file_get_contents(dirname(__FILE__) . '/../../composer.json'), true);
+        $ComposerJson = json_decode(file_get_contents(dirname(__FILE__) . '/../composer.json'), true);
         $sdkVersion = $ComposerJson['version'];
         $this->generator = "renderforest/sdk-node/$sdkVersion";
 
