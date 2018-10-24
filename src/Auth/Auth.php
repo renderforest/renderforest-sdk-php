@@ -7,9 +7,9 @@
  * LICENSE file in the root directory.
  */
 
-require_once(dirname(dirname(__FILE__)) . '/Singleton.php');
+namespace Renderforest\Auth;
 
-require_once(dirname(__FILE__) . '/Auth_util.php');
+use Renderforest\Singleton; 
 
 class Auth
 {
@@ -22,16 +22,16 @@ class Auth
      */
     public function __construct()
     {
-        $this->Auth_util = Auth_util::getInstance();
+        $this->Auth_util = AuthUtil::getInstance();
     }
 
     /**
+     * Sets authorization.
+     * Sets nonce, clientid, timestamp, authorization headers.
      * @param array $options
      * @param string $signKey
      * @param number $clientId
      * @return array - New options object is returned.
-     * Sets authorization.
-     *  Sets nonce, clientid, timestamp, authorization headers.
      */
     public function setAuthorization($options, $signKey, $clientId)
     {

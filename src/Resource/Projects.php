@@ -7,16 +7,16 @@
  * LICENSE file in the root directory.
  */
 
-require_once(dirname(__FILE__) . '/../http/Http.php');
+namespace Renderforest\Resource;
 
-require_once(dirname(__FILE__) . '/../../util/Params.php');
+use Renderforest;
 
 class Projects
 {
     private $API_PREFIX = '/api/v1';
 
     private $Params;
-    private $Http;
+    private $Request;
 
     /**
      * Projects constructor.
@@ -24,14 +24,15 @@ class Projects
      */
     public function __construct()
     {
-        $this->Http = Http::getInstance();
-        $this->Params = Params::getInstance();
+        $this->Params = new Renderforest\Params();
+        $this->Request = Renderforest\Request\Http::getInstance();
     }
 
     /**
-     * @param array $payload
+     * Gets all projects.
+     * @param $payload
      * @return array|null
-     * Get All Projects.
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getProjects($payload)
     {
@@ -42,13 +43,14 @@ class Projects
             'qs' => $qs
         ];
 
-        return $this->Http->authorizedRequest($options);
+        return $this->Request->authorizedRequest($options);
     }
 
     /**
-     * @param array $payload
+     * Adds the project.
+     * @param $payload
      * @return array|null
-     * Add Project.
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function addProject($payload)
     {
@@ -57,16 +59,17 @@ class Projects
         $options = [
             'method' => 'POST',
             'endpoint' => "$this->API_PREFIX/projects",
-            'body' => $body
+            'json' => $body
         ];
 
-        return $this->Http->authorizedRequest($options);
+        return $this->Request->authorizedRequest($options);
     }
 
     /**
-     * @param array $payload
+     * Gets the trial project
+     * @param $payload
      * @return array|null
-     * Get Trial Project.
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getTrialProject($payload)
     {
@@ -77,13 +80,14 @@ class Projects
             'qs' => $qs
         ];
 
-        return $this->Http->unauthorizedRequest($options);
+        return $this->Request->unauthorizedRequest($options);
     }
 
     /**
-     * @param array $payload
+     * Gets a specific project
+     * @param $payload
      * @return array|null
-     * Get a Specific Project.
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getProject($payload)
     {
@@ -93,13 +97,14 @@ class Projects
             'endpoint' => "$this->API_PREFIX/projects/$projectId"
         ];
 
-        return $this->Http->authorizedRequest($options);
+        return $this->Request->authorizedRequest($options);
     }
 
     /**
-     * @param array $payload
+     * Updates the project (partial update)
+     * @param $payload
      * @return array|null
-     * Update the Project (partial update).
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function updateProjectPartial($payload)
     {
@@ -109,16 +114,17 @@ class Projects
         $options = [
             'method' => 'PATCH',
             'endpoint' => "$this->API_PREFIX/projects/$projectId",
-            'body' => $body
+            'json' => $body
         ];
 
-        return $this->Http->authorizedRequest($options);
+        return $this->Request->authorizedRequest($options);
     }
 
     /**
-     * @param array $payload
+     * Deletes a specific project.
+     * @param $payload
      * @return array|null
-     * Delete a Specific Project.
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function deleteProject($payload)
     {
@@ -129,13 +135,14 @@ class Projects
             'endpoint' => "$this->API_PREFIX/projects/$projectId"
         ];
 
-        return $this->Http->authorizedRequest($options);
+        return $this->Request->authorizedRequest($options);
     }
 
     /**
-     * @param array $payload
+     * Applies template preset on the project.
+     * @param $payload
      * @return array|null
-     * Apply Template Preset on the Project.
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function applyTemplatePresetOnProject($payload)
     {
@@ -145,16 +152,17 @@ class Projects
         $options = [
             'method' => 'POST',
             'endpoint' => "$this->API_PREFIX/projects/$projectId/apply-template-preset",
-            'body' => $body
+            'json' => $body
         ];
 
-        return $this->Http->authorizedRequest($options);
+        return $this->Request->authorizedRequest($options);
     }
 
     /**
-     * @param array $payload
+     * Duplicates the project.
+     * @param $payload
      * @return array|null
-     * Duplicate the Project.
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function duplicateProject($payload)
     {
@@ -165,13 +173,14 @@ class Projects
             'endpoint' => "$this->API_PREFIX/projects/$projectId/duplicate"
         ];
 
-        return $this->Http->authorizedRequest($options);
+        return $this->Request->authorizedRequest($options);
     }
 
     /**
-     * @param array $payload
+     * Renders the project.
+     * @param $payload
      * @return array|null
-     * Render the Project.
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function renderProject($payload)
     {
@@ -181,9 +190,9 @@ class Projects
         $options = [
             'method' => 'POST',
             'endpoint' => "$this->API_PREFIX/projects/$projectId/render",
-            'body' => $body
+            'json ' => $body
         ];
 
-        return $this->Http->authorizedRequest($options);
+        return $this->Request->authorizedRequest($options);
     }
 }

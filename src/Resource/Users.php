@@ -7,24 +7,27 @@
  * LICENSE file in the root directory.
  */
 
-require_once(dirname(__FILE__) . '/../http/Http.php');
+namespace Renderforest\Resource;
+
+use Renderforest;
 
 class Users
 {
     private $API_PREFIX = '/api/v1';
-    private $Http;
+    private $Request;
 
     /**
      * Users constructor.
      */
     public function __construct()
     {
-        $this->Http = Http::getInstance();
+        $this->Request = Renderforest\Request\Http::getInstance();
     }
 
     /**
+     * Gets current user.
      * @return array|null
-     * Get Current User.
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getCurrentUser()
     {
@@ -32,6 +35,6 @@ class Users
             'endpoint' => "$this->API_PREFIX/users/current"
         ];
 
-        return $this->Http->authorizedRequest($options);
+        return $this->Request->authorizedRequest($options);
     }
 }

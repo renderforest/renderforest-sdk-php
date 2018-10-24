@@ -7,18 +7,16 @@
  * LICENSE file in the root directory.
  */
 
-require_once(dirname(__FILE__) . '/../http/Http.php');
+namespace Renderforest\Resource;
 
-require_once(dirname(__FILE__) . '/../../util/Params.php');
+use Renderforest;
 
-require_once(dirname(__FILE__) . '/../../classes/Project_data_class.php');
-
-class Project_data
+class ProjectData
 {
     private $API_PREFIX = '/api/v5';
 
-    private $Http;
     private $Params;
+    private $Request;
 
     /**
      * Projects constructor.
@@ -26,44 +24,44 @@ class Project_data
      */
     public function __construct()
     {
-        $this->Http = Http::getInstance();
-        $this->Params = Params::getInstance();
+        $this->Params = new Renderforest\Params();
+        $this->Request = Renderforest\Request\Http::getInstance();
     }
 
     /**
-     * @param array $payload
-     * @return Project_data_class
-     * Get Project-data.
+     * Gets the project data.
+     * @param $payload
+     * @return Renderforest\ProjectData
+     * @throws \GuzzleHttp\Exception\GuzzleException Get Project-data.
      */
     public function getProjectData($payload)
     {
         $projectId = $this->Params->destructURLParam($payload, 'projectId');
-
         $options = [
             'endpoint' => "$this->API_PREFIX/project-data/$projectId"
         ];
 
-        $projectDataJson = $this->Http->authorizedRequest($options);
+        $projectDataJson = $this->Request->authorizedRequest($options);
 
-        return new Project_data_class($projectDataJson);
+        return new Renderforest\ProjectData($projectDataJson);
     }
 
     /**
-     * @param array $payload
+     * Updates the project data (partial update).
+     * @param $payload
      * @return array|null
-     * Update Project-data (partial update).
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function updateProjectDataPartial($payload)
     {
         $body = $this->Params->destructParams($payload, ['data']);
         $projectId = $this->Params->destructURLParam($payload, 'projectId');
-
         $options = [
             'method' => 'PATCH',
             'endpoint' => "$this->API_PREFIX/project-data/$projectId",
-            'body' => $body
+            'json' => $body
         ];
 
-        return $this->Http->authorizedRequest($options);
+        return $this->Request->authorizedRequest($options);
     }
 }

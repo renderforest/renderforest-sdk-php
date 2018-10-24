@@ -7,36 +7,36 @@
  * LICENSE file in the root directory.
  */
 
-require_once(dirname(__FILE__) . '/../http/Http.php');
+namespace Renderforest\Resource;
 
-require_once(dirname(__FILE__) . '/../../util/Params.php');
+use Renderforest;
 
 class Supports
 {
     private $API_PREFIX = '/api/v1';
     private $Params;
-    private $Http;
+    private $Request;
 
     public function __construct()
     {
-        $this->Http = Http::getInstance();
-        $this->Params = Params::getInstance();
+        $this->Params = new Renderforest\Params();
+        $this->Request = Renderforest\Request\Http::getInstance();
     }
 
     /**
-     * @param array $payload
+     * Adds supports ticket.
+     * @param $payload
      * @return array|null
-     * @description Add Supports Ticket.
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function addSupportsTicket ($payload) {
         $body = $this->Params->destructParams($payload, ['message', 'mailType', 'subject']);
-
         $options = [
             'method' => 'POST',
             'endpoint' => "$this->API_PREFIX/supports/ticket",
-            'body' => $body
+            'json' => $body
         ];
 
-        return $this->Http->authorizedRequest($options);
+        return $this->Request->authorizedRequest($options);
   }
 }

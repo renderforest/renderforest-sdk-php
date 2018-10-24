@@ -6,13 +6,12 @@
  * This source code is licensed under the license found in the
  * LICENSE file in the root directory.
  */
+namespace Renderforest;
 
-require_once(dirname(__FILE__) . '/Error.php');
+use Renderforest\Error\RenderforestError;
 
 class Params
 {
-    use Singleton;
-
     /**
      * @param $payload {Array}
      * @param $props {Array}

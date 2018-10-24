@@ -7,15 +7,17 @@
  * LICENSE file in the root directory.
  */
 
-class RenderforestError extends Error
+namespace Renderforest\Error;
+
+class RenderforestError extends \Error
 {
     /**
      * RenderforestError constructor.
      * @param string $message
      * @param int $code
-     * @param Throwable|null $previous
+     * @param \Throwable|null $previous
      */
-    public function __construct($message = "", $code = 0, Throwable $previous = null)
+    public function __construct($message = "", $code = 0, \Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);
     }
