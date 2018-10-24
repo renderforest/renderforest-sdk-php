@@ -7,11 +7,11 @@
  * LICENSE file in the root directory.
  */
 
-require_once(dirname(__FILE__) . '/../../src/lib/Renderforest.php');
+require 'vendor/autoload.php';
 
 $options = ['signKey' => '<signKey>', 'clientId' => -1];
 
-$renderforest = new Renderforest($options);
+$renderforest = new \Renderforest\Client($options);;
 
 $payload = [
     'projectId' => 7549843
@@ -21,6 +21,7 @@ function sample()
 {
     global $renderforest;
     global $payload;
+
     $projectDataInstance = $renderforest->getProjectData($payload);
 
     // make some change
