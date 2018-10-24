@@ -7,15 +7,15 @@
  * LICENSE file in the root directory.
  */
 
-require_once(dirname(__FILE__) . '/../../src/lib/Renderforest.php');
+require 'vendor/autoload.php';
 
 $options = ['signKey' => '<signKey>', 'clientId' => -1];
 
-$renderforest = new Renderforest($options);
+$renderforest = new \Renderforest\Client($options);;
 
 try {
     $currentUser = $renderforest->getCurrentUser();
-} catch (Exception $e) {
+} catch (\GuzzleHttp\Exception\GuzzleException $e) {
     var_dump($e); // handle the error
 }
 
