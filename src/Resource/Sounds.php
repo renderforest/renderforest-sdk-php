@@ -7,86 +7,86 @@
  * LICENSE file in the root directory.
  */
 
-require_once(dirname(__FILE__) . '/../http/Http.php');
+namespace Renderforest\Resource;
 
-require_once(dirname(__FILE__) . '/../../util/Params.php');
+use Renderforest;
 
 class Sounds
 {
     private $API_PREFIX = '/api/v1';
     private $Params;
-    private $Http;
+    private $Request;
 
     public function __construct()
     {
-        $this->Http = Http::getInstance();
-        $this->Params = Params::getInstance();
+        $this->Params = new Renderforest\Params();
+        $this->Request = Renderforest\Request\Http::getInstance();
     }
 
     /**
-     * @param array $payload
+     * Gets company sounds (limited).
+     * @param $payload
      * @return array|null
-     * Get Company Sounds (limited).
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getCompanySoundsLimited($payload)
     {
         $qs = $this->Params->destructParams($payload, ['duration']);
-
         $options = [
             'endpoint' => "$this->API_PREFIX/sounds",
             'qs' => $qs
         ];
 
-        return $this->Http->unauthorizedRequest($options);
+        return $this->Request->unauthorizedRequest($options);
     }
 
     /**
-     * @param array $payload
+     * Gets sounds.
+     * @param $payload
      * @return array|null
-     * Get Sounds.
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getSounds($payload)
     {
         $qs = $this->Params->destructParams($payload, ['duration']);
-
         $options = ['endpoint' => "$this->API_PREFIX/sounds",
             'qs' => $qs
         ];
 
-        return $this->Http->authorizedRequest($options);
+        return $this->Request->authorizedRequest($options);
     }
 
     /**
-     * @param array $payload
+     * Gets recommended sounds (limited).
+     * @param $payload
      * @return array|null
-     * Get Recommended Sounds (limited).
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getRecommendedSoundsLimited($payload)
     {
         $qs = $this->Params->destructParams($payload, ['duration', 'templateId']);
-
         $options = [
             'endpoint' => "$this->API_PREFIX/sounds/recommended",
             'qs' => $qs
         ];
 
-        return $this->Http->unauthorizedRequest($options);
+        return $this->Request->unauthorizedRequest($options);
     }
 
     /**
-     * @param array $payload
+     * Gets recommended sounds.
+     * @param $payload
      * @return array|null
-     * Get Recommended Sounds.
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getRecommendedSounds($payload)
     {
         $qs = $this->Params->destructParams($payload, ['duration', 'templateId']);
-
         $options = [
             'endpoint' => "$this->API_PREFIX/sounds/recommended",
             'qs' => $qs
         ];
 
-        return $this->Http->authorizedRequest($options);
+        return $this->Request->authorizedRequest($options);
     }
 }
