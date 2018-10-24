@@ -7,11 +7,10 @@
  * LICENSE file in the root directory.
  */
 
-require_once(dirname(__FILE__) . '/../Singleton.php');
+namespace Renderforest\Request;
 
-require_once(dirname(__FILE__) . '/../../../vendor/autoload.php');
-
-require_once(dirname(__FILE__) . '/../auth/Auth.php');
+use Renderforest\Auth\Auth;
+use Renderforest\Singleton;
 
 class Http
 {
@@ -35,10 +34,8 @@ class Http
         $this->clientId = NULL;
         $this->HOST = 'https://api.renderforest.com';
 
-        /**
-         * Get SDK version from composer.json file and set it in `User-Agent`.
-         */
-        $ComposerJson = json_decode(file_get_contents(dirname(__FILE__) . '/../../../composer.json'), true);
+        // Get SDK version from composer.json file and set it in `User-Agent`.
+        $ComposerJson = json_decode(file_get_contents(dirname(__FILE__) . '/../../composer.json'), true);
         $sdkVersion = $ComposerJson['version'];
         $this->DEFAULT_OPTIONS = [
             'method' => 'GET',
@@ -53,10 +50,10 @@ class Http
     }
 
     /**
+     * Recursively removes array entries which have given `$key`.
      * @param array $array
      * @param string $key
      * @return array
-     * Removes array entries which have given `key`.
      */
     private function recursiveUnset(&$array, $key)
     {
@@ -71,9 +68,9 @@ class Http
     }
 
     /**
+     * Sets config based on given `$signKey` and `$clientId`.
      * @param string $signKey
      * @param number $clientId
-     * Set config.
      */
     public function setConfig($signKey, $clientId)
     {
@@ -82,10 +79,10 @@ class Http
     }
 
     /**
+     * Appends query params.
+     * Formats object parameters into GET request query string.
      * @param array $options
      * @return array
-     * Append query params.
-     * Format object parameters into GET request query string.
      */
     public function appendQueryParams($options)
     {
@@ -103,9 +100,9 @@ class Http
     }
 
     /**
+     * Appends URI in given `$options` array.
      * @param array options
      * @return array
-     * Append URI in given `$options` array.
      */
     public function appendURI($options)
     {
@@ -116,34 +113,30 @@ class Http
     }
 
     /**
+     * Prepares request.
+     *  Appends query params in given `$options`.
+     *  Appends URI on given `$options`.
      * @param array options
-     * Prepare request.
      * @return array
-     * Appends query params and URI to given `$options` array.
      */
     public function prepareRequest($options)
     {
-        $preparedRequest = $this->appendQueryParams($options);
-        $_options = $this->appendURI($preparedRequest);
+        $appendedQueryParamsOptions = $this->appendQueryParams($options);
+        $_options = $this->appendURI($appendedQueryParamsOptions);
 
         return $_options;
     }
 
     /**
+     * Makes request with given `$options`.
      * @param array $options
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * Make request.
      */
     public function request($options)
     {
         $requestMethod = isset($options['method']) ? $options['method'] : 'GET';
         $requestURI = isset($options['uri']) ? $options['uri'] : '';
-
-        if (isset($options['body'])) {
-            $options['json'] = $options['body'];
-            unset($options['body']);
-        }
 
         try {
             $response = $this->requestClient->request($requestMethod, $requestURI, $options);
@@ -156,10 +149,12 @@ class Http
     }
 
     /**
-     * @param array $options
-     * @return mixed
-     * @throws \GuzzleHttp\Exception\GuzzleException
      * Makes unauthorized request.
+     *  Assigns default options.
+     *  Prepares `$options`.
+     * @param array $options
+     * @return array|null
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function unauthorizedRequest($options)
     {
@@ -170,10 +165,13 @@ class Http
     }
 
     /**
-     * @param array $options
-     * @return mixed
-     * @throws \GuzzleHttp\Exception\GuzzleException
      * Makes authorized request.
+     *  Assigns default options.
+     *  Clears `getAreas` entries before sending.
+     *  Sets the authorization.
+     * @param array $options
+     * @return array|null
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function authorizedRequest($options)
     {
