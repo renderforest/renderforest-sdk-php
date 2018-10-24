@@ -24,12 +24,12 @@
     "video maker"
   ],
   "require": {
-    "php": ">=7.1.0",
+    "php": ">=5.5",
     "guzzlehttp/guzzle": "6.3.3"
   },
  "autoload": {
    "psr-4": {
-     "RenderForest\\": "src/"
+     "Renderforest\\": "src/"
    }
  },
   "readme": "https://github.com/renderforest/renderforest-sdk-php/blob/master/README.md",
