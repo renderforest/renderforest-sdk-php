@@ -190,7 +190,7 @@ class Projects
         $options = [
             'method' => 'POST',
             'endpoint' => "$this->API_PREFIX/projects/$projectId/render",
-            'json ' => $body
+            'json' => $body
         ];
 
         return $this->Request->authorizedRequest($options);
