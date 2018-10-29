@@ -138,12 +138,8 @@ class Http
         $requestMethod = isset($options['method']) ? $options['method'] : 'GET';
         $requestURI = isset($options['uri']) ? $options['uri'] : '';
 
-        try {
-            $response = $this->requestClient->request($requestMethod, $requestURI, $options);
-            $responseContent = (array)json_decode($response->getBody()->getContents());
-        } catch (\GuzzleHttp\Exception\RequestException $e) {
-            echo $e;
-        }
+        $response = $this->requestClient->request($requestMethod, $requestURI, $options);
+        $responseContent = (array)json_decode($response->getBody()->getContents());
 
         return isset($responseContent) ? (array)$responseContent['data'] : NULL;
     }
