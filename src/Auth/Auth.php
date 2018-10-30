@@ -41,14 +41,14 @@ class Auth
         $headers['clientid'] = $clientId;
         $headers['timestamp'] = $this->Auth_util->dateNow();
         $parsedUrl = parse_url(isset($opts['uri']) ? $opts['uri'] : '');
-        $query = isset($parsedUrl['query']) ? '?' . $parsedUrl['query'] : '';
-        $path = $query ? $parsedUrl['path'] . $query : $parsedUrl['path'];
+        $query = isset($parsedUrl['query']) ? $parsedUrl['query'] : '';
+        $path = $query ? $parsedUrl['path'] . '?' . $query : $parsedUrl['path'];
 
         $headers['authorization'] = $this->Auth_util->generateHash([
             'clientId' => $clientId,
             'path' => $path ? $path : '',
             'qs' => $query ? $query : '',
-            'body' => isset($opts['json']) ? json_encode($opts['json'], JSON_UNESCAPED_SLASHES) : '',
+            'body' => isset($opts['json']) ? json_encode($opts['json'], JSON_UNESCAPED_SLASHES) : '{}',
             'nonce' => $headers['nonce'],
             'timestamp' => $headers['timestamp']
         ], $signKey);
