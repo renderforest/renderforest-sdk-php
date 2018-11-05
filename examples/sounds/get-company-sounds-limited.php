@@ -12,7 +12,6 @@ require 'vendor/autoload.php';
 $payload = [
     'duration' => 5
 ];
-
 try {
     $companySoundsLimited = \Renderforest\Client::getCompanySoundsLimited($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {

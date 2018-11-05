@@ -9,15 +9,12 @@
 
 require 'vendor/autoload.php';
 
-$options = ['signKey' => '<signKey>', 'clientId' => -1];
-
-$renderforest = new \Renderforest\Client($options);;
+$renderforest = new \Renderforest\Client(['signKey' => '<signKey>', 'clientId' => -1]);
 
 $payload = [
     'templateId' => 701,
     'duration' => 5
 ];
-
 try {
     $recommendedSounds = $renderforest->getRecommendedSounds($payload);
 } catch (Exception $e) {

@@ -13,7 +13,6 @@ $payload = [
     'templateId' => 701,
     'duration' => 5
 ];
-
 try {
     $recommendedSoundsLimited = \Renderforest\Client::getRecommendedSoundsLimited($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {

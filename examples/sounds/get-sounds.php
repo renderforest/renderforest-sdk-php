@@ -9,14 +9,11 @@
 
 require 'vendor/autoload.php';
 
-$options = ['signKey' => '<signKey>', 'clientId' => -1];
-
-$renderforest = new \Renderforest\Client($options);;
+$renderforest = new \Renderforest\Client(['signKey' => '<signKey>', 'clientId' => -1]);
 
 $payload = [
     'duration' => 4
 ];
-
 try {
     $sounds = $renderforest->getSounds($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
