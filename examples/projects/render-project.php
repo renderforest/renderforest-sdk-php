@@ -9,15 +9,12 @@
 
 require 'vendor/autoload.php';
 
-$options = ['signKey' => '<signKey>', 'clientId' => -1];
-
-$renderforest = new \Renderforest\Client($options);;
+$renderforest = new \Renderforest\Client(['signKey' => '<signKey>', 'clientId' => -1]);
 
 $payload = [
     'projectId' => 5000658,
     'quality' => 1080
 ];
-
 try {
     $renderProject = $renderforest->renderProject($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {

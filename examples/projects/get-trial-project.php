@@ -9,16 +9,11 @@
 
 require 'vendor/autoload.php';
 
-$options = ['signKey' => '<signKey>', 'clientId' => -1];
-
-$renderforest = new \Renderforest\Client($options);;
-
 $payload = [
     'templateId' => 701
 ];
-
 try {
-    $trialProject = $renderforest->getTrialProject($payload);
+    $trialProject = \Renderforest\Client::getTrialProject($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
     var_dump($e); // handle the error
 }
