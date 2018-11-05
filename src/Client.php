@@ -20,6 +20,7 @@ class Client {
     private $Supports;
     private $Users;
 
+    private static $staticProjects;
     private static $staticSounds;
     private static $staticTemplates;
 
@@ -43,6 +44,7 @@ class Client {
      * Initialize static members of Renderforest class.
      */
     public static function init () {
+        self::$staticProjects = new Resource\Projects();
         self::$staticSounds = new Resource\Sounds();
         self::$staticTemplates = new Resource\Templates();
     }
@@ -86,16 +88,6 @@ class Client {
     public function addProject ($payload) {
       return $this->Projects->addProject($payload);
     }
-
-    /**
-     * Gets Trial Project.
-     * @param array $payload
-     * @return array|null
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-     public function getTrialProject ($payload) {
-       return $this->Projects->getTrialProject($payload);
-     }
 
     /**
      * Gets a specific project.
@@ -194,6 +186,16 @@ class Client {
      */
     public function getCurrentUser () {
       return $this->Users->getCurrentUser();
+    }
+
+    /**
+     * Gets Trial Project.
+     * @param array $payload
+     * @return array|null
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public static function getTrialProject ($payload) {
+        return self::$staticProjects->getTrialProject($payload);
     }
 
     /**
