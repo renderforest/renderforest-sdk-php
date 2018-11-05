@@ -95,29 +95,27 @@ Welcome to the Renderforest API! You can use our API to:
 ### Get All Projects
 
 Retrieves the projects.
+
 ```php
 <?php
 
 require 'vendor/autoload.php';
 
-$options = ['signKey' => '<signKey>', 'clientId' => -1];
-
-$renderforest = new \Renderforest\Client($options);;
+$renderforest = new \Renderforest\Client(['signKey' => '<signKey>', 'clientId' => -1]);
 
 $payload = [
     'limit' => 2,
     'offset' => 10
 ];
-
 try {
     $projects = $renderforest->getProjects($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-    var_dump($e); // handle the error
+    echo $e; // handle the error
 }
 
 var_dump($projects); // handle the success
-
 ```
+
 - The renderedQualities property is optional and present if the project is in renders queue (ongoing rend).
 
 [See example](https://github.com/renderforest/renderforest-sdk-php/blob/master/examples/projects/get-projects.php)
@@ -126,28 +124,26 @@ var_dump($projects); // handle the success
 ### Add Project
 
 Creates a project.
+
 ```php
 <?php
 
 require 'vendor/autoload.php';
 
-$options = ['signKey' => '<signKey>', 'clientId' => -1];
-
-$renderforest = new \Renderforest\Client($options);;
+$renderforest = new \Renderforest\Client(['signKey' => '<signKey>', 'clientId' => -1]);
 
 $payload = [
     'templateId' => 701
 ];
-
 try {
     $addProject = $renderforest->addProject($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-    var_dump($e); // handle the error
+    echo $e; // handle the error
 }
 
 var_dump($addProject); // handle the success
-
 ```
+
 - Also, project-data is created with the following list of initial properties: 
   templateId, title, duration, equalizer, isLego, extendableScreens, fps, projectVersion, screens, muteMusic, 
   currentScreenId, projectColors (optional), themeVariableName (optional), themeVariableValue (optional).
@@ -169,199 +165,185 @@ This endpoint retrieves a trial project. Designed to allow the user to make a pr
 The data can be used later to create real project (create project, update project-data with this data).
 
 _No authorization is required for this endpoint._
+
 ```php
 <?php
 
 require 'vendor/autoload.php';
 
-$options = ['signKey' => '<signKey>', 'clientId' => -1];
-
-$renderforest = new \Renderforest\Client($options);;
+$renderforest = new \Renderforest\Client(['signKey' => '<signKey>', 'clientId' => -1]);
 
 $payload = [
     'templateId' => 701
 ];
-
 try {
     $trialProject = $renderforest->getTrialProject($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-    var_dump($e); // handle the error
+    echo $e; // handle the error
 }
 
 var_dump($trialProject); // handle the success
-
 ```
+
 [See example](https://github.com/renderforest/renderforest-sdk-php/blob/master/examples/projects/get-trial-project.php)
 
 
 ### Get a Specific Project
 
 Gets a specific project.
+
 ```php
 <?php
 
 require 'vendor/autoload.php';
 
-$options = ['signKey' => '<signKey>', 'clientId' => -1];
-
-$renderforest = new \Renderforest\Client($options);;
+$renderforest = new \Renderforest\Client(['signKey' => '<signKey>', 'clientId' => -1]);
 
 $payload = [
     'projectId' => 5000295
 ];
-
 try {
     $project = $renderforest->getProject($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-    var_dump($e); // handle the error
+    echo $e; // handle the error
 }
 
 var_dump($project); // handle the success
-
 ```
+
 [See example](https://github.com/renderforest/renderforest-sdk-php/blob/master/examples/projects/get-project.php)
 
 
 ### Update the Project - partial update
 
 Updates the project (partial update).
+
 ```php
 <?php
 
 require 'vendor/autoload.php';
 
-$options = ['signKey' => '<signKey>', 'clientId' => -1];
-
-$renderforest = new \Renderforest\Client($options);;
+$renderforest = new \Renderforest\Client(['signKey' => '<signKey>', 'clientId' => -1]);
 
 $payload = [
     'projectId' => 5000658,
     'customTitle' => 'mock-customTitle'
 ];
-
 try {
     $updateProject = $renderforest->updateProjectPartial($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-    var_dump($e); // handle the error
+    echo $e; // handle the error
 }
 
 var_dump($updateProject); // handle the success
-
 ```
+
 [See example](https://github.com/renderforest/renderforest-sdk-php/blob/master/examples/projects/update-project-partial.php)
 
 
 ### Delete a Specific Project
 
 Deletes a specific project.
+
 ```php
 <?php
 
 require 'vendor/autoload.php';
 
-$options = ['signKey' => '<signKey>', 'clientId' => -1];
-
-$renderforest = new \Renderforest\Client($options);;
+$renderforest = new \Renderforest\Client(['signKey' => '<signKey>', 'clientId' => -1]);
 
 $payload = [
     'projectId' => 5000658
 ];
-
 try {
     $deleteProject = $renderforest->deleteProject($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-    var_dump($e); // handle the error
+    echo $e; // handle the error
 }
 
 var_dump($deleteProject); // handle the success
-
 ```
+
 [See example](https://github.com/renderforest/renderforest-sdk-php/blob/master/examples/projects/delete-project.php)
 
 
 ### Apply Template Preset on the Project
 
 Applies template preset on the project.
+
 ```php
 <?php
 
 require 'vendor/autoload.php';
 
-$options = ['signKey' => '<signKey>', 'clientId' => -1];
-
-$renderforest = new \Renderforest\Client($options);;
+$renderforest = new \Renderforest\Client(['signKey' => '<signKey>', 'clientId' => -1]);
 
 $payload = [
     'projectId' => 5000658,
     'presetId' => 55
 ];
-
 try {
     $applyTemplatePresetOnProject = $renderforest->applyTemplatePresetOnProject($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-    var_dump($e); // handle the error
+    echo $e; // handle the error
 }
 
 var_dump($applyTemplatePresetOnProject); // handle the success
-
 ```
+
 [See example](https://github.com/renderforest/renderforest-sdk-php/blob/master/examples/projects/apply-template-preset-on-project.php)
 
 
 ### Duplicate the Project
 
 Duplicates the project.
+
 ```php
 <?php
 
 require 'vendor/autoload.php';
 
-$options = ['signKey' => '<signKey>', 'clientId' => -1];
-
-$renderforest = new \Renderforest\Client($options);;
+$renderforest = new \Renderforest\Client(['signKey' => '<signKey>', 'clientId' => -1]);
 
 $payload = [
     'projectId' => 5000658
 ];
-
 try {
     $duplicateProject = $renderforest->duplicateProject($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-    var_dump($e); // handle the error
+    echo $e; // handle the error
 }
 
 var_dump($duplicateProject); // handle the success
-
 ```
+
 [See example](https://github.com/renderforest/renderforest-sdk-php/blob/master/examples/projects/duplicate-project.php)
 
 
 ### Render the Project
 
 Renders the project.
+
 ```php
 <?php
 
 require 'vendor/autoload.php';
 
-$options = ['signKey' => '<signKey>', 'clientId' => -1];
-
-$renderforest = new \Renderforest\Client($options);;
+$renderforest = new \Renderforest\Client(['signKey' => '<signKey>', 'clientId' => -1]);
 
 $payload = [
     'projectId' => 5000658,
     'quality' => 1080
 ];
-
 try {
     $renderProject = $renderforest->renderProject($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-    var_dump($e); // handle the error
+    echo $e; // handle the error
 }
 
 var_dump($renderProject); // handle the success
-
 ```
+
 - The possible values of the quality are: 0, 360, 720, and 1080.
 
 [See example](https://github.com/renderforest/renderforest-sdk-php/blob/master/examples/projects/render-project.php)
@@ -386,18 +368,15 @@ Retrieves a specific project-data.
 
 require 'vendor/autoload.php';
 
-$options = ['signKey' => '<signKey>', 'clientId' => -1];
-
-$renderforest = new \Renderforest\Client($options);;
+$renderforest = new \Renderforest\Client(['signKey' => '<signKey>', 'clientId' => -1]);
 
 $payload = [
     'projectId' => 7549843
 ];
-
 try {
     $projectDataInstance = $renderforest->getProjectData($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-    var_dump($e); // handle the error
+    echo $e; // handle the error
 }
 
 echo 'Project id: ';
@@ -427,6 +406,7 @@ $screens = $projectDataInstance->getScreens();
 echo 'Areas: ';
 var_dump($screens[1]['getAreas']());
 ```
+
 [See example](https://github.com/renderforest/renderforest-sdk-php/blob/master/examples/project-data/get-project-data.php)
 
 See the [Getters and Setters of Project-data Instance](#getters-and-setters-of-project-data-instance)
@@ -438,19 +418,10 @@ Updates the project-data (partial update).
 
 ```php
 <?php
-/**
- * Copyright (c) 2018-present, Renderforest, LLC.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory.
- */
 
 require 'vendor/autoload.php';
 
-$options = ['signKey' => '<signKey>', 'clientId' => -1];
-
-$renderforest = new \Renderforest\Client($options);;
+$renderforest = new \Renderforest\Client(['signKey' => '<signKey>', 'clientId' => -1]);
 
 $payload = [
     'projectId' => 7549843
@@ -486,8 +457,8 @@ try {
 } catch (Exception $e) {
     var_dump($e); // handle the error
 }
-
 ```
+
 - You can update the following list of properties: `currentScreenId, duration, generator, muteMusic, themeVariableName, 
   themeVariableValue, projectColors, simple, sounds, screens, voiceSoundId`.
 - Any top-level properties (writable) can be updated separately (except `themeVariableName` & `themeVariableValue`), as
@@ -512,61 +483,73 @@ See the [Getters and Setters of Project-data Instance](#getters-and-setters-of-p
 #### Getters
 
 ##### Get project id
+
 ```php
 $projectDataInstance->getProjectId();  // 7096113
 ```
 
 ##### Get template id
+
 ```php
 $projectDataInstance->getTemplateId();  // 701
 ```
 
 ##### Check whether is equalizer or not
+
 ```php
 $projectDataInstance->isEqualizer();  // false
 ```
 
 ##### Check whether is lego or not
+
 ```php
 $projectDataInstance->isLego();  // true
 ```
 
 ##### Get title
+
 ```php
 $projectDataInstance->getTitle();  // 'Explainer Video Toolkit'
 ```
 
 ##### Get mute music
+
 ```php
 $projectDataInstance->getMuteMusic();  // false
 ```
 
 ##### Get sounds
+
 ```php
 $projectDataInstance->getSounds();  // Array of sound objects
 ```
 
 ##### Get styles
+
 ```php
 $projectDataInstance->getStyles();  // [ theme: '1', transition: '2' ]
 ```
 
 ##### Get voice-over
+
 ```php
 $projectDataInstance->getVoiceOver(); // [ path: 'https://example.com/voice-over.mp3' ]
 ```
 
 ##### Get project colors
+
 ```php
 $projectDataInstance->getProjectColors();  // Array of color objects
 ```
 
 ##### Get screens
+
 ```php
 $projectDataInstance->getScreens();  // Array of screen objects
 ```
 
 ##### Get screen areas
+
 ```php
 $screens = $projectDataInstance->getScreens();
 
@@ -574,6 +557,7 @@ $firstScreenAreas = $screens && $screens[0] && $screens[0]['getAreas']();  // Ar
 ```
 
 ##### Get patch object
+
 ```php
 $projectDataInstance->getPatchObject();  // Object containing local updates. Used to update project-data (partial). 
 ```
@@ -582,6 +566,7 @@ $projectDataInstance->getPatchObject();  // Object containing local updates. Use
 #### Setters
 
 ##### Set styles
+
 ```php
 // get theme/transition from .templates API
 $styles = [
@@ -592,6 +577,7 @@ $projectDataInstance->setStyles($styles);
 ```
 
 ##### Set voice-over
+
 ```php
 $voiceOver = [
   'path' => 'https://example.com/voice-ower.mp3' // optional
@@ -600,11 +586,13 @@ $projectDataInstance->setVoiceOver($voiceOver);
 ```
 
 ##### Set mute music
+
 ```php
 $projectDataInstance->setMuteMusic(true);
 ```
 
 ##### Set sounds
+
 ```php
 // sound from ./sounds API
 $sound1 = [
@@ -633,6 +621,7 @@ $projectDataInstance->setSounds($sounds);
 ```
 
 ##### Set text on text holder area
+
 ```php
 if ($screens && $screens[0]) {
   $areas = $screens[0]['getAreas']();
@@ -645,6 +634,7 @@ if ($screens && $screens[0]) {
 ```
 
 ##### Set image on image holder area
+
 ```php
 if ($screens && $screens[1]) {
   $areas = $screens[1]['getAreas']();
@@ -674,6 +664,7 @@ if ($screens && $screens[1]) {
 ```
 
 ##### Set video on video holder area
+
 ```php
 if ($screens && $screens[2]) {
   $areas = $screens[2]['getAreas']();
@@ -705,6 +696,7 @@ if ($screens && $screens[2]) {
 ```
 
 ##### Set project colors
+
 ```php
 // get project colors from ./templates API
 $projectColors = [
@@ -714,6 +706,7 @@ $projectDataInstance->setProjectColors($projectColors); // get project colors fr
 ```
 
 ##### Set screens
+
 ```php
 // get screen from ./templates API
 $screen = [
@@ -762,6 +755,7 @@ Retrieves sounds given the duration.
 
 The endpoint supports both authorized and unauthorized requests. If the authorization is not present, then response 
  limits to 5.
+ 
 ```php
 <?php
 
@@ -770,11 +764,10 @@ require 'vendor/autoload.php';
 $payload = [
     'duration' => 5
 ];
-
 try {
     $companySoundsLimited = \Renderforest\Client::getCompanySoundsLimited($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-    var_dump($e); // handle the error
+    echo $e; // handle the error
 }
 
 var_dump($companySoundsLimited); // handle the success
@@ -787,22 +780,20 @@ var_dump($companySoundsLimited); // handle the success
 
 require 'vendor/autoload.php';
 
-$options = ['signKey' => '<signKey>', 'clientId' => -1];
-
-$renderforest = new \Renderforest\Client($options);;
+$renderforest = new \Renderforest\Client(['signKey' => '<signKey>', 'clientId' => -1]);
 
 $payload = [
     'duration' => 4
 ];
-
 try {
     $sounds = $renderforest->getSounds($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-    var_dump($e); // handle the error
+    echo $e; // handle the error
 }
 
 var_dump($sounds); // handle the success
 ```
+
 - The sounds will have greater or equal duration to the specified one.
 - Remember — any given value of the duration greater than 180 will be overridden by 180!
 
@@ -825,11 +816,10 @@ $payload = [
     'templateId' => 701,
     'duration' => 5
 ];
-
 try {
     $recommendedSoundsLimited = \Renderforest\Client::getRecommendedSoundsLimited($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-    var_dump($e); // handle the error
+    echo $e; // handle the error
 }
 
 var_dump($recommendedSoundsLimited); // handle the success
@@ -842,24 +832,21 @@ var_dump($recommendedSoundsLimited); // handle the success
 
 require 'vendor/autoload.php';
 
-$options = ['signKey' => '<signKey>', 'clientId' => -1];
-
-$renderforest = new \Renderforest\Client($options);;
+$renderforest = new \Renderforest\Client(['signKey' => '<signKey>', 'clientId' => -1]);
 
 $payload = [
     'templateId' => 701,
     'duration' => 5
 ];
-
 try {
     $recommendedSounds = $renderforest->getRecommendedSounds($payload);
-} catch (Exception $e) {
-    var_dump($e); // handle the error
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
+    var_dump($e); // handle the error
 }
 
 var_dump($recommendedSounds); // handle the success
 ```
+
 - These sounds will have greater or equal duration to the specified one.
 - Remember — any given value of the duration greater than 180 will be overridden by 180!
 
@@ -872,29 +859,28 @@ var_dump($recommendedSounds); // handle the success
 ### Add Supports Ticket
 
 Creates supports ticket.
+
 ```php
 <?php
 
 require 'vendor/autoload.php';
 
-$options = ['signKey' => '<signKey>', 'clientId' => -1];
-
-$renderforest = new \Renderforest\Client($options);
+$renderforest = new \Renderforest\Client(['signKey' => '<signKey>', 'clientId' => -1]);
 
 $payload = [
     'message' => 'I need to...',
     'mailType' => 'Creative team',
     'subject' => 'Some help in ..'
 ];
-
 try {
     $supportTicket = $renderforest->addSupportsTicket($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-    var_dump($e); // handle the error
+    echo $e; // handle the error
 }
 
 var_dump($supportTicket); // handle the success
 ```
+
 - The possible values of ticket mailType are: 'Sales', 'Report a bug', 'Editing process', 'Creative team', 'Other'.
 
 [See example](https://github.com/renderforest/renderforest-sdk-php/blob/master/examples/supports/add-supports-ticket.php)
@@ -908,6 +894,7 @@ _No authorization is required for ./templates API's._
 ### Get All Templates
 
 Retrieves all templates.
+
 ```php
 <?php
 
@@ -919,15 +906,15 @@ $payload = [
     'limit' => 4,
     'offset' => 10
 ];
-
 try {
     $templates = \Renderforest\Client::getTemplates($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-    var_dump($e); // handle the error
+    echo $e; // handle the error
 }
 
 var_dump($templates); // handle the success
 ```
+
 [See example](https://github.com/renderforest/renderforest-sdk-php/blob/master/examples/templates/get-templates.php)
 
 
@@ -943,15 +930,15 @@ require 'vendor/autoload.php';
 $payload = [
     'language' => 'en'
 ];
-
 try {
     $templateCategories = \Renderforest\Client::getTemplatesCategories($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-    var_dump($e); // handle the error
+    echo $e; // handle the error
 }
 
 var_dump($templateCategories); // handle the success
 ```
+
 - The supported language codes are: ar, de, en, es, fr, pt, ru, tr.
 
 [See example](https://github.com/renderforest/renderforest-sdk-php/blob/master/examples/templates/get-templates-categories.php)
@@ -960,6 +947,7 @@ var_dump($templateCategories); // handle the success
 ### Get a Specific Template
 
 Retrieves a specific template.
+
 ```php
 <?php
 
@@ -969,15 +957,15 @@ $payload = [
     'templateId' => 701,
     'language' => 'en'
 ];
-
 try {
     $template = \Renderforest\Client::getTemplate($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-    var_dump($e); // handle the error
+    echo $e; // handle the error
 }
 
 var_dump($template); // handle the success
 ```
+
 - The supported language codes are: ar, de, en, es, fr, pt, ru, tr.
 
 [See example](https://github.com/renderforest/renderforest-sdk-php/blob/master/examples/templates/get-template.php)
@@ -987,6 +975,7 @@ var_dump($template); // handle the success
 
 Retrieves color-presets of the template.
 You can apply these color presets to your project to give it better and unique look.
+
 ```php
 <?php
 
@@ -995,15 +984,15 @@ require 'vendor/autoload.php';
 $payload = [
     'templateId' => 701
 ];
-
 try {
     $getTemplateColorPresets = \Renderforest\Client::getTemplateColorPresets($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-    var_dump($e); // handle the error
+    echo $e; // handle the error
 }
 
 var_dump($getTemplateColorPresets); // handle the success
 ```
+
 - The number of color-presets is varying from template to template.
 
 [See example](https://github.com/renderforest/renderforest-sdk-php/blob/master/examples/templates/get-template-color-presets.php)
@@ -1012,6 +1001,7 @@ var_dump($getTemplateColorPresets); // handle the success
 ### Get Pluggable-Screens of the Template
 
 Retrieves pluggable-screens of the template.
+
 ```php
 <?php
 
@@ -1020,15 +1010,15 @@ require 'vendor/autoload.php';
 $payload = [
     'templateId' => 701
 ];
-
 try {
     $templatePluggableScreens = \Renderforest\Client::getTemplatePluggableScreens($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-    var_dump($e); // handle the error
+    echo $e; // handle the error
 }
 
 var_dump($templatePluggableScreens); // handle the success
 ```
+
 - Only lego templates might have a pluggable-screen. 
 - The number of pluggable-screens is varying from template to template.
 Pluggable-Screens are grouped by categories.
@@ -1040,6 +1030,7 @@ Pluggable-Screens are grouped by categories.
 
 Retrieves recommended-custom-colors of the template.
 You can apply these recommended custom colors to your project to give it better and unique look.
+
 ```php
 <?php
 
@@ -1052,11 +1043,12 @@ $payload = [
 try {
     $templateRecommendedCustomColors = \Renderforest\Client::getTemplateRecommendedCustomColors($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-    var_dump($e); // handle the error
+    echo $e; // handle the error
 }
 
 var_dump($templateRecommendedCustomColors); // handle the success
 ```
+
 - The number of recommended-custom-colors is varying from template to template.
 
 [See example](https://github.com/renderforest/renderforest-sdk-php/blob/master/examples/templates/get-template-recommended-custom-colors.php)
@@ -1065,6 +1057,7 @@ var_dump($templateRecommendedCustomColors); // handle the success
 ### Get Template-Presets of the Template
 
 Retrieves template-presets of the template.
+
 ```php
 <?php
 
@@ -1073,15 +1066,15 @@ require 'vendor/autoload.php';
 $payload = [
     'templateId' => 701
 ];
-
 try {
     $templatePresets = \Renderforest\Client::getTemplatePresets($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-    var_dump($e); // handle the error
+    echo $e; // handle the error
 }
 
 var_dump($templatePresets); // handle the success
 ```
+
 - Only lego templates might have a template-preset.
 
 - The number of template-presets is varying from template to template.
@@ -1093,6 +1086,7 @@ Template-presets are ready-made stories created from this template to fasten you
 ### Get Theme of the Template
 
 Retrieves theme of the template.
+
 ```php
 <?php
 
@@ -1101,15 +1095,15 @@ require 'vendor/autoload.php';
 $payload = [
     'templateId' => 701
 ];
-
 try {
     $templateTheme = \Renderforest\Client::getTemplateTheme($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-    var_dump($e); // handle the error
+    echo $e; // handle the error
 }
 
 var_dump($templateTheme); // handle the success
 ```
+
 - Both lego & non-lego templates might have a theme.
 
 [See example](https://github.com/renderforest/renderforest-sdk-php/blob/master/examples/templates/get-template-theme.php)
@@ -1122,21 +1116,21 @@ var_dump($templateTheme); // handle the success
 ### Get Current User
 
 Retrieves the current user.
+
 ```php
 <?php
 
 require 'vendor/autoload.php';
 
-$options = ['signKey' => '<signKey>', 'clientId' => -1];
-
-$renderforest = new \Renderforest\Client($options);;
+$renderforest = new \Renderforest\Client(['signKey' => '<signKey>', 'clientId' => -1]);
 
 try {
     $currentUser = $renderforest->getCurrentUser();
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-    var_dump($e); // handle the error
+    echo $e; // handle the error
 }
 
 var_dump($currentUser); // handle the success
 ```
+
 [See example](https://github.com/renderforest/renderforest-sdk-php/blob/master/examples/users/get-current-user.php)
