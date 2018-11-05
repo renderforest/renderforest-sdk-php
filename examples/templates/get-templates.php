@@ -15,7 +15,6 @@ $payload = [
     'limit' => 4,
     'offset' => 10
 ];
-
 try {
     $templates = \Renderforest\Client::getTemplates($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {

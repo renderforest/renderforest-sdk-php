@@ -12,7 +12,6 @@ require 'vendor/autoload.php';
 $payload = [
     'templateId' => 701
 ];
-
 try {
     $templateTheme = \Renderforest\Client::getTemplateTheme($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {

@@ -13,7 +13,6 @@ $payload = [
     'templateId' => 701,
     'language' => 'en'
 ];
-
 try {
     $template = \Renderforest\Client::getTemplate($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {

@@ -12,7 +12,6 @@ require 'vendor/autoload.php';
 $payload = [
     'templateId' => 701
 ];
-
 try {
     $templatePresets = \Renderforest\Client::getTemplatePresets($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {

@@ -12,7 +12,6 @@ require 'vendor/autoload.php';
 $payload = [
     'language' => 'en'
 ];
-
 try {
     $templateCategories = \Renderforest\Client::getTemplatesCategories($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {

@@ -12,7 +12,6 @@ require 'vendor/autoload.php';
 $payload = [
     'templateId' => 701
 ];
-
 try {
     $getTemplateColorPresets = \Renderforest\Client::getTemplateColorPresets($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
