@@ -9,16 +9,13 @@
 
 require 'vendor/autoload.php';
 
-$options = ['signKey' => '<signKey>', 'clientId' => -1];
-
-$renderforest = new \Renderforest\Client($options);
+$renderforest = new \Renderforest\Client(['signKey' => '<signKey>', 'clientId' => -1]);
 
 $payload = [
     'message' => 'I need to...',
     'mailType' => 'Creative team',
     'subject' => 'Some help in ..'
 ];
-
 try {
     $supportTicket = $renderforest->addSupportsTicket($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
