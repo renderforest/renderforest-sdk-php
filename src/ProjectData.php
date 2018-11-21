@@ -258,6 +258,15 @@ class ProjectData
     }
 
     /**
+     * Get the project duration.
+     * @return integer
+     */
+    public function getDuration()
+    {
+        return $this->projectDataJson['data']['duration'];
+    }
+
+    /**
      * Get screens (add methods on screens & screen areas).
      * @return array
      */
