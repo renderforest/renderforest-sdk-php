@@ -261,7 +261,7 @@ class ProjectData
      * Get the project duration.
      * @return integer
      */
-    public function getDuration()
+    public function getProjectDuration()
     {
         return $this->projectDataJson['data']['duration'];
     }
