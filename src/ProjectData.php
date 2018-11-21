@@ -158,8 +158,17 @@ class ProjectData
     }
 
     /**
+     * Get the project duration.
+     * @return array
+     */
+    public function getProjectDuration()
+    {
+        return $this->projectDataJson['data']['duration'];
+    }
+
+    /**
      * Set the project colors.
-     * @param {Array} projectColors
+     * @param array projectColors
      */
     public function setProjectColors($projectColors)
     {
