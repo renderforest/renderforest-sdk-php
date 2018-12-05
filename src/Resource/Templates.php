@@ -154,4 +154,20 @@ class Templates
 
         return $this->Request->unauthorizedRequest($options);
     }
+
+    /**
+     * GEts Transitions of the template.
+     * @param $payload
+     * @return array|null
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getTemplateTransitions($payload)
+    {
+        $templateId = $this->Params->destructURLParam($payload, 'templateId');
+        $options = [
+            'endpoint' => "$this->API_PREFIX/templates/$templateId/transitions"
+        ];
+
+        return $this->Request->unauthorizedRequest($options);
+    }
 }
