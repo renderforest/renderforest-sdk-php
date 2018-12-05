@@ -82,6 +82,7 @@ Welcome to the Renderforest API! You can use our API to:
   - [Get Recommended-Custom-Colors of the Template](#get-recommended-custom-colors-of-the-template)
   - [Get Template-Presets of the Template](#get-template-presets-of-the-template)
   - [Get Theme of the Template](#get-theme-of-the-template)
+  - [Get Transitions of the Template](#get-transitions-of-the-template)
 * [Users API](#users-api)
   - [Get Current User](#get-current-user)
  
