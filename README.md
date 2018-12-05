@@ -542,6 +542,12 @@ $projectDataInstance->getVoiceOver(); // [ path: 'https://example.com/voice-over
 $projectDataInstance->getProjectColors();  // Array of color objects
 ```
 
+##### Get project duration
+
+```php
+$projectDataInstance->getProjectDuration();  // The number representing project duration
+```
+
 ##### Get screens
 
 ```php
@@ -559,7 +565,7 @@ $firstScreenAreas = $screens && $screens[0] && $screens[0]['getAreas']();  // Ar
 ##### Get patch object
 
 ```php
-$projectDataInstance->getPatchObject();  // Object containing local updates. Used to update project-data (partial). 
+$projectDataInstance->getPatchObject();  // Array containing local updates. Used to update project-data (partial). 
 ```
 
 
@@ -1107,6 +1113,30 @@ var_dump($templateTheme); // handle the success
 - Both lego & non-lego templates might have a theme.
 
 [See example](https://github.com/renderforest/renderforest-sdk-php/blob/master/examples/templates/get-template-theme.php)
+
+
+### Get Transitions of the Template
+
+Retrieves transitions of the template.
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+
+$payload = [
+    'templateId' => 1021
+];
+try {
+    $templateTransitions = \Renderforest\Client::getTemplateTransitions($payload);
+} catch (\GuzzleHttp\Exception\GuzzleException $e) {
+    echo $e; // handle the error
+}
+
+var_dump($templateTheme); // handle the success
+```
+
+[See example](https://github.com/renderforest/renderforest-sdk-php/blob/master/examples/templates/get-template-transitions.php)
 
 
 
