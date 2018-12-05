@@ -297,5 +297,15 @@ class Client {
     public static function getTemplateTheme ($payload) {
       return self::$staticTemplates->getTemplateTheme($payload);
     }
+
+    /**
+     * Gets Transitions of the template.
+     * @param array $payload
+     * @return array|null
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public static function getTemplateTransitions ($payload) {
+      return self::$staticTemplates->getTempalateTransitions($payload);
+    }
 }
 Client::init();
