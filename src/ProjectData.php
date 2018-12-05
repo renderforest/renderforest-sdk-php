@@ -150,11 +150,12 @@ class ProjectData
 
     /**
      * Get the project colors.
-     * @return array
+     * @return array|null
      */
     public function getProjectColors()
     {
-        return $this->projectDataJson['data']['projectColors'];
+        $projectColors = $this->projectDataJson['data']['projectColors'];
+        return isset($projectColors) ? $projectColors : null;
     }
 
     /**
