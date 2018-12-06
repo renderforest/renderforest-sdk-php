@@ -154,8 +154,8 @@ class ProjectData
      */
     public function getProjectColors()
     {
-        $projectColors = $this->projectDataJson['data']['projectColors'];
-        return isset($projectColors) ? $projectColors : null;
+        return isset($this->projectDataJson['data']['projectColors']) ?
+            $this->projectDataJson['data']['projectColors'] : null;
     }
 
     /**
