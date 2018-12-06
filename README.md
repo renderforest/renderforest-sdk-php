@@ -55,6 +55,7 @@ Welcome to the Renderforest API! You can use our API to:
       - [Get styles](#get-styles)
       - [Get voice-over](#get-voice-over)
       - [Get project colors](#get-project-colors)
+      - [Get project duration](#get-project-duration)
       - [Get screens](#get-screens)
       - [Get screen areas](#get-screen-areas)
       - [Get patch object](#get-patch-object)
