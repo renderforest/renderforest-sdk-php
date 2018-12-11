@@ -27,7 +27,7 @@ class ProjectData
         /**
          * Get SDK version from composer.json file and set it in generator`.
          */
-        $ComposerJson = json_decode(file_get_contents(dirname(__FILE__) . '/../composer.json'), true);
+        $ComposerJson = json_decode(file_get_contents(dirname(__FILE__) . '/../../composer.json'), true);
         $sdkVersion = $ComposerJson['version'];
         $this->generator = "renderforest/sdk-node/$sdkVersion";
 
