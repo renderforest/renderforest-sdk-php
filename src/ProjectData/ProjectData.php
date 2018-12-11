@@ -6,13 +6,17 @@
  * This source code is licensed under the license found in the
  * LICENSE file in the root directory.
  */
-namespace Renderforest;
+
+namespace Renderforest\ProjectData;
+
+use Renderforest\Error\MissingOrderError;
 
 class ProjectData
 {
     private $generator;
     private $patchProperties;
     private $projectDataJson;
+    private $projectDataUtil;
 
     /**
      * Project_data constructor.
@@ -39,8 +43,8 @@ class ProjectData
                 return $objectToConvert;
             }
         }
-
         $this->projectDataJson = objectToArray($projectDataJson);
+        $this->projectDataUtil = new ProjectDataUtil();
         $this->patchProperties = [];
         $this->setGenerator();
     }
@@ -288,6 +292,21 @@ class ProjectData
     {
         $this->projectDataJson['data']['screens'] = $screens;
         array_push($this->patchProperties, 'screens');
+    }
+
+    /**
+     * Pushes the given `newScreen` to `screens` array.
+     * @param array $newScreen - The new screen to push.
+     * @return array
+     */
+    public function pushScreen($newScreen)
+    {
+        if (!isset($newScreen['order'])) {
+            throw new MissingOrderError('Screen order property is missing.');
+        }
+
+        $screens = $this->getScreens();
+        return $this->projectDataUtil->insertAndNormalizeOrder($screens, $newScreen);
     }
 
     /**
