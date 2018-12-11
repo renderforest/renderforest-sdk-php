@@ -66,7 +66,7 @@ function sample()
     if ($screens && $screens[0]) {
         $areas = $screens[0]['getAreas']();
 
-        $area = $areas[0] ?? [];
+        $area = isset($areas[0]) ? isset($areas[0]) : [];
 
         if ($area && $area['type'] === 'text') {
             $area['setText']('sample text');
@@ -76,7 +76,7 @@ function sample()
     if ($screens && $screens[1]) {
         $areas = $screens[1]['getAreas']();
 
-        $area = $areas[0] ?? [];
+        $area = isset($areas[0]) ? isset($areas[0]) : [];
 
         if ($area && $area['type'] === 'image') {
             $image = [
@@ -163,8 +163,7 @@ function sample()
         ]
     ];
 
-    $_screens = $projectDataInstance->getScreens();
-    array_push($_screens, $screen);
+    $_screens = $projectDataInstance->pushScreen($screen);
 
     $projectDataInstance->setScreens($_screens); // get screen from ./templates API
 
