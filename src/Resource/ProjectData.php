@@ -43,7 +43,7 @@ class ProjectData
 
         $projectDataJson = $this->Request->authorizedRequest($options);
 
-        return new Renderforest\ProjectData($projectDataJson);
+        return new Renderforest\ProjectData\ProjectData($projectDataJson);
     }
 
     /**
