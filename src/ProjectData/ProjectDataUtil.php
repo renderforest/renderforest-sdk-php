@@ -81,7 +81,7 @@ class ProjectDataUtil
         usort($screensWithNewScreen, $this->sortFactory('order'));
 
         return array_map(
-            array(new ProjectDataUtil(), 'normalizeOrders'),
+            array(__CLASS__, 'normalizeOrders'),
             $screensWithNewScreen,
             array_keys($screensWithNewScreen)
         );
