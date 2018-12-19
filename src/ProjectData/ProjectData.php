@@ -262,6 +262,7 @@ class ProjectData
      */
     public function setVoiceOver($voiceOver)
     {
+        $voiceOver = (empty($voiceOver)) ? new \stdClass() : $voiceOver;
         $this->projectDataJson['data']['voiceOver'] = $voiceOver;
         array_push($this->patchProperties, 'voiceOver');
     }
