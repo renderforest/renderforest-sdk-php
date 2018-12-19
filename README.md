@@ -587,6 +587,8 @@ $projectDataInstance->setStyles($styles);
 
 ##### Set voice-over
 
+In case if you want to unset `voiceover`, send empty array.
+
 ```php
 $voiceOver = [
   'path' => 'https://example.com/voice-ower.mp3' // optional

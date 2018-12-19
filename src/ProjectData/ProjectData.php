@@ -24,35 +24,39 @@ class ProjectData
      */
     public function __construct($projectDataJson)
     {
-        /**
-         * Get SDK version from composer.json file and set it in generator`.
-         */
-        $ComposerJson = json_decode(file_get_contents(dirname(__FILE__) . '/../../composer.json'), true);
-        $sdkVersion = $ComposerJson['version'];
-        $this->generator = "renderforest/sdk-node/$sdkVersion";
+        $composer = file_get_contents(dirname(__FILE__) . '/../../composer.json');
+        $composerJson = json_decode($composer, true);
+        $sdkVersion = $composerJson['version'];
 
-        function objectToArray($objectToConvert)
-        {
-            if (is_object($objectToConvert)) {
-                $objectToConvert = get_object_vars($objectToConvert);
-            }
-
-            if (is_array($objectToConvert)) {
-                return array_map(__FUNCTION__, $objectToConvert);
-            } else {
-                return $objectToConvert;
-            }
-        }
-        $this->projectDataJson = objectToArray($projectDataJson);
-        $this->projectDataUtil = new ProjectDataUtil();
+        $this->generator = "renderforest/sdk-php/$sdkVersion";
         $this->patchProperties = [];
+        $this->projectDataJson = $this->objectToArray($projectDataJson);
+        $this->projectDataUtil = new ProjectDataUtil();
         $this->setGenerator();
     }
 
     /**
-     * @param $array
+     * Converts `stdClass` object to array recursively.
+     * @param \stdClass $objectToConvert
      * @return array
+     */
+    private function objectToArray($objectToConvert)
+    {
+        if (is_object($objectToConvert)) {
+            $objectToConvert = get_object_vars($objectToConvert);
+        }
+
+        if (is_array($objectToConvert)) {
+            return array_map([__CLASS__, __METHOD__], $objectToConvert);
+        } else {
+            return $objectToConvert;
+        }
+    }
+
+    /**
      * Checks if given array have `NULL` property then unset it, otherwise does noting.
+     * @param $array - The data to unset `NULL` props.
+     * @return array
      */
     private function unsetNullProperties($array)
     {
@@ -75,8 +79,8 @@ class ProjectData
     }
 
     /**
-     * @return array
      * Get patch object.
+     * @return array
      */
     public function getPatchObject()
     {
@@ -258,6 +262,7 @@ class ProjectData
      */
     public function setVoiceOver($voiceOver)
     {
+        $voiceOver = (empty($voiceOver)) ? new \stdClass() : $voiceOver;
         $this->projectDataJson['data']['voiceOver'] = $voiceOver;
         array_push($this->patchProperties, 'voiceOver');
     }
