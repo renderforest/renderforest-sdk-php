@@ -87,6 +87,7 @@ Welcome to the Renderforest API! You can use our API to:
   - [Get Transitions of the Template](#get-transitions-of-the-template)
 * [Users API](#users-api)
   - [Get Current User](#get-current-user)
+* [Creating Project from Scratch](#creating-project-from-scratch)
  
  
 # API
@@ -1179,3 +1180,11 @@ var_dump($currentUser); // handle the success
 ```
 
 [See example](https://github.com/renderforest/renderforest-sdk-php/blob/master/examples/users/get-current-user.php)
+
+
+## Creating Project from Scratch
+
+Example for creating project from scratch. Includes creating project, updating project data, video rendering status 
+checking and video downloading.
+
+[See example](https://github.com/renderforest/renderforest-sdk-php/blob/master/examples/scratch-project/create-project-from-scratch.php)
