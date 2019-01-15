@@ -11,37 +11,45 @@ namespace Renderforest\Resource;
 
 use Renderforest;
 
+use Renderforest\Params;
+
+use Renderforest\Request\Api;
+
 class ProjectData
 {
-    private $API_PREFIX = '/api/v5';
+    private $CONFIG;
 
     private $Params;
-    private $Request;
+
+    private $ApiRequest;
 
     /**
      * Projects constructor.
-     * Initialize Http, Params libraries.
+     * Initialize Api, Params libraries.
      */
     public function __construct()
     {
-        $this->Params = new Renderforest\Params();
-        $this->Request = Renderforest\Request\Http::getInstance();
+        $this->CONFIG = include dirname(__FILE__) . '/../Config/Config.php';
+
+        $this->Params = new Params();
+
+        $this->ApiRequest = Api::getInstance();
     }
 
     /**
      * Gets the project data.
      * @param $payload
-     * @return Renderforest\ProjectData
+     * @return Renderforest\ProjectData\ProjectData
      * @throws \GuzzleHttp\Exception\GuzzleException Get Project-data.
      */
     public function getProjectData($payload)
     {
         $projectId = $this->Params->destructURLParam($payload, 'projectId');
         $options = [
-            'endpoint' => "$this->API_PREFIX/project-data/$projectId"
+            'endpoint' => "{$this->CONFIG['API_PREFIX']}/project-data/$projectId"
         ];
 
-        $projectDataJson = $this->Request->authorizedRequest($options);
+        $projectDataJson = $this->ApiRequest->authorizedRequest($options);
 
         return new Renderforest\ProjectData\ProjectData($projectDataJson);
     }
@@ -58,10 +66,10 @@ class ProjectData
         $projectId = $this->Params->destructURLParam($payload, 'projectId');
         $options = [
             'method' => 'PATCH',
-            'endpoint' => "$this->API_PREFIX/project-data/$projectId",
+            'endpoint' => "{$this->CONFIG['API_PREFIX']}/project-data/$projectId",
             'json' => $body
         ];
 
-        return $this->Request->authorizedRequest($options);
+        return $this->ApiRequest->authorizedRequest($options);
     }
 }
