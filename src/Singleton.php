@@ -22,27 +22,10 @@ trait Singleton
     }
 
     /**
-     * Prevent user to clone class.
-     * @return Singleton
+     * Get instance method
+     * @return static
      */
-    private function __clone()
-    {
-        return self::$instance;
-    }
-
-    /**
-     * Prevent user to copy class via unserialize.
-     * @return Singleton
-     */
-    private function __wakeup()
-    {
-        return self::$instance;
-    }
-
-    /**
-     * @return Singleton
-     */
-    static public function getInstance()
+    public static function getInstance()
     {
         if (!isset(self::$instance)) {
             self::$instance = new self();
