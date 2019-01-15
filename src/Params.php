@@ -13,8 +13,8 @@ use Renderforest\Error\RenderforestError;
 class Params
 {
     /**
-     * @param $payload {Array}
-     * @param $props {Array}
+     * @param array $payload
+     * @param array $props
      * @return array
      * @description Destruct given properties from the payload.
      */
@@ -35,7 +35,7 @@ class Params
 
     /**
      * @param array $payload
-     * @param $param
+     * @param string $param
      * @return mixed
      * @throws RenderforestError
      * @description Destruct URL param from the payload.
