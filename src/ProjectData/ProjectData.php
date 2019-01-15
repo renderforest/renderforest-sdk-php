@@ -13,6 +13,8 @@ use Renderforest\Error\MissingOrderError;
 
 class ProjectData
 {
+    private $CONFIG;
+
     private $generator;
     private $patchProperties;
     private $projectDataJson;
@@ -24,11 +26,8 @@ class ProjectData
      */
     public function __construct($projectDataJson)
     {
-        $composer = file_get_contents(dirname(__FILE__) . '/../../composer.json');
-        $composerJson = json_decode($composer, true);
-        $sdkVersion = $composerJson['version'];
-
-        $this->generator = "renderforest/sdk-php/$sdkVersion";
+        $this->CONFIG = include "../Config/Config.php";
+        $this->generator = $this->CONFIG['HTTP_DEFAULT_OPTIONS']['headers']['User-Agent'];
         $this->patchProperties = [];
         $this->projectDataJson = $this->objectToArray($projectDataJson);
         $this->projectDataUtil = new ProjectDataUtil();
