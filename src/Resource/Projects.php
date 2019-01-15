@@ -9,23 +9,29 @@
 
 namespace Renderforest\Resource;
 
-use Renderforest;
+use Renderforest\Params;
+
+use Renderforest\Request\Api;
 
 class Projects
 {
-    private $API_PREFIX = '/api/v1';
+    private $CONFIG;
 
     private $Params;
-    private $Request;
+
+    private $ApiRequest;
 
     /**
      * Projects constructor.
-     * Initialize Http, Params libraries.
+     * Initialize Api, Params libraries.
      */
     public function __construct()
     {
-        $this->Params = new Renderforest\Params();
-        $this->Request = Renderforest\Request\Http::getInstance();
+        $this->CONFIG = include dirname(__FILE__) . '/../Config/Config.php';
+
+        $this->Params = new Params();
+
+        $this->ApiRequest = Api::getInstance();
     }
 
     /**
@@ -39,11 +45,11 @@ class Projects
         $qs = $this->Params->destructParams($payload, ['limit', 'offset']);
 
         $options = [
-            'endpoint' => "$this->API_PREFIX/projects",
+            'endpoint' => "{$this->CONFIG['API_PREFIX']}/projects",
             'qs' => $qs
         ];
 
-        return $this->Request->authorizedRequest($options);
+        return $this->ApiRequest->authorizedRequest($options);
     }
 
     /**
@@ -58,11 +64,11 @@ class Projects
 
         $options = [
             'method' => 'POST',
-            'endpoint' => "$this->API_PREFIX/projects",
+            'endpoint' => "{$this->CONFIG['API_PREFIX']}/projects",
             'json' => $body
         ];
 
-        return $this->Request->authorizedRequest($options);
+        return $this->ApiRequest->authorizedRequest($options);
     }
 
     /**
@@ -76,11 +82,11 @@ class Projects
         $qs = $this->Params->destructParams($payload, ['templateId']);
 
         $options = [
-            'endpoint' => "$this->API_PREFIX/projects/trial",
+            'endpoint' => "{$this->CONFIG['API_PREFIX']}/projects/trial",
             'qs' => $qs
         ];
 
-        return $this->Request->unauthorizedRequest($options);
+        return $this->ApiRequest->unauthorizedRequest($options);
     }
 
     /**
@@ -94,10 +100,10 @@ class Projects
         $projectId = $this->Params->destructURLParam($payload, 'projectId');
 
         $options = [
-            'endpoint' => "$this->API_PREFIX/projects/$projectId"
+            'endpoint' => "{$this->CONFIG['API_PREFIX']}/projects/$projectId"
         ];
 
-        return $this->Request->authorizedRequest($options);
+        return $this->ApiRequest->authorizedRequest($options);
     }
 
     /**
@@ -113,11 +119,11 @@ class Projects
 
         $options = [
             'method' => 'PATCH',
-            'endpoint' => "$this->API_PREFIX/projects/$projectId",
+            'endpoint' => "{$this->CONFIG['API_PREFIX']}/projects/$projectId",
             'json' => $body
         ];
 
-        return $this->Request->authorizedRequest($options);
+        return $this->ApiRequest->authorizedRequest($options);
     }
 
     /**
@@ -132,10 +138,10 @@ class Projects
 
         $options = [
             'method' => 'DELETE',
-            'endpoint' => "$this->API_PREFIX/projects/$projectId"
+            'endpoint' => "{$this->CONFIG['API_PREFIX']}/projects/$projectId"
         ];
 
-        return $this->Request->authorizedRequest($options);
+        return $this->ApiRequest->authorizedRequest($options);
     }
 
     /**
@@ -151,11 +157,11 @@ class Projects
 
         $options = [
             'method' => 'POST',
-            'endpoint' => "$this->API_PREFIX/projects/$projectId/apply-template-preset",
+            'endpoint' => "{$this->CONFIG['API_PREFIX']}/projects/$projectId/apply-template-preset",
             'json' => $body
         ];
 
-        return $this->Request->authorizedRequest($options);
+        return $this->ApiRequest->authorizedRequest($options);
     }
 
     /**
@@ -170,10 +176,10 @@ class Projects
 
         $options = [
             'method' => 'POST',
-            'endpoint' => "$this->API_PREFIX/projects/$projectId/duplicate"
+            'endpoint' => "{$this->CONFIG['API_PREFIX']}/projects/$projectId/duplicate"
         ];
 
-        return $this->Request->authorizedRequest($options);
+        return $this->ApiRequest->authorizedRequest($options);
     }
 
     /**
@@ -189,10 +195,10 @@ class Projects
 
         $options = [
             'method' => 'POST',
-            'endpoint' => "$this->API_PREFIX/projects/$projectId/render",
+            'endpoint' => "{$this->CONFIG['API_PREFIX']}/projects/$projectId/render",
             'json' => $body
         ];
 
-        return $this->Request->authorizedRequest($options);
+        return $this->ApiRequest->authorizedRequest($options);
     }
 }
