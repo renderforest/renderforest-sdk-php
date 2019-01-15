@@ -9,9 +9,7 @@
 
 require 'vendor/autoload.php';
 
-$options = ['signKey' => '<signKey>', 'clientId' => -1];
-
-$renderforest = new \Renderforest\Client($options);;
+$renderforest = new \Renderforest\Client(['signKey' => '<signKey>', 'clientId' => -1]);
 
 try {
     $currentUser = $renderforest->getCurrentUser();
