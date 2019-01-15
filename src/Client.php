@@ -9,19 +9,38 @@
 
 namespace Renderforest;
 
-use Renderforest\Request\Http;
-use Renderforest\Resource;
+use Renderforest;
 
-class Client {
-    private $Request;
+use Renderforest\Request\Api;
+
+use Renderforest\Resource\ProjectData;
+use Renderforest\Resource\Projects;
+use Renderforest\Resource\Sounds;
+use Renderforest\Resource\Supports;
+use Renderforest\Resource\Templates;
+use Renderforest\Resource\Users;
+
+class Client
+{
+    private $ApiRequest;
+
     private $Project_data;
     private $Projects;
     private $Sounds;
     private $Supports;
     private $Users;
 
+    /**
+     * @var Resource\Projects
+     */
     private static $staticProjects;
+    /**
+     * @var Resource\Sounds
+     */
     private static $staticSounds;
+    /**
+     * @var Resource\Templates
+     */
     private static $staticTemplates;
 
     /**
@@ -30,33 +49,37 @@ class Client {
      */
     public function __construct($options)
     {
-        $this->Request = Http::getInstance();
-        $this->Project_data = new Resource\ProjectData();
-        $this->Projects = new Resource\Projects();
-        $this->Sounds = new Resource\Sounds();
-        $this->Supports = new Resource\Supports();
-        $this->Users = new Resource\Users();
+        $this->ApiRequest = Api::getInstance();
+        $this->ApiRequest->setConfig($options['signKey'], $options['clientId']);
 
-        $this->Request->setConfig($options['signKey'], $options['clientId']);
+        $this->Project_data = new ProjectData();
+        $this->Projects = new Projects();
+        $this->Sounds = new Sounds();
+        $this->Supports = new Supports();
+        $this->Users = new Users();
     }
 
     /**
      * Initialize static members of Renderforest class.
+     * @t
      */
-    public static function init () {
-        self::$staticProjects = new Resource\Projects();
-        self::$staticSounds = new Resource\Sounds();
-        self::$staticTemplates = new Resource\Templates();
+    public static function init()
+    {
+
+        self::$staticProjects = new Projects();
+        self::$staticSounds = new Sounds();
+        self::$staticTemplates = new Templates();
     }
 
     /**
      * Gets Project-data.
      * @param array $payload
-     * @return ProjectData
+     * @return Renderforest\ProjectData\ProjectData
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getProjectData ($payload) {
-      return $this->Project_data->getProjectData($payload);
+    public function getProjectData($payload)
+    {
+        return $this->Project_data->getProjectData($payload);
     }
 
     /**
@@ -65,8 +88,9 @@ class Client {
      * @return array|null
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function updateProjectDataPartial ($payload) {
-      return $this->Project_data->updateProjectDataPartial($payload);
+    public function updateProjectDataPartial($payload)
+    {
+        return $this->Project_data->updateProjectDataPartial($payload);
     }
 
     /**
@@ -75,8 +99,9 @@ class Client {
      * @return array|null
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getProjects ($payload) {
-      return $this->Projects->getProjects($payload);
+    public function getProjects($payload)
+    {
+        return $this->Projects->getProjects($payload);
     }
 
     /**
@@ -85,8 +110,9 @@ class Client {
      * @return array|null
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function addProject ($payload) {
-      return $this->Projects->addProject($payload);
+    public function addProject($payload)
+    {
+        return $this->Projects->addProject($payload);
     }
 
     /**
@@ -95,8 +121,9 @@ class Client {
      * @return array|null
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getProject ($payload) {
-      return $this->Projects->getProject($payload);
+    public function getProject($payload)
+    {
+        return $this->Projects->getProject($payload);
     }
 
     /**
@@ -105,8 +132,9 @@ class Client {
      * @return array|null
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function updateProjectPartial ($payload) {
-      return $this->Projects->updateProjectPartial($payload);
+    public function updateProjectPartial($payload)
+    {
+        return $this->Projects->updateProjectPartial($payload);
     }
 
     /**
@@ -115,7 +143,8 @@ class Client {
      * @return array|null
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function deleteProject ($payload) {
+    public function deleteProject($payload)
+    {
         return $this->Projects->deleteProject($payload);
     }
 
@@ -125,8 +154,9 @@ class Client {
      * @return array|null
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function applyTemplatePresetOnProject ($payload) {
-      return $this->Projects->applyTemplatePresetOnProject($payload);
+    public function applyTemplatePresetOnProject($payload)
+    {
+        return $this->Projects->applyTemplatePresetOnProject($payload);
     }
 
     /**
@@ -135,8 +165,9 @@ class Client {
      * @return array|null
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function duplicateProject ($payload) {
-      return $this->Projects->duplicateProject($payload);
+    public function duplicateProject($payload)
+    {
+        return $this->Projects->duplicateProject($payload);
     }
 
     /**
@@ -145,8 +176,9 @@ class Client {
      * @return array|null
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function renderProject ($payload) {
-      return $this->Projects->renderProject($payload);
+    public function renderProject($payload)
+    {
+        return $this->Projects->renderProject($payload);
     }
 
     /**
@@ -155,8 +187,9 @@ class Client {
      * @return array|null
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getSounds ($payload) {
-      return $this->Sounds->getSounds($payload);
+    public function getSounds($payload)
+    {
+        return $this->Sounds->getSounds($payload);
     }
 
     /**
@@ -165,8 +198,9 @@ class Client {
      * @return array|null
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getRecommendedSounds ($payload) {
-      return $this->Sounds->getRecommendedSounds($payload);
+    public function getRecommendedSounds($payload)
+    {
+        return $this->Sounds->getRecommendedSounds($payload);
     }
 
     /**
@@ -175,8 +209,9 @@ class Client {
      * @return array|null
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function addSupportsTicket ($payload) {
-      return $this->Supports->addSupportsTicket($payload);
+    public function addSupportsTicket($payload)
+    {
+        return $this->Supports->addSupportsTicket($payload);
     }
 
     /**
@@ -184,8 +219,9 @@ class Client {
      * @return array|null
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getCurrentUser () {
-      return $this->Users->getCurrentUser();
+    public function getCurrentUser()
+    {
+        return $this->Users->getCurrentUser();
     }
 
     /**
@@ -194,7 +230,8 @@ class Client {
      * @return array|null
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public static function getTrialProject ($payload) {
+    public static function getTrialProject($payload)
+    {
         return self::$staticProjects->getTrialProject($payload);
     }
 
@@ -204,8 +241,9 @@ class Client {
      * @return array|null
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public static function getCompanySoundsLimited ($payload) {
-      return self::$staticSounds->getRecommendedSoundsLimited($payload);
+    public static function getCompanySoundsLimited($payload)
+    {
+        return self::$staticSounds->getRecommendedSoundsLimited($payload);
     }
 
     /**
@@ -214,8 +252,9 @@ class Client {
      * @return array|null
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public static function getRecommendedSoundsLimited ($payload) {
-      return self::$staticSounds->getRecommendedSoundsLimited($payload);
+    public static function getRecommendedSoundsLimited($payload)
+    {
+        return self::$staticSounds->getRecommendedSoundsLimited($payload);
     }
 
     /**
@@ -224,8 +263,9 @@ class Client {
      * @return array|null
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public static function getTemplates ($payload) {
-      return self::$staticTemplates->getTemplates($payload);
+    public static function getTemplates($payload)
+    {
+        return self::$staticTemplates->getTemplates($payload);
     }
 
     /**
@@ -234,8 +274,9 @@ class Client {
      * @return array|null
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public static function getTemplatesCategories ($payload) {
-      return self::$staticTemplates->getTemplatesCategories($payload);
+    public static function getTemplatesCategories($payload)
+    {
+        return self::$staticTemplates->getTemplatesCategories($payload);
     }
 
     /**
@@ -244,8 +285,9 @@ class Client {
      * @return array|null
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public static function getTemplate ($payload) {
-      return self::$staticTemplates->getTemplate($payload);
+    public static function getTemplate($payload)
+    {
+        return self::$staticTemplates->getTemplate($payload);
     }
 
     /**
@@ -254,8 +296,9 @@ class Client {
      * @return array|null
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public static function getTemplateColorPresets ($payload) {
-      return self::$staticTemplates->getTemplateColorPresets($payload);
+    public static function getTemplateColorPresets($payload)
+    {
+        return self::$staticTemplates->getTemplateColorPresets($payload);
     }
 
     /**
@@ -264,8 +307,9 @@ class Client {
      * @return array|null
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public static function getTemplatePluggableScreens ($payload) {
-      return self::$staticTemplates->getTemplatePluggableScreens($payload);
+    public static function getTemplatePluggableScreens($payload)
+    {
+        return self::$staticTemplates->getTemplatePluggableScreens($payload);
     }
 
     /**
@@ -274,8 +318,9 @@ class Client {
      * @return array|null
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public static function getTemplateRecommendedCustomColors ($payload) {
-      return self::$staticTemplates->getTemplateRecommendedCustomColors($payload);
+    public static function getTemplateRecommendedCustomColors($payload)
+    {
+        return self::$staticTemplates->getTemplateRecommendedCustomColors($payload);
     }
 
     /**
@@ -284,8 +329,20 @@ class Client {
      * @return array|null
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public static function getTemplatePresets ($payload) {
-      return self::$staticTemplates->getTemplatePresets($payload);
+    public static function getTemplatePresets($payload)
+    {
+        return self::$staticTemplates->getTemplatePresets($payload);
+    }
+
+    /**
+     * Gets Template-SVG-Content of the template.
+     * @param array $payload
+     * @return array|null
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public static function getTemplateSVGContent($payload)
+    {
+        return self::$staticTemplates->getTemplateSVGContent($payload);
     }
 
     /**
@@ -294,8 +351,9 @@ class Client {
      * @return array|null
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public static function getTemplateTheme ($payload) {
-      return self::$staticTemplates->getTemplateTheme($payload);
+    public static function getTemplateTheme($payload)
+    {
+        return self::$staticTemplates->getTemplateTheme($payload);
     }
 
     /**
@@ -304,8 +362,10 @@ class Client {
      * @return array|null
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public static function getTemplateTransitions ($payload) {
-      return self::$staticTemplates->getTempalateTransitions($payload);
+    public static function getTemplateTransitions($payload)
+    {
+        return self::$staticTemplates->getTemplateTransitions($payload);
     }
 }
+
 Client::init();
