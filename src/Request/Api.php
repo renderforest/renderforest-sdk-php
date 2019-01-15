@@ -9,44 +9,41 @@
 
 namespace Renderforest\Request;
 
+use GuzzleHttp\Client;
+
 use Renderforest\Auth\Auth;
 use Renderforest\Singleton;
 
-class Http
+class Api
 {
     use Singleton;
+
+    private $CONFIG;
 
     private $signKey;
     private $clientId;
 
-    private $HOST;
-    private $DEFAULT_OPTIONS;
-
+    /**
+     * @var Auth
+     */
     private $Auth;
+    /**
+     * @var Client
+     */
     private $requestClient;
 
     /**
-     * Http constructor.
+     * Api constructor.
      */
     private function __construct()
     {
+        $this->CONFIG = include dirname(__FILE__) . '/../Config/Config.php';
+
         $this->signKey = NULL;
         $this->clientId = NULL;
-        $this->HOST = 'https://api.renderforest.com';
-
-        // Get SDK version from composer.json file and set it in `User-Agent`.
-        $ComposerJson = json_decode(file_get_contents(dirname(__FILE__) . '/../../composer.json'), true);
-        $sdkVersion = $ComposerJson['version'];
-        $this->DEFAULT_OPTIONS = [
-            'method' => 'GET',
-            'headers' => [
-                'Accept' => 'application/json',
-                'User-Agent' => "renderforest/sdk-php/$sdkVersion"
-            ]
-        ];
 
         $this->Auth = Auth::getInstance();
-        $this->requestClient = new \GuzzleHttp\Client();
+        $this->requestClient = new Client();
     }
 
     /**
@@ -84,7 +81,7 @@ class Http
      * @param array $options
      * @return array
      */
-    public function appendQueryParams($options)
+    private function appendQueryParams($options)
     {
         if (
             isset($options['method']) &&
@@ -104,10 +101,10 @@ class Http
      * @param array options
      * @return array
      */
-    public function appendURI($options)
+    private function appendURI($options)
     {
         $endpoint = $options['endpoint'];
-        $options['uri'] = $this->HOST . $endpoint;
+        $options['uri'] = $this->CONFIG['API_HOST'] . $endpoint;
 
         return $options;
     }
@@ -119,7 +116,7 @@ class Http
      * @param array options
      * @return array
      */
-    public function prepareRequest($options)
+    private function prepareRequest($options)
     {
         $appendedQueryParamsOptions = $this->appendQueryParams($options);
         $_options = $this->appendURI($appendedQueryParamsOptions);
@@ -133,7 +130,7 @@ class Http
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function request($options)
+    private function request($options)
     {
         $requestMethod = isset($options['method']) ? $options['method'] : 'GET';
         $requestURI = isset($options['uri']) ? $options['uri'] : '';
@@ -154,7 +151,7 @@ class Http
      */
     public function unauthorizedRequest($options)
     {
-        $_options = array_replace_recursive($this->DEFAULT_OPTIONS, $options);
+        $_options = array_replace_recursive($this->CONFIG['HTTP_DEFAULT_OPTIONS'], $options);
         $preparedOptions = $this->prepareRequest($_options);
 
         return $this->request($preparedOptions);
@@ -171,7 +168,7 @@ class Http
      */
     public function authorizedRequest($options)
     {
-        $options = array_replace_recursive($this->DEFAULT_OPTIONS, $options);
+        $options = array_replace_recursive($this->CONFIG['HTTP_DEFAULT_OPTIONS'], $options);
 
         $preparedOptions = $this->prepareRequest($options);
         $cleanGetAreasOptions = $this->recursiveUnset($preparedOptions, 'getAreas');

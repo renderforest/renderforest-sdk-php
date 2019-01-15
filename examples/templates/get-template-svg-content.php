@@ -9,12 +9,13 @@
 
 require 'vendor/autoload.php';
 
-$renderforest = new \Renderforest\Client(['signKey' => '<signKey>', 'clientId' => -1]);
-
+$payload = [
+    'templateId' => 701
+];
 try {
-    $currentUser = $renderforest->getCurrentUser();
+    $templateSVGContent = \Renderforest\Client::getTemplateSVGContent($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
     var_dump($e); // handle the error
 }
 
-var_dump($currentUser); // handle the success
+var_dump($templateRecommendedCustomColors); // handle the success

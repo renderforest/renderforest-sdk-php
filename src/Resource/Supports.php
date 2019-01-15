@@ -9,18 +9,25 @@
 
 namespace Renderforest\Resource;
 
-use Renderforest;
+use Renderforest\Params;
+
+use Renderforest\Request\Api;
 
 class Supports
 {
-    private $API_PREFIX = '/api/v1';
+    private $CONFIG;
+
     private $Params;
-    private $Request;
+
+    private $ApiRequest;
 
     public function __construct()
     {
-        $this->Params = new Renderforest\Params();
-        $this->Request = Renderforest\Request\Http::getInstance();
+        $this->CONFIG = include dirname(__FILE__) . '/../Config/Config.php';
+
+        $this->Params = new Params();
+
+        $this->ApiRequest = Api::getInstance();
     }
 
     /**
@@ -33,10 +40,10 @@ class Supports
         $body = $this->Params->destructParams($payload, ['message', 'mailType', 'subject']);
         $options = [
             'method' => 'POST',
-            'endpoint' => "$this->API_PREFIX/supports/ticket",
+            'endpoint' => "{$this->CONFIG['API_PREFIX']}/supports/ticket",
             'json' => $body
         ];
 
-        return $this->Request->authorizedRequest($options);
+        return $this->ApiRequest->authorizedRequest($options);
   }
 }

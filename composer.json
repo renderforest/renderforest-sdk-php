@@ -1,7 +1,7 @@
 {
   "name": "renderforest/sdk-php",
   "description": "Renderforest SDK for PHP",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "homepage": "https://github.com/renderforest/renderforest-sdk-php",
   "authors": [
     {
@@ -24,8 +24,9 @@
     "video maker"
   ],
   "require": {
-    "php": ">=5.5",
-    "guzzlehttp/guzzle": "6.3.3"
+    "php": ">=7.1",
+    "guzzlehttp/guzzle": "6.3.3",
+    "ext-json": ""
   },
  "autoload": {
    "psr-4": {

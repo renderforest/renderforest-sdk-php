@@ -9,18 +9,25 @@
 
 namespace Renderforest\Resource;
 
-use Renderforest;
+use Renderforest\Params;
+
+use Renderforest\Request\Api;
 
 class Sounds
 {
-    private $API_PREFIX = '/api/v1';
+    private $CONFIG;
+
     private $Params;
-    private $Request;
+
+    private $ApiRequest;
 
     public function __construct()
     {
-        $this->Params = new Renderforest\Params();
-        $this->Request = Renderforest\Request\Http::getInstance();
+        $this->CONFIG = include dirname(__FILE__) . '/../Config/Config.php';
+
+        $this->Params = new Params();
+
+        $this->ApiRequest = Api::getInstance();
     }
 
     /**
@@ -33,11 +40,11 @@ class Sounds
     {
         $qs = $this->Params->destructParams($payload, ['duration']);
         $options = [
-            'endpoint' => "$this->API_PREFIX/sounds",
+            'endpoint' => "{$this->CONFIG['API_PREFIX']}/sounds",
             'qs' => $qs
         ];
 
-        return $this->Request->unauthorizedRequest($options);
+        return $this->ApiRequest->unauthorizedRequest($options);
     }
 
     /**
@@ -49,11 +56,11 @@ class Sounds
     public function getSounds($payload)
     {
         $qs = $this->Params->destructParams($payload, ['duration']);
-        $options = ['endpoint' => "$this->API_PREFIX/sounds",
+        $options = ['endpoint' => "{$this->CONFIG['API_PREFIX']}/sounds",
             'qs' => $qs
         ];
 
-        return $this->Request->authorizedRequest($options);
+        return $this->ApiRequest->authorizedRequest($options);
     }
 
     /**
@@ -66,11 +73,11 @@ class Sounds
     {
         $qs = $this->Params->destructParams($payload, ['duration', 'templateId']);
         $options = [
-            'endpoint' => "$this->API_PREFIX/sounds/recommended",
+            'endpoint' => "{$this->CONFIG['API_PREFIX']}/sounds/recommended",
             'qs' => $qs
         ];
 
-        return $this->Request->unauthorizedRequest($options);
+        return $this->ApiRequest->unauthorizedRequest($options);
     }
 
     /**
@@ -83,10 +90,10 @@ class Sounds
     {
         $qs = $this->Params->destructParams($payload, ['duration', 'templateId']);
         $options = [
-            'endpoint' => "$this->API_PREFIX/sounds/recommended",
+            'endpoint' => "{$this->CONFIG['API_PREFIX']}/sounds/recommended",
             'qs' => $qs
         ];
 
-        return $this->Request->authorizedRequest($options);
+        return $this->ApiRequest->authorizedRequest($options);
     }
 }

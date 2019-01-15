@@ -83,6 +83,7 @@ Welcome to the Renderforest API! You can use our API to:
   - [Get Pluggable-Screens of the Template](#get-pluggable-screens-of-the-template)
   - [Get Recommended-Custom-Colors of the Template](#get-recommended-custom-colors-of-the-template)
   - [Get Template-Presets of the Template](#get-template-presets-of-the-template)
+  - [Get SVG Content of the Template](#get-svg-content-of-the-template)
   - [Get Theme of the Template](#get-theme-of-the-template)
   - [Get Transitions of the Template](#get-transitions-of-the-template)
 * [Users API](#users-api)
@@ -1103,6 +1104,29 @@ var_dump($templatePresets); // handle the success
 Template-presets are ready-made stories created from this template to fasten your video production.
 
 [See example](https://github.com/renderforest/renderforest-sdk-php/blob/master/examples/templates/get-template-presets.php)
+
+
+### Get SVG Content of the Template
+Retrieves SVG content of the template.
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+
+$payload = [
+    'templateId' => 701
+];
+try {
+    $templateSVGContent = \Renderforest\Client::getTemplateSVGContent($payload);
+} catch (\GuzzleHttp\Exception\GuzzleException $e) {
+    var_dump($e); // handle the error
+}
+
+var_dump($templateRecommendedCustomColors); // handle the success
+```
+
+[See example](https://github.com/renderforest/renderforest-sdk-php/blob/master/examples/templates/get-template-svg-content.php)
 
 
 ### Get Theme of the Template

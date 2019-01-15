@@ -9,19 +9,21 @@
 
 namespace Renderforest\Resource;
 
-use Renderforest;
+use Renderforest\Request\Api;
 
 class Users
 {
-    private $API_PREFIX = '/api/v1';
-    private $Request;
+    private $CONFIG;
+
+    private $ApiRequest;
 
     /**
      * Users constructor.
      */
     public function __construct()
     {
-        $this->Request = Renderforest\Request\Http::getInstance();
+        $this->CONFIG = include dirname(__FILE__) . '/../Config/Config.php';
+        $this->ApiRequest = Api::getInstance();
     }
 
     /**
@@ -32,9 +34,9 @@ class Users
     public function getCurrentUser()
     {
         $options = [
-            'endpoint' => "$this->API_PREFIX/users/current"
+            'endpoint' => "{$this->CONFIG['API_PREFIX']}/users/current"
         ];
 
-        return $this->Request->authorizedRequest($options);
+        return $this->ApiRequest->authorizedRequest($options);
     }
 }

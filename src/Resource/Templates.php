@@ -9,18 +9,28 @@
 
 namespace Renderforest\Resource;
 
-use Renderforest;
+use Renderforest\Params;
+
+use Renderforest\Request\Api;
+use Renderforest\Request\Web;
 
 class Templates
 {
-    private $API_PREFIX = '/api/v1';
+    private $CONFIG;
+
     private $Params;
-    private $Request;
+
+    private $ApiRequest;
+    private $WebRequest;
 
     public function __construct()
     {
-        $this->Params = new Renderforest\Params();
-        $this->Request = Renderforest\Request\Http::getInstance();
+        $this->CONFIG = include dirname(__FILE__) . '/../Config/Config.php';
+
+        $this->Params = new Params();
+
+        $this->ApiRequest = Api::getInstance();
+        $this->WebRequest = Web::getInstance();
     }
 
     /**
@@ -33,11 +43,11 @@ class Templates
     {
         $qs = $this->Params->destructParams($payload, ['categoryId', 'equalizer', 'limit', 'offset']);
         $options = [
-            'endpoint' => "$this->API_PREFIX/templates",
+            'endpoint' => "{$this->CONFIG['API_PREFIX']}/templates",
             'qs' => $qs
         ];
 
-        return $this->Request->unauthorizedRequest($options);
+        return $this->ApiRequest->unauthorizedRequest($options);
     }
 
     /**
@@ -50,11 +60,11 @@ class Templates
     {
         $qs = $this->Params->destructParams($payload, ['language']);
         $options = [
-            'endpoint' => "$this->API_PREFIX/templates/categories",
+            'endpoint' => "{$this->CONFIG['API_PREFIX']}/templates/categories",
             'qs' => $qs
         ];
 
-        return $this->Request->unauthorizedRequest($options);
+        return $this->ApiRequest->unauthorizedRequest($options);
     }
 
     /**
@@ -68,11 +78,11 @@ class Templates
         $qs = $this->Params->destructParams($payload, ['language']);
         $templateId = $this->Params->destructURLParam($payload, 'templateId');
         $options = [
-            'endpoint' => "$this->API_PREFIX/templates/$templateId",
+            'endpoint' => "{$this->CONFIG['API_PREFIX']}/templates/$templateId",
             'qs' => $qs
         ];
 
-        return $this->Request->unauthorizedRequest($options);
+        return $this->ApiRequest->unauthorizedRequest($options);
     }
 
     /**
@@ -85,10 +95,10 @@ class Templates
     {
         $templateId = $this->Params->destructURLParam($payload, 'templateId');
         $options = [
-            'endpoint' => "$this->API_PREFIX/templates/$templateId/color-presets"
+            'endpoint' => "{$this->CONFIG['API_PREFIX']}/templates/$templateId/color-presets"
         ];
 
-        return $this->Request->unauthorizedRequest($options);
+        return $this->ApiRequest->unauthorizedRequest($options);
     }
 
     /**
@@ -101,10 +111,10 @@ class Templates
     {
         $templateId = $this->Params->destructURLParam($payload, 'templateId');
         $options = [
-            'endpoint' => "$this->API_PREFIX/templates/$templateId/pluggable-screens"
+            'endpoint' => "{$this->CONFIG['API_PREFIX']}/templates/$templateId/pluggable-screens"
         ];
 
-        return $this->Request->unauthorizedRequest($options);
+        return $this->ApiRequest->unauthorizedRequest($options);
     }
 
     /**
@@ -117,10 +127,10 @@ class Templates
     {
         $templateId = $this->Params->destructURLParam($payload, 'templateId');
         $options = [
-            'endpoint' => "$this->API_PREFIX/templates/$templateId/recommended-custom-colors"
+            'endpoint' => "{$this->CONFIG['API_PREFIX']}/templates/$templateId/recommended-custom-colors"
         ];
 
-        return $this->Request->unauthorizedRequest($options);
+        return $this->ApiRequest->unauthorizedRequest($options);
     }
 
     /**
@@ -133,10 +143,25 @@ class Templates
     {
         $templateId = $this->Params->destructURLParam($payload, 'templateId');
         $options = [
-            'endpoint' => "$this->API_PREFIX/templates/$templateId/template-presets"
+            'endpoint' => "{$this->CONFIG['API_PREFIX']}/templates/$templateId/template-presets"
         ];
 
-        return $this->Request->unauthorizedRequest($options);
+        return $this->ApiRequest->unauthorizedRequest($options);
+    }
+
+    /**
+     * Gets Template-SVG-Content of the Template.
+     * @param $payload
+     * @return array|null
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getTemplateSVGContent($payload) {
+        $templateId = $this->Params->destructURLParam($payload, 'templateId');
+        $options = [
+            'endpoint' => "{$this->CONFIG['WEB_PREFIX']}/templates/termplatesvg/$templateId"
+        ];
+
+        return $this->WebRequest->request($options);
     }
 
     /**
@@ -149,10 +174,10 @@ class Templates
     {
         $templateId = $this->Params->destructURLParam($payload, 'templateId');
         $options = [
-            'endpoint' => "$this->API_PREFIX/templates/$templateId/theme"
+            'endpoint' => "{$this->CONFIG['API_PREFIX']}/templates/$templateId/theme"
         ];
 
-        return $this->Request->unauthorizedRequest($options);
+        return $this->ApiRequest->unauthorizedRequest($options);
     }
 
     /**
@@ -165,9 +190,9 @@ class Templates
     {
         $templateId = $this->Params->destructURLParam($payload, 'templateId');
         $options = [
-            'endpoint' => "$this->API_PREFIX/templates/$templateId/transitions"
+            'endpoint' => "{$this->CONFIG['API_PREFIX']}/templates/$templateId/transitions"
         ];
 
-        return $this->Request->unauthorizedRequest($options);
+        return $this->ApiRequest->unauthorizedRequest($options);
     }
 }
