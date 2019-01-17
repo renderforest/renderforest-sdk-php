@@ -26,7 +26,7 @@ class ProjectData
      */
     public function __construct($projectDataJson)
     {
-        $this->CONFIG = include "../Config/Config.php";
+        $this->CONFIG = include dirname(__FILE__) . '/../Config/Config.php';
         $this->generator = $this->CONFIG['HTTP_DEFAULT_OPTIONS']['headers']['User-Agent'];
         $this->patchProperties = [];
         $this->projectDataJson = $this->objectToArray($projectDataJson);
