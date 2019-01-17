@@ -46,7 +46,7 @@ class ProjectData
     {
         $projectId = $this->Params->destructURLParam($payload, 'projectId');
         $options = [
-            'endpoint' => "{$this->CONFIG['API_PREFIX']}/project-data/$projectId"
+            'endpoint' => "{$this->CONFIG['PROJECT_DATA_API_PREFIX']}/project-data/$projectId"
         ];
 
         $projectDataJson = $this->ApiRequest->authorizedRequest($options);
@@ -66,7 +66,7 @@ class ProjectData
         $projectId = $this->Params->destructURLParam($payload, 'projectId');
         $options = [
             'method' => 'PATCH',
-            'endpoint' => "{$this->CONFIG['API_PREFIX']}/project-data/$projectId",
+            'endpoint' => "{$this->CONFIG['PROJECT_DATA_API_PREFIX']}/project-data/$projectId",
             'json' => $body
         ];
 
