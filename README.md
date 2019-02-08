@@ -357,7 +357,9 @@ var_dump($duplicateProject); // handle the success
 
 ### Render the Project
 
-Renders the project.
+Renders the project with given quality. The possible values for the quality are: 0, 360, 720, and 1080. 
+The watermark parameter is optional, must be in '.png' file format and have canvas size of 1920 x 1080 pixels,
+url length must not exceed 250 characters and is not applicable to HD quality videos.
 
 ```php
 <?php
@@ -368,7 +370,8 @@ $renderforest = new \Renderforest\Client(['signKey' => '<signKey>', 'clientId' =
 
 $payload = [
     'projectId' => 5000658,
-    'quality' => 1080
+    'quality' => 360,
+    'watermark' => 'https://example.com/watermark.png' // optional parameter
 ];
 try {
     $renderProject = $renderforest->renderProject($payload);
