@@ -13,7 +13,8 @@ $renderforest = new \Renderforest\Client(['signKey' => '<signKey>', 'clientId' =
 
 $payload = [
     'projectId' => 5000658,
-    'quality' => 1080
+    'quality' => 360,
+    'watermark' => 'https://example.com/watermark.png' // optional argument
 ];
 try {
     $renderProject = $renderforest->renderProject($payload);
