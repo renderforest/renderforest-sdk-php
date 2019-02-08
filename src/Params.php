@@ -52,19 +52,16 @@ class Params
 
     /**
      * Destructs optional URL param from the given payload.
-     * @param $payload - Thr array to destruct.
-     * @param $param - The param to destruct from array.
+     * @param array $payload - Thr array to destruct.
+     * @param string $param - The param to destruct from array.
      * @return string
      * @throws RenderforestError
      */
     public function destructOptionalURLParam($payload, $param)
     {
-        if (!isset($payload) || sizeof($payload)) {
-            throw new RenderforestError("Missing optional parameter: ${param}.");
-        }
-
-        if (!isset($payload[$param])) {
+        if (!isset($payload) || !sizeof($payload) || !isset($payload[$param])) {
             return '';
+
         }
 
         return $payload[$param];
