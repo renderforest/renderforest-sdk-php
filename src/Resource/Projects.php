@@ -152,7 +152,7 @@ class Projects
 
         $options = [
             'method' => 'DELETE',
-            'endpoints' => "{$this->CONFIG['API_PREFIX']}/projects/$projectId/videos/$quality"
+            'endpoint' => "{$this->CONFIG['API_PREFIX']}/projects/$projectId/videos/$quality"
         ];
         return $this->ApiRequest->authorizedRequest($options);
     }
