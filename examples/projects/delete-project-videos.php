@@ -13,13 +13,12 @@ $renderforest = new \Renderforest\Client(['signKey' => '<signKey>', 'clientId' =
 
 $payload = [
     'projectId' => 5000658,
-    'quality' => 360,
-    'watermark' => 'https://example.com/watermark.png' // optional argument
+    'quality' => 360 // optional argument
 ];
 try {
-    $renderProject = $renderforest->renderProject($payload);
+    $deleteProject = $renderforest->deleteProjectVideos($payload);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
     var_dump($e); // handle the error
 }
 
-var_dump($renderProject); // handle the success
+var_dump($deleteProject); // handle the success

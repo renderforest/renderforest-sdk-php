@@ -48,7 +48,6 @@ class Projects
             'endpoint' => "{$this->CONFIG['API_PREFIX']}/projects",
             'qs' => $qs
         ];
-
         return $this->ApiRequest->authorizedRequest($options);
     }
 
@@ -67,7 +66,6 @@ class Projects
             'endpoint' => "{$this->CONFIG['API_PREFIX']}/projects",
             'json' => $body
         ];
-
         return $this->ApiRequest->authorizedRequest($options);
     }
 
@@ -85,7 +83,6 @@ class Projects
             'endpoint' => "{$this->CONFIG['API_PREFIX']}/projects/trial",
             'qs' => $qs
         ];
-
         return $this->ApiRequest->unauthorizedRequest($options);
     }
 
@@ -102,7 +99,6 @@ class Projects
         $options = [
             'endpoint' => "{$this->CONFIG['API_PREFIX']}/projects/$projectId"
         ];
-
         return $this->ApiRequest->authorizedRequest($options);
     }
 
@@ -122,7 +118,6 @@ class Projects
             'endpoint' => "{$this->CONFIG['API_PREFIX']}/projects/$projectId",
             'json' => $body
         ];
-
         return $this->ApiRequest->authorizedRequest($options);
     }
 
@@ -140,7 +135,25 @@ class Projects
             'method' => 'DELETE',
             'endpoint' => "{$this->CONFIG['API_PREFIX']}/projects/$projectId"
         ];
+        return $this->ApiRequest->authorizedRequest($options);
+    }
 
+    /**
+     * Deletes specific project videos. The quality parameter is optional.
+     * IMPORTANT: In case if quality is not specified, it will remove all rendered videos.
+     * @param $payload
+     * @return array|null
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function deleteProjectVideos($payload)
+    {
+        $projectId = $this->Params->destructURLParam($payload, 'projectId');
+        $quality = $this->Params->destructOptionalURLParam($payload, 'quality');
+
+        $options = [
+            'method' => 'DELETE',
+            'endpoints' => "{$this->CONFIG['API_PREFIX']}/projects/$projectId/videos/$quality"
+        ];
         return $this->ApiRequest->authorizedRequest($options);
     }
 
@@ -160,7 +173,6 @@ class Projects
             'endpoint' => "{$this->CONFIG['API_PREFIX']}/projects/$projectId/apply-template-preset",
             'json' => $body
         ];
-
         return $this->ApiRequest->authorizedRequest($options);
     }
 
@@ -178,7 +190,6 @@ class Projects
             'method' => 'POST',
             'endpoint' => "{$this->CONFIG['API_PREFIX']}/projects/$projectId/duplicate"
         ];
-
         return $this->ApiRequest->authorizedRequest($options);
     }
 
@@ -190,7 +201,7 @@ class Projects
      */
     public function renderProject($payload)
     {
-        $body = $this->Params->destructParams($payload, ['quality']);
+        $body = $this->Params->destructParams($payload, ['quality', 'watermark']);
         $projectId = $this->Params->destructURLParam($payload, 'projectId');
 
         $options = [
@@ -198,7 +209,6 @@ class Projects
             'endpoint' => "{$this->CONFIG['API_PREFIX']}/projects/$projectId/render",
             'json' => $body
         ];
-
         return $this->ApiRequest->authorizedRequest($options);
     }
 }
