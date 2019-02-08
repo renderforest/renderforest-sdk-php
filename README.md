@@ -37,6 +37,7 @@ Welcome to the Renderforest API! You can use our API to:
   - [Get a Specific Project](#get-a-specific-project)
   - [Update the Project - partial update](#update-the-project---partial-update)
   - [Delete a Specific Project](#delete-a-specific-project)
+  - [Delete Specific Project Videos](#delete-specific-project-videos)
   - [Apply Template Preset on the Project](#apply-template-preset-on-the-project)
   - [Duplicate the Project](#duplicate-the-project)
   - [Render the Project](#render-the-project)
@@ -271,6 +272,35 @@ var_dump($deleteProject); // handle the success
 
 [See example](https://github.com/renderforest/renderforest-sdk-php/blob/master/examples/projects/delete-project.php)
 
+
+### Delete Specific Project Videos
+
+Deletes specific project videos. The quality parameter is optional.
+
+**IMPORTANT**: If you want to delete only a single quality video, you have to specify quality parameter, 
+otherwise all quality videos of the project will be deleted.
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+
+$renderforest = new \Renderforest\Client(['signKey' => '<signKey>', 'clientId' => -1]);
+
+$payload = [
+    'projectId' => 5000658,
+    'quality' => 360 // optional argument
+];
+try {
+    $deleteProject = $renderforest->deleteProjectVideos($payload);
+} catch (\GuzzleHttp\Exception\GuzzleException $e) {
+    var_dump($e); // handle the error
+}
+
+var_dump($deleteProject); // handle the success
+```
+
+[See example](https://github.com/renderforest/renderforest-sdk-php/blob/master/examples/projects/delete-project-videos.php)
 
 ### Apply Template Preset on the Project
 
