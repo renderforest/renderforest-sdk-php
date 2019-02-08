@@ -201,7 +201,7 @@ class Projects
      */
     public function renderProject($payload)
     {
-        $body = $this->Params->destructParams($payload, ['quality']);
+        $body = $this->Params->destructParams($payload, ['quality', 'watermark']);
         $projectId = $this->Params->destructURLParam($payload, 'projectId');
 
         $options = [
