@@ -149,6 +149,17 @@ class Client
     }
 
     /**
+     * Deletes the rendered project videos based given on quality.
+     * @param array $payload
+     * @return array|null
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function deleteProjectVideos($payload)
+    {
+        return $this->Projects->deleteProjectVideos($payload);
+    }
+
+    /**
      * Applies template preset on the project.
      * @param array $payload
      * @return array|null
