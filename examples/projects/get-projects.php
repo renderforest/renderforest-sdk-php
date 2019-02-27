@@ -13,7 +13,11 @@ $renderforest = new \Renderforest\Client(['signKey' => '<signKey>', 'clientId' =
 
 $payload = [
     'limit' => 2,
-    'offset' => 10
+    'offset' => 10,
+    'includeApiProjects' => false,
+    'order' => 'DESC',
+    'orderBy' => 'order',
+    'search' => ''
 ];
 try {
     $projects = $renderforest->getProjects($payload);

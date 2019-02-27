@@ -42,7 +42,14 @@ class Projects
      */
     public function getProjects($payload)
     {
-        $qs = $this->Params->destructParams($payload, ['limit', 'offset']);
+        $qs = $this->Params->destructParams($payload, [
+            'limit',
+            'offset',
+            'includeApiProjects',
+            'order',
+            'orderBy',
+            'search'
+        ]);
 
         $options = [
             'endpoint' => "{$this->CONFIG['API_PREFIX']}/projects",
