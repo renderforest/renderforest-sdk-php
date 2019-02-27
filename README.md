@@ -111,7 +111,11 @@ $renderforest = new \Renderforest\Client(['signKey' => '<signKey>', 'clientId' =
 
 $payload = [
     'limit' => 2,
-    'offset' => 10
+    'offset' => 10,
+    'includeApiProjects' => false,
+    'order' => 'DESC',
+    'orderBy' => 'order',
+    'search' => ''
 ];
 try {
     $projects = $renderforest->getProjects($payload);
@@ -123,6 +127,7 @@ var_dump($projects); // handle the success
 ```
 
 - The renderedQualities property is optional and present if the project is in renders queue (ongoing rend).
+- All the properties of `payload` object are optional.
 
 [See example](https://github.com/renderforest/renderforest-sdk-php/blob/master/examples/projects/get-projects.php)
 
