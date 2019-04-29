@@ -7,6 +7,6 @@ $renderforestClient = new \Renderforest\ApiClient(
     'your-client-id'
 );
 
-$projectId = $renderforestClient->addProject(701);
+$affectedRows = $renderforestClient->deleteProject(15747948);
 
-echo 'New Project Successfully Created - ID: ' . $projectId . PHP_EOL;
+echo 'Affected Rows - ' . $affectedRows . PHP_EOL;

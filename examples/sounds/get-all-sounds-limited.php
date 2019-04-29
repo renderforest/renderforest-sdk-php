@@ -2,12 +2,7 @@
 
 require '../../vendor/autoload.php';
 
-$renderforestClient = new \Renderforest\ApiClient(
-    'your-api-key',
-    'your-client-id'
-);
-
-$sounds = $renderforestClient->getRecommendedSounds(15, 701);
+$sounds = \Renderforest\ApiClient::getAllSoundsLimited(15);
 
 echo 'Count - ' . count($sounds) . PHP_EOL;
 echo PHP_EOL;
