@@ -1,21 +1,21 @@
 <?php
-/**
- * Copyright (c) 2018-present, Renderforest, LLC.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory.
- */
 
-require 'vendor/autoload.php';
+require '../../vendor/autoload.php';
 
-$payload = [
-    'templateId' => 1021
-];
-try {
-    $templateTransitions = \Renderforest\Client::getTemplateTransitions($payload);
-} catch (\GuzzleHttp\Exception\GuzzleException $e) {
-    var_dump($e); // handle the error
+$templateTransitions = \Renderforest\ApiClient::getTemplateTransitions(701);
+
+echo 'ID - ' . $templateTransitions->getId() . PHP_EOL;
+echo 'Theme Name - ' . $templateTransitions->getTransitionName() . PHP_EOL;
+echo 'Variable Name - ' . $templateTransitions->getVariableName() . PHP_EOL;
+echo PHP_EOL;
+
+echo 'Data: ' . PHP_EOL;
+foreach ($templateTransitions->getData() as $dataItem) {
+    echo '-- ' . 'Image - ' . $dataItem->getImage() . PHP_EOL;
+    echo '-- ' . 'Name - ' . $dataItem->getName() . PHP_EOL;
+    echo '-- ' . 'Value - ' . $dataItem->getValue() . PHP_EOL;
+
+    echo PHP_EOL;
 }
 
-var_dump($templateTheme); // handle the success
+echo PHP_EOL;

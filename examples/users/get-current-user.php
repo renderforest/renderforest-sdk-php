@@ -1,20 +1,27 @@
 <?php
-/**
- * Copyright (c) 2018-present, Renderforest, LLC.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory.
- */
 
-require 'vendor/autoload.php';
+require '../../vendor/autoload.php';
 
-$renderforest = new \Renderforest\Client(['signKey' => '<signKey>', 'clientId' => -1]);
+$renderforestClient = new \Renderforest\ApiClient(
+    'your-api-key',
+    'your-client-id'
+);
 
-try {
-    $currentUser = $renderforest->getCurrentUser();
-} catch (\GuzzleHttp\Exception\GuzzleException $e) {
-    var_dump($e); // handle the error
-}
+$currentUser = $renderforestClient->getCurrentUser();
 
-var_dump($currentUser); // handle the success
+echo 'ID - ' . $currentUser->getId() . PHP_EOL;
+echo 'Is Active - ' . ($currentUser->isActive() ? 'true' : 'false') . PHP_EOL;
+echo 'Is Blocked - ' . ($currentUser->isBlocked() ? 'true' : 'false') . PHP_EOL;
+echo 'Email - ' . $currentUser->getEmail() . PHP_EOL;
+echo 'First Name - ' . $currentUser->getFirstName() . PHP_EOL;
+echo 'Language - ' . $currentUser->getLanguage() . PHP_EOL;
+echo 'Last Login - ' . $currentUser->getLastLogin() . PHP_EOL;
+echo 'Minute Limit - ' . $currentUser->getMinuteLimit() . PHP_EOL;
+echo 'Post Max Size - ' . $currentUser->getPostMaxSize() . PHP_EOL;
+echo 'Privacy - ' . $currentUser->getPrivacy() . PHP_EOL;
+echo 'Is Public Share - ' . ($currentUser->isPublicShare() ? 'true' : 'false') . PHP_EOL;
+echo 'Rend Limit - ' . $currentUser->getRendLimit() . PHP_EOL;
+echo 'Roles - ' . $currentUser->getRoles() . PHP_EOL;
+echo 'Status - ' . $currentUser->getStatus() . PHP_EOL;
+echo 'Upload Host - ' . $currentUser->getUploadHost() . PHP_EOL;
+echo 'Upload Max File Size - ' . $currentUser->getUploadMaxFileSize() . PHP_EOL;

@@ -1,467 +1,798 @@
 <?php
-/**
- * Copyright (c) 2018-present, Renderforest, LLC.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory.
- */
 
 namespace Renderforest\ProjectData;
 
-use Renderforest\Error\MissingOrderError;
+use Renderforest\Base\ApiEntityBase;
+use Renderforest\Font\Font;
+use Renderforest\ProjectData\Color\Collection\ColorCollection;
+use Renderforest\ProjectData\ProjectDataFont\ProjectDataFont;
+use Renderforest\ProjectData\ProjectDataFont\ProjectDataFontCollectionGroup;
+use Renderforest\ProjectData\Screen\Collection\ScreenCollection;
+use Renderforest\ProjectData\Screen\Entity\Screen;
+use Renderforest\ProjectData\Sound\Collection\SoundCollection;
 
-class ProjectData
+/**
+ * Class ProjectData
+ * @package Renderforest\ProjectData
+ */
+class ProjectData extends ApiEntityBase
 {
-    private $CONFIG;
+    const KEY_TEMPLATE_ID = 'templateId';
+    const KEY_CURRENT_SCREEN_ID = 'currentScreenId';
+    const KEY_DURATION = 'duration';
+    const KEY_FPS = 'fps';
+    const KEY_EQUALIZER = 'equalizer';
+    const KEY_EXTENDABLE_SCREENS = 'extendableScreens';
+    const KEY_IS_LEGO = 'isLego';
+    const KEY_MUTE_MUSIC = 'muteMusic';
+    const KEY_PROJECT_COLORS = 'projectColors';
+    const KEY_PROJECT_VERSION = 'projectVersion';
+    const KEY_SCREENS = 'screens';
+    const KEY_SOUNDS = 'sounds';
+    const KEY_THEME_VARIABLE_NAME = 'themeVariableName';
+    const KEY_THEME_VARIABLE_VALUE = 'themeVariableValue';
+    const KEY_TEMPLATE_VERSION = 'templateVersion';
+    const KEY_TITLE = 'title';
+    const KEY_VOICE_SOUND_ID = 'voiceSoundId';
+    const KEY_GENERATOR = 'generator';
 
-    private $generator;
-    private $patchProperties;
-    private $projectDataJson;
-    private $projectDataUtil;
+    const KEY_STYLES = 'styles';
+    const KEY_VOICE_OVER = 'voiceOver';
+    const KEY_FONTS = 'fonts';
+
+    const WRITABLE_KEYS = [
+        self::KEY_CURRENT_SCREEN_ID,
+        self::KEY_MUTE_MUSIC,
+        self::KEY_SOUNDS,
+        self::KEY_PROJECT_COLORS,
+        self::KEY_SCREENS,
+        self::KEY_STYLES,
+        self::KEY_VOICE_OVER,
+        self::KEY_FONTS,
+    ];
+
+    /** @var int */
+    protected $templateId;
+
+    /** @var int|null */
+    protected $currentScreenId;
+
+    /** @var int */
+    protected $duration;
+
+    /** @var int */
+    protected $fps;
+
+    /** @var bool */
+    protected $equalizer;
+
+    /** @var bool */
+    protected $extendableScreens;
+
+    /** @var bool */
+    protected $isLego;
+
+    /** @var bool */
+    protected $muteMusic;
+
+    /** @var ColorCollection */
+    protected $projectColors;
+
+    /** @var string|null */
+    protected $projectVersion;
+
+    /** @var ScreenCollection */
+    protected $screens;
+
+    /** @var SoundCollection */
+    protected $sounds;
+
+    /** @var string|null */
+    protected $themeVariableName;
+
+    /** @var string|null */
+    protected $themeVariableValue;
+
+    /** @var int|null */
+    protected $templateVersion;
+
+    /** @var string */
+    protected $title;
+
+    /** @var int|null */
+    protected $voiceSoundId;
+
+    /** @var string|null */
+    protected $generator;
+
+    /** @var ProjectDataStyles|null */
+    protected $styles;
+
+    /** @var ProjectDataVoiceOver|null */
+    protected $voiceOver;
+
+    /** @var ProjectDataFontCollectionGroup|null */
+    protected $fonts;
 
     /**
-     * Project_data constructor.
-     * @param $projectDataJson
+     * ProjectData constructor.
      */
-    public function __construct($projectDataJson)
+    public function __construct()
     {
-        $this->CONFIG = include dirname(__FILE__) . '/../Config/Config.php';
-        $this->generator = $this->CONFIG['HTTP_DEFAULT_OPTIONS']['headers']['User-Agent'];
-        $this->patchProperties = [];
-        $this->projectDataJson = $this->objectToArray($projectDataJson);
-        $this->projectDataUtil = new ProjectDataUtil();
-        $this->setGenerator();
+        $this->projectColors = new ColorCollection();
+        $this->screens = new ScreenCollection();
+        $this->sounds = new SoundCollection();
     }
 
     /**
-     * Converts `stdClass` object to array recursively.
-     * @param \stdClass $objectToConvert
-     * @return array
+     * @return int
      */
-    private function objectToArray($objectToConvert)
+    public function getTemplateId(): int
     {
-        if (is_object($objectToConvert)) {
-            $objectToConvert = get_object_vars($objectToConvert);
-        }
-
-        if (is_array($objectToConvert)) {
-            return array_map([__CLASS__, __METHOD__], $objectToConvert);
-        } else {
-            return $objectToConvert;
-        }
+        return $this->templateId;
     }
 
     /**
-     * Checks if given array have `NULL` property then unset it, otherwise does noting.
-     * @param $array - The data to unset `NULL` props.
-     * @return array
+     * @param int $templateId
+     * @return ProjectData
      */
-    private function unsetNullProperties($array)
+    public function setTemplateId(int $templateId): ProjectData
     {
-        foreach ($array as $key => $value) {
-            if ($value === NULL) {
-                unset($array[$key]);
-            }
-        }
+        $this->templateId = $templateId;
 
-        return $array;
+        return $this;
     }
 
     /**
-     * Set the generator.
+     * @return int|null
      */
-    private function setGenerator()
+    public function getCurrentScreenId()
     {
-        $this->projectDataJson['data']['generator'] = $this->generator;
-        array_push($this->patchProperties, 'generator');
+        return $this->currentScreenId;
     }
 
     /**
-     * Get patch object.
-     * @return array
+     * @param int|null $currentScreenId
+     * @return ProjectData
      */
-    public function getPatchObject()
+    private function setCurrentScreenId($currentScreenId): ProjectData
     {
-        $projectDataJsonData = $this->projectDataJson['data'];
+        $this->currentScreenId = $currentScreenId;
 
-        return array_reduce($this->patchProperties, function ($acc, $property) use ($projectDataJsonData) {
-            $acc[$property] = $projectDataJsonData[$property];
-
-            return $acc;
-        }, []);
+        return $this;
     }
 
     /**
-     * Reset patch object.
+     * @return int
      */
-    public function resetPatchObject()
+    public function getDuration(): int
     {
-        $this->patchProperties = [];
+        return $this->duration;
     }
 
     /**
-     * Get the project id.
-     * @return integer
+     * @param int $duration
+     * @return ProjectData
      */
-    public function getProjectId()
+    public function setDuration(int $duration): ProjectData
     {
-        return $this->projectDataJson['projectId'];
+        $this->duration = $duration;
+
+        return $this;
     }
 
     /**
-     * Get the template id.
-     * @return integer
+     * @return int
      */
-    public function getTemplateId()
+    public function getFps(): int
     {
-        return $this->projectDataJson['data']['templateId'];
+        return $this->fps;
     }
 
     /**
-     * Check whether is equalizer or not.
-     * @return boolean
+     * @param int $fps
+     * @return ProjectData
      */
-    public function isEqualizer()
+    public function setFps(int $fps): ProjectData
     {
-        return $this->projectDataJson['data']['equalizer'];
+        $this->fps = $fps;
+
+        return $this;
     }
 
     /**
-     * Check whether is lego or not.
-     * @return boolean
+     * @return bool
      */
-    public function isLego()
+    public function isEqualizer(): bool
     {
-        return $this->projectDataJson['data']['isLego'];
+        return $this->equalizer;
     }
 
     /**
-     * Get the project muteMusic property.
-     * @return boolean
+     * @param bool $equalizer
+     * @return ProjectData
      */
-    public function getMuteMusic()
+    public function setEqualizer(bool $equalizer): ProjectData
     {
-        return $this->projectDataJson['data']['muteMusic'];
+        $this->equalizer = $equalizer;
+
+        return $this;
     }
 
     /**
-     * Set the project muteMusic property.
-     * @param $muteMusic boolean
+     * @return bool
      */
-    public function setMuteMusic($muteMusic)
+    public function isExtendableScreens(): bool
     {
-        $this->projectDataJson['data']['muteMusic'] = $muteMusic;
-        array_push($this->patchProperties, 'muteMusic');
+        return $this->extendableScreens;
     }
 
     /**
-     * Get the project colors.
-     * @return array|null
+     * @param bool $extendableScreens
+     * @return ProjectData
      */
-    public function getProjectColors()
+    public function setExtendableScreens(bool $extendableScreens): ProjectData
     {
-        return isset($this->projectDataJson['data']['projectColors']) ?
-            $this->projectDataJson['data']['projectColors'] : null;
+        $this->extendableScreens = $extendableScreens;
+
+        return $this;
     }
 
     /**
-     * Get the project duration.
-     * @return array
+     * @return bool
      */
-    public function getProjectDuration()
+    public function isLego(): bool
     {
-        return $this->projectDataJson['data']['duration'];
+        return $this->isLego;
     }
 
     /**
-     * Set the project colors.
-     * @param array projectColors
+     * @param bool $isLego
+     * @return ProjectData
      */
-    public function setProjectColors($projectColors)
+    public function setIsLego(bool $isLego): ProjectData
     {
-        $this->projectDataJson['data']['projectColors'] = $projectColors;
-        array_push($this->patchProperties, 'projectColors');
+        $this->isLego = $isLego;
+
+        return $this;
     }
 
     /**
-     * Get the project theme.
-     * @return array
+     * @return bool
      */
-    public function getTheme()
+    public function isMuteMusic(): bool
     {
-        return [
-            'themeVariableName' => $this->projectDataJson['data']['themeVariableName'],
-            'themeVariableValue' => $this->projectDataJson['data']['themeVariableValue']
-        ];
+        return $this->muteMusic;
     }
 
     /**
-     * Set the project theme.
-     * @param array payload
+     * @param bool $muteMusic
+     * @return ProjectData
      */
-    public function setTheme($payload)
+    public function setMuteMusic(bool $muteMusic): ProjectData
     {
-        $this->projectDataJson['data']['themeVariableName'] = $payload['themeVariableName'];
-        $this->projectDataJson['data']['themeVariableValue'] = $payload['themeVariableValue'];
-        array_push($this->patchProperties, 'themeVariableName');
-        array_push($this->patchProperties, 'themeVariableValue');
+        $this->muteMusic = $muteMusic;
+
+        return $this;
     }
 
     /**
-     * Get the project sounds.
-     * @return array
+     * @return ColorCollection
      */
-    public function getSounds()
+    public function getProjectColors(): ColorCollection
     {
-        return $this->projectDataJson['data']['sounds'];
+        return $this->projectColors;
     }
 
     /**
-     * Set the project sounds.
-     * @param array sounds
+     * @param ColorCollection $projectColors
+     * @return ProjectData
      */
-    public function setSounds($sounds)
+    public function setProjectColors(ColorCollection $projectColors): ProjectData
     {
-        $this->projectDataJson['data']['sounds'] = $sounds;
-        array_push($this->patchProperties, 'sounds');
+        $this->projectColors = $projectColors;
+
+        return $this;
     }
 
     /**
-     * Get the project styles.
-     * @return array
+     * @return string|null
+     */
+    public function getProjectVersion()
+    {
+        return $this->projectVersion;
+    }
+
+    /**
+     * @param string|null $projectVersion
+     * @return ProjectData
+     */
+    private function setProjectVersion($projectVersion): ProjectData
+    {
+        $this->projectVersion = $projectVersion;
+
+        return $this;
+    }
+
+    /**
+     * @return ScreenCollection
+     */
+    public function getScreens(): ScreenCollection
+    {
+        return $this->screens;
+    }
+
+    /**
+     * @param ScreenCollection $screens
+     * @return ProjectData
+     */
+    public function setScreens(ScreenCollection $screens): ProjectData
+    {
+        $this->screens = $screens;
+
+        return $this;
+    }
+
+    /**
+     * @return SoundCollection
+     */
+    public function getSounds(): SoundCollection
+    {
+        return $this->sounds;
+    }
+
+    /**
+     * @param SoundCollection $sounds
+     * @return ProjectData
+     */
+    public function setSounds(SoundCollection $sounds): ProjectData
+    {
+        $this->sounds = $sounds;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getThemeVariableName()
+    {
+        return $this->themeVariableName;
+    }
+
+    /**
+     * @param string|null $themeVariableName
+     * @return ProjectData
+     */
+    public function setThemeVariableName($themeVariableName): ProjectData
+    {
+        $this->themeVariableName = $themeVariableName;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getThemeVariableValue()
+    {
+        return $this->themeVariableValue;
+    }
+
+    /**
+     * @param string|null $themeVariableValue
+     * @return ProjectData
+     */
+    public function setThemeVariableValue($themeVariableValue): ProjectData
+    {
+        $this->themeVariableValue = $themeVariableValue;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getTemplateVersion()
+    {
+        return $this->templateVersion;
+    }
+
+    /**
+     * @param int|null $templateVersion
+     * @return ProjectData
+     */
+    public function setTemplateVersion($templateVersion): ProjectData
+    {
+        $this->templateVersion = $templateVersion;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     * @return ProjectData
+     */
+    public function setTitle(string $title): ProjectData
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getVoiceSoundId()
+    {
+        return $this->voiceSoundId;
+    }
+
+    /**
+     * @param int|null $voiceSoundId
+     * @return ProjectData
+     */
+    public function setVoiceSoundId($voiceSoundId): ProjectData
+    {
+        $this->voiceSoundId = $voiceSoundId;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getGenerator()
+    {
+        return $this->generator;
+    }
+
+    /**
+     * @param string|null $generator
+     * @return ProjectData
+     */
+    private function setGenerator($generator): ProjectData
+    {
+        $this->generator = $generator;
+
+        return $this;
+    }
+
+    /**
+     * @return ProjectDataStyles|null
      */
     public function getStyles()
     {
-        return $this->projectDataJson['data']['styles'];
+        return $this->styles;
     }
 
     /**
-     * Set the project styles.
-     * @param array styles
+     * @param ProjectDataStyles|null $styles
+     * @return ProjectData
      */
-    public function setStyles($styles)
+    public function setStyles($styles): ProjectData
     {
-        $this->projectDataJson['data']['styles'] = $styles;
-        array_push($this->patchProperties, 'styles');
+        $this->styles = $styles;
+
+        return $this;
     }
 
     /**
-     * Get the project voiceOver.
-     * @return array
+     * @return ProjectDataFontCollectionGroup|null
+     */
+    public function getFonts()
+    {
+        return $this->fonts;
+    }
+
+    /**
+     * @param ProjectDataFontCollectionGroup|null $fonts
+     * @return ProjectData
+     */
+    private function setFonts($fonts): ProjectData
+    {
+        $this->fonts = $fonts;
+
+        return $this;
+    }
+
+    /**
+     * @param ProjectDataFont|Font $font
+     * @return ProjectData
+     * @throws \Exception
+     */
+    public function setPrimaryFont($font): ProjectData
+    {
+        $projectDataFont = null;
+
+        if ($font instanceof ProjectDataFont) {
+            $projectDataFont = $font;
+        }
+
+        if ($font instanceof Font) {
+            $projectDataFont = new ProjectDataFont();
+            $projectDataFont->exchangeArray(
+                $font->getArrayCopy()
+            );
+        }
+
+        if (false === is_null($projectDataFont)) {
+            $this->getFonts()->getSelected()->setPrimaryFont($projectDataFont);
+        } else {
+            throw new \Exception('Invalid font object passed to project data');
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ProjectDataFont|Font $font
+     * @return ProjectData
+     * @throws \Exception
+     */
+    public function setSecondaryFont($font): ProjectData
+    {
+        $projectDataFont = null;
+
+        if ($font instanceof ProjectDataFont) {
+            $projectDataFont = $font;
+        }
+
+        if ($font instanceof Font) {
+            $projectDataFont = new ProjectDataFont();
+            $projectDataFont->exchangeArray(
+                $font->getArrayCopy()
+            );
+        }
+
+        if (false === is_null($projectDataFont)) {
+            $this->getFonts()->getSelected()->setSecondaryFont($projectDataFont);
+        } else {
+            throw new \Exception('Invalid font object passed to project data');
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return ProjectData
+     * @throws \Exception
+     */
+    public function resetFonts(): ProjectData
+    {
+        $this->getFonts()->getSelected()->reset();
+
+        $defaultFontsPrimary = $this->getFonts()->getDefaults()->getPrimaryFont();
+        $defaultFontsSecondary = $this->getFonts()->getDefaults()->getSecondaryFont();
+
+        $this->getFonts()->getSelected()->setPrimaryFont($defaultFontsPrimary);
+        $this->getFonts()->getSelected()->setSecondaryFont($defaultFontsSecondary);
+
+        return $this;
+    }
+
+    /**
+     * @return ProjectDataVoiceOver|null
      */
     public function getVoiceOver()
     {
-        return $this->projectDataJson['data']['voiceOver'];
+        return $this->voiceOver;
     }
 
     /**
-     * Set the project voiceOver.
-     * @param array voiceOver
+     * @param ProjectDataVoiceOver|null $voiceOver
+     * @return ProjectData
      */
-    public function setVoiceOver($voiceOver)
+    public function setVoiceOver($voiceOver): ProjectData
     {
-        $voiceOver = (empty($voiceOver)) ? new \stdClass() : $voiceOver;
-        $this->projectDataJson['data']['voiceOver'] = $voiceOver;
-        array_push($this->patchProperties, 'voiceOver');
+        $this->voiceOver = $voiceOver;
+
+        return $this;
     }
 
     /**
-     * Get the project title.
-     * @return string
+     * @param array $projectDataArrayData
+     * @throws \Exception
      */
-    public function getTitle()
+    public function exchangeArray(array $projectDataArrayData)
     {
-        return $this->projectDataJson['data']['title'];
-    }
+        $templateId = $projectDataArrayData[self::KEY_TEMPLATE_ID];
+        $this->setTemplateId($templateId);
 
-    /**
-     * Get screens (add methods on screens & screen areas).
-     * @return array
-     */
-    public function getScreens()
-    {
-        $screens = $this->projectDataJson['data']['screens'];
-
-        return array_map(function ($screen) {
-            return $this->constructScreen($screen);
-        }, $screens);
-    }
-
-    /**
-     * Set screens.
-     * @param array screens
-     */
-    public function setScreens($screens)
-    {
-        $this->projectDataJson['data']['screens'] = $screens;
-        array_push($this->patchProperties, 'screens');
-    }
-
-    /**
-     * Pushes the given `newScreen` to `screens` array.
-     * @param array $newScreen - The new screen to push.
-     * @return array
-     */
-    public function pushScreen($newScreen)
-    {
-        if (!isset($newScreen['order'])) {
-            throw new MissingOrderError('Screen order property is missing.');
+        if (array_key_exists(self::KEY_CURRENT_SCREEN_ID, $projectDataArrayData)) {
+            $this->setCurrentScreenId($projectDataArrayData[self::KEY_CURRENT_SCREEN_ID]);
         }
 
-        $screens = $this->getScreens();
-        return $this->projectDataUtil->insertAndNormalizeOrder($screens, $newScreen);
-    }
+        $duration = $projectDataArrayData[self::KEY_DURATION];
+        $this->setDuration($duration);
 
-    /**
-     * Construct screen.
-     * @param array $screen
-     * @return array
-     */
-    public function constructScreen($screen)
-    {
-        $constructedScreen = [
-            'id' => isset($screen['id']) ? $screen['id'] : NULL,
-            'characterBasedDuration' => isset($screen['characterBasedDuration']) ? $screen['characterBasedDuration'] : NULL,
-            'duration' => isset($screen['duration']) ? $screen['duration'] : NULL,
-            'extraVideoSecond' => isset($screen['extraVideoSecond']) ? $screen['extraVideoSecond'] : NULL,
-            'hidden' => isset($screen['hidden']) ? $screen['hidden'] : NULL,
-            'iconAdjustable' => isset($screen['iconAdjustable']) ? $screen['iconAdjustable'] : NULL,
-            'isFull' => isset($screen['isFull']) ? $screen['isFull'] : NULL,
-            'maxDuration' => isset($screen['maxDuration']) ? $screen['maxDuration'] : NULL,
-            'order' => isset($screen['order']) ? $screen['order'] : NULL,
-            'path' => isset($screen['path']) ? $screen['path'] : NULL,
-            'title' => isset($screen['title']) ? $screen['title'] : NULL,
-            'type' => isset($screen['type']) ? $screen['type'] : NULL,
-            'areas' => isset($screen['areas']) ? $screen['areas'] : NULL,
-            'getAreas' => function () use ($screen) {
-                return array_map(function ($area) {
-                    return $this->constructArea($area);
-                }, $screen['areas']);
-            },
-        ];
-        $cleanScreen = $this->unsetNullProperties($constructedScreen);
-        $cleanScreen['compositionName'] = isset($screen['compositionName']) ? $screen['compositionName'] : NULL;
-        $cleanScreen['gifBigPath'] = isset($screen['gifBigPath']) ? $screen['gifBigPath'] : NULL;
-        $cleanScreen['gifPath'] = isset($screen['gifPath']) ? $screen['gifPath'] : NULL;
-        $cleanScreen['gifThumbnailPath'] = isset($screen['gifThumbnailPath']) ? $screen['gifThumbnailPath'] : NULL;
-        $cleanScreen['tags'] = isset($screen['tags']) ? $screen['tags'] : NULL;
+        $fps = $projectDataArrayData[self::KEY_FPS];
+        $this->setFps($fps);
 
-        return $cleanScreen;
-    }
+        $equalizer = $projectDataArrayData[self::KEY_EQUALIZER];
+        $this->setEqualizer($equalizer);
 
-    /**
-     * Construct area.
-     * @param array $area
-     * @return array
-     */
-    public function constructArea($area)
-    {
-        $resultWithNulls = [
-            'id' => isset($area['id']) ? $area['id'] : NULL,
-            'height' => isset($area['height']) ? $area['height'] : NULL,
-            'width' => isset($area['width']) ? $area['width'] : NULL,
-            'value' => isset($area['value']) ? $area['value'] : NULL,
-            'cords' => isset($area['cords']) ? $area['cords'] : NULL,
-            'order' => isset($area['order']) ? $area['order'] : NULL,
-            'type' => isset($area['type']) ? $area['type'] : NULL
-        ];
+        $extendableScreens = $projectDataArrayData[self::KEY_EXTENDABLE_SCREENS];
+        $this->setExtendableScreens($extendableScreens);
 
-        $result = $this->unsetNullProperties($resultWithNulls);
-        $result['title'] = isset($area['wordCount']) ? $area['wordCount'] : NULL;
+        $isLego = $projectDataArrayData[self::KEY_IS_LEGO];
+        $this->setIsLego($isLego);
 
-        if ($area['type'] === 'text') {
-            $result['setText'] = function ($text) {
-                $area['value'] = $text;
-                array_push($this->patchProperties, 'screens');
-            };
+        $muteMusic = $projectDataArrayData[self::KEY_MUTE_MUSIC];
+        $this->setMuteMusic($muteMusic);
+
+        if (array_key_exists(self::KEY_PROJECT_COLORS, $projectDataArrayData)) {
+            $projectColorsArrayData = $projectDataArrayData[self::KEY_PROJECT_COLORS];
+
+            $colorCollection = new ColorCollection();
+            $colorCollection->exchangeArray($projectColorsArrayData);
+
+            $this->setProjectColors($colorCollection);
         }
 
-        if ($area['type'] === 'image') {
-            $imageParams = [
-                'originalHeight' => isset($area['originalHeight']) ? $area['originalHeight'] : NULL,
-                'originalWidth' => isset($area['originalWidth']) ? $area['originalWidth'] : NULL,
-                'mimeType' => isset($area['mimeType']) ? $area['mimeType'] : NULL,
-                'fileType' => isset($area['fileType']) ? $area['fileType'] : NULL,
-                'imageCropParams' => isset($area['imageCropParams']) ? $area['imageCropParams'] : NULL,
-                'setImage' => function ($image) use ($area) {
-                    $this->setAreaImage($area, $image);
-                    array_push($this->patchProperties, 'screens');
+        if (array_key_exists(self::KEY_SCREENS, $projectDataArrayData)) {
+            $screensArrayData = $projectDataArrayData[self::KEY_SCREENS];
+
+            if (false === is_null($screensArrayData)) {
+                $screenCollection = new ScreenCollection();
+                $screenCollection->exchangeArray($screensArrayData);
+
+                $this->setScreens($screenCollection);
+            }
+        }
+
+        if (array_key_exists(self::KEY_SOUNDS, $projectDataArrayData)) {
+            $soundsArrayData = $projectDataArrayData[self::KEY_SOUNDS];
+
+            if (false === is_null($soundsArrayData) && is_array($soundsArrayData)) {
+                if (count($soundsArrayData)) {
+                    $soundCollection = new SoundCollection();
+                    $soundCollection->exchangeArray($soundsArrayData);
+
+                    $this->setSounds($soundCollection);
                 }
-            ];
-            $cleanImageParams = $this->unsetNullProperties($imageParams);
-            $cleanImageParams['fileName'] = isset($area['fileName']) ? $area['fileName'] : NULL;
-            $cleanImageParams['webpPath'] = isset($area['webpPath']) ? $area['webpPath'] : NULL;
-            $cleanImageParams['thumbnailPath'] = isset($area['thumbnailPath']) ? $area['thumbnailPath'] : NULL;
-            $result = array_replace_recursive($result, $cleanImageParams);
-
+            }
         }
 
-        if ($area['type'] === 'video') {
-            $videoParams = [
-                'originalHeight' => isset($area['originalHeight']) ? $area['originalHeight'] : NULL,
-                'originalWidth' => isset($area['originalWidth']) ? $area['originalWidth'] : NULL,
-                'mimeType' => isset($area['mimeType']) ? $area['mimeType'] : NULL,
-                'fileType' => isset($area['fileType']) ? $area['fileType'] : NULL,
-                'videoCropParams' => isset($area['videoCropParams']) ? $area['videoCropParams'] : NULL,
-                'setVideo' => function ($video) use ($area) {
-                    $this->setAreaVideo($area, $video);
-                    array_push($this->patchProperties, 'screens');
+        if (array_key_exists(self::KEY_STYLES, $projectDataArrayData)) {
+            $stylesArrayData = $projectDataArrayData[self::KEY_STYLES];
+
+            if (false === is_null($stylesArrayData) && is_array($stylesArrayData)) {
+                if (count($stylesArrayData)) {
+                    $styles = new ProjectDataStyles();
+                    $styles->exchangeArray($stylesArrayData);
+
+                    $this->setStyles($styles);
                 }
-            ];
-            $cleanVideoParams = $this->unsetNullProperties($videoParams);
-            $result = array_replace_recursive($result, $cleanVideoParams);
+            }
         }
 
-        return $result;
+        if (array_key_exists(self::KEY_VOICE_OVER, $projectDataArrayData)) {
+            $voiceOverArrayData = $projectDataArrayData[self::KEY_VOICE_OVER];
+
+            if (false === is_null($voiceOverArrayData) && is_array($voiceOverArrayData)) {
+                if (count($voiceOverArrayData)) {
+                    $projectDataVoiceOver = new ProjectDataVoiceOver();
+                    $projectDataVoiceOver->exchangeArray($voiceOverArrayData);
+
+                    $this->setVoiceOver($projectDataVoiceOver);
+                }
+            }
+        }
+
+        if (array_key_exists(self::KEY_FONTS, $projectDataArrayData)) {
+            $fontsArrayData = $projectDataArrayData[self::KEY_FONTS];
+
+            if (false === is_null($fontsArrayData) && is_array($fontsArrayData)) {
+                if (count($fontsArrayData)) {
+                    $fonts = new ProjectDataFontCollectionGroup();
+                    $fonts->exchangeArray($fontsArrayData);
+
+                    $this->setFonts($fonts);
+                }
+            }
+        }
+
+        if (array_key_exists(self::KEY_THEME_VARIABLE_NAME, $projectDataArrayData)) {
+            $this->setThemeVariableName($projectDataArrayData[self::KEY_THEME_VARIABLE_NAME]);
+        }
+
+        if (array_key_exists(self::KEY_THEME_VARIABLE_VALUE, $projectDataArrayData)) {
+            $this->setThemeVariableValue($projectDataArrayData[self::KEY_THEME_VARIABLE_VALUE]);
+        }
+
+        if (array_key_exists(self::KEY_TITLE, $projectDataArrayData)) {
+            $this->setTitle($projectDataArrayData[self::KEY_TITLE]);
+        }
+
+        if (array_key_exists(self::KEY_VOICE_SOUND_ID, $projectDataArrayData)) {
+            $this->setVoiceSoundId($projectDataArrayData[self::KEY_VOICE_SOUND_ID]);
+        }
+
+        if (array_key_exists(self::KEY_GENERATOR, $projectDataArrayData)) {
+            $this->setGenerator($projectDataArrayData[self::KEY_GENERATOR]);
+        }
     }
 
     /**
-     * @param array $area
-     * @param array $image
-     * @return array
-     * Set image on area.
+     * @param string $projectDataJson
+     * @throws \Exception
      */
-    public function setAreaImage($area, $image)
+    public function exchangeJson(string $projectDataJson)
     {
-        $imageProperties = [
-            'mimeType' => isset($image['mime']) ? $image['mime'] : NULL,
-            'value' => isset($image['filePath']) ? $image['filePath'] : NULL,
-            'fileType' => isset($image['fileType']) ? $image['fileType'] : NULL,
-            'imageCropParams' => [
-                'tranform' => isset($image['imageCropParams']['transform']) ? $image['imageCropParams']['transform'] : NULL,
-                'top' => isset($image['imageCropParams']['top']) ? $image['imageCropParams']['top'] : NULL,
-                'left' => isset($image['imageCropParams']['left']) ? $image['imageCropParams']['left'] : NULL,
-                'width' => isset($image['imageCropParams']['width']) ? $image['imageCropParams']['width'] : NULL,
-                'height' => isset($image['imageCropParams']['height']) ? $image['imageCropParams']['height'] : NULL
-            ]
-        ];
-        $cleanImageProperties = $this->unsetNullProperties($imageProperties);
-        $cleanImageProperties['fileName'] = isset($area['fileName']) ? $area['fileName'] : NULL;
-        $cleanImageProperties['webpPath'] = isset($area['webpPath']) ? $area['webpPath'] : NULL;
-        $cleanImageProperties['thumbnailPath'] = isset($area['thumbnailPath']) ? $area['thumbnailPath'] : NULL;
+        $projectDataArray = json_decode($projectDataJson, true);
 
-        return array_replace_recursive($area, $cleanImageProperties);
+        $projectDataArray = $projectDataArray['data']['data'];
+
+        $this->exchangeArray($projectDataArray);
     }
 
     /**
-     * @param array $area
-     * @param array $video
      * @return array
-     * Set video on area.
      */
-    public function setAreaVideo($area, $video)
+    public function getArrayCopy(): array
     {
-        $videoProperties = [
-            'mimeType' => isset($video['mime']) ? $video['mime'] : NULL,
-            'value' => isset($video['filePath']) ? $video['filePath'] : NULL,
-            'fileType' => isset($video['fileType']) ? $video['fileType'] : NULL,
-            'videoCropParams' => isset($video['videoCropParams']) ? $video['videoCropParams'] : NULL
+        $arrayCopy = [
+            self::KEY_TEMPLATE_ID => $this->getTemplateId(),
+            self::KEY_CURRENT_SCREEN_ID => $this->getCurrentScreenId(),
+            self::KEY_DURATION => $this->getDuration(),
+            self::KEY_FPS => $this->getFps(),
+            self::KEY_EQUALIZER => $this->isEqualizer(),
+            self::KEY_EXTENDABLE_SCREENS => $this->isExtendableScreens(),
+            self::KEY_IS_LEGO => $this->isLego(),
+            self::KEY_MUTE_MUSIC => $this->isMuteMusic(),
+            self::KEY_PROJECT_COLORS => $this->projectColors->getArrayCopy(),
+            self::KEY_PROJECT_VERSION => $this->getProjectVersion(),
+            self::KEY_SCREENS => $this->screens->getArrayCopy(),
+            self::KEY_SOUNDS => $this->sounds->getArrayCopy(),
+            self::KEY_THEME_VARIABLE_NAME => $this->getThemeVariableName(),
+            self::KEY_THEME_VARIABLE_VALUE => $this->getThemeVariableValue(),
+            self::KEY_TEMPLATE_VERSION => $this->getTemplateVersion(),
+            self::KEY_TITLE => $this->getTitle(),
+            self::KEY_VOICE_SOUND_ID => $this->getVoiceSoundId(),
+            self::KEY_GENERATOR => $this->getGenerator(),
         ];
-        $cleanVideoProperties = $this->unsetNullProperties($videoProperties);
-        $cleanVideoProperties['fileName'] = isset($area['fileName']) ? $area['fileName'] : NULL;
-        $cleanVideoProperties['webpPath'] = isset($area['webpPath']) ? $area['webpPath'] : NULL;
 
-        return array_replace_recursive($area, $cleanVideoProperties);
+        if (false === is_null($this->fonts)) {
+            $arrayCopy[self::KEY_FONTS] = $this->fonts->getArrayCopy();
+        }
+
+        if (false === is_null($this->styles)) {
+            $arrayCopy[self::KEY_STYLES] = $this->styles->getArrayCopy();
+        }
+
+        if (false === is_null($this->voiceOver)) {
+            $arrayCopy[self::KEY_VOICE_OVER] = $this->voiceOver->getArrayCopy();
+        }
+
+        if (false === is_null($this->fonts)) {
+            $arrayCopy[self::KEY_FONTS] = $this->fonts->getArrayCopy();
+        }
+
+        foreach (array_keys($arrayCopy) as $key) {
+            if (false === in_array($key, self::WRITABLE_KEYS)) {
+                unset($arrayCopy[$key]);
+            }
+        }
+
+        return $arrayCopy;
+    }
+
+    /**
+     * @param int $screenOrder
+     * @return Screen
+     * @throws \Exception
+     */
+    public function getScreenByOrder(int $screenOrder): Screen
+    {
+        return $this->screens->getScreenByOrder($screenOrder);
     }
 }

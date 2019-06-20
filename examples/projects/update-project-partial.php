@@ -1,24 +1,15 @@
 <?php
-/**
- * Copyright (c) 2018-present, Renderforest, LLC.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory.
- */
 
-require 'vendor/autoload.php';
+require '../../vendor/autoload.php';
 
-$renderforest = new \Renderforest\Client(['signKey' => '<signKey>', 'clientId' => -1]);
+$renderforestClient = new \Renderforest\ApiClient(
+    'your-api-key',
+    'your-client-id'
+);
 
-$payload = [
-    'projectId' => 5000658,
-    'customTitle' => 'mock-customTitle'
-];
-try {
-    $updateProject = $renderforest->updateProjectPartial($payload);
-} catch (\GuzzleHttp\Exception\GuzzleException $e) {
-    var_dump($e); // handle the error
-}
+$projectId = $renderforestClient->updateProject(
+    16296675,
+    'new custom title'
+);
 
-var_dump($updateProject); // handle the success
+echo 'Project Successfully Updated - ID: ' . $projectId . PHP_EOL;
