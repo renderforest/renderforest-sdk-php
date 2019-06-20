@@ -87,7 +87,11 @@ $templateColorPresets = \Renderforest\ApiClient::getTemplateColorPresets(701);
 
 Retrieves pluggable-screens of the template.
 ```php
+<?php
 
+require '../../vendor/autoload.php';
+
+$templatePluggableScreensGroupCollection = \Renderforest\ApiClient::getTemplatePluggableScreens(701);
 ```
 
 - Only lego templates might have a pluggable-screen. 
