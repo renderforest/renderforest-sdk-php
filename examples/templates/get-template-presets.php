@@ -1,21 +1,24 @@
 <?php
-/**
- * Copyright (c) 2018-present, Renderforest, LLC.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory.
- */
 
-require 'vendor/autoload.php';
+require '../../vendor/autoload.php';
 
-$payload = [
-    'templateId' => 701
-];
-try {
-    $templatePresets = \Renderforest\Client::getTemplatePresets($payload);
-} catch (\GuzzleHttp\Exception\GuzzleException $e) {
-    var_dump($e); // handle the error
+$templatePresets = \Renderforest\ApiClient::getTemplatePresets(701);
+
+echo 'Count - ' . count($templatePresets) . PHP_EOL;
+echo PHP_EOL;
+
+foreach ($templatePresets as $templatePreset) {
+    echo 'ID - ' . $templatePreset->getId() . PHP_EOL;
+    echo 'Template ID - ' . $templatePreset->getTemplateId() . PHP_EOL;
+    echo 'Project ID - ' . $templatePreset->getProjectId() . PHP_EOL;
+    echo 'Description - ' . $templatePreset->getDescription() . PHP_EOL;
+    echo 'Order - ' . $templatePreset->getOrder() . PHP_EOL;
+    echo 'Is Public - ' . $templatePreset->isPublic() . PHP_EOL;
+    echo 'Thumbnail - ' . $templatePreset->getThumbnail() . PHP_EOL;
+    echo 'Title - ' . $templatePreset->getTitle() . PHP_EOL;
+    echo 'Video Url - ' . $templatePreset->getVideoUrl() . PHP_EOL;
+    echo 'Created At - ' . $templatePreset->getCreatedAt() . PHP_EOL;
+    echo 'Updated At - ' . $templatePreset->getUpdatedAt() . PHP_EOL;
+
+    echo PHP_EOL;
 }
-
-var_dump($templatePresets); // handle the success

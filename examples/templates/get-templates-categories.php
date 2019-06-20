@@ -1,21 +1,27 @@
 <?php
-/**
- * Copyright (c) 2018-present, Renderforest, LLC.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory.
- */
 
-require 'vendor/autoload.php';
+require '../../vendor/autoload.php';
 
-$payload = [
-    'language' => 'en'
-];
-try {
-    $templateCategories = \Renderforest\Client::getTemplatesCategories($payload);
-} catch (\GuzzleHttp\Exception\GuzzleException $e) {
-    var_dump($e); // handle the error
+$renderforestClient = new \Renderforest\ApiClient(
+    'your-api-key',
+    'your-client-id'
+);
+
+$templateCategories = $renderforestClient->getTemplatesCategories('ru');
+
+echo 'Count - ' . count($templateCategories) . PHP_EOL;
+echo PHP_EOL;
+
+foreach ($templateCategories as $templateCategory) {
+    echo 'ID - ' . $templateCategory->getId() . PHP_EOL;
+    echo 'Parent ID - ' . $templateCategory->getParentId() . PHP_EOL;
+    echo 'Title - ' . $templateCategory->getTitle() . PHP_EOL;
+
+    foreach ($templateCategory->getSubCategoriesCollection()->getItems() as $templateSubCategory) {
+        echo '-- ' . 'ID - ' . $templateSubCategory->getId() . PHP_EOL;
+        echo '-- ' . 'Parent ID - ' . $templateSubCategory->getParentId() . PHP_EOL;
+        echo '-- ' . 'Title - ' . $templateSubCategory->getTitle() . PHP_EOL;
+    }
+
+    echo PHP_EOL;
 }
-
-var_dump($templateCategories); // handle the success
