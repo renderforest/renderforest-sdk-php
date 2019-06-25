@@ -352,8 +352,6 @@ class Screen extends EntityBase
      */
     public function setDuration(int $duration): Screen
     {
-        $this->duration = $duration;
-
         if ($this->hasVideoArea()) {
             throw new \Exception('The screen has video area.');
         }
