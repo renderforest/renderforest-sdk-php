@@ -21,11 +21,6 @@ class ProjectDataStyles extends ApiEntityBase
     const KEY_THEME = 'theme';
     const KEY_TRANSITION = 'transition';
 
-    const REQUIRED_KEYS = [
-        self::KEY_THEME,
-        self::KEY_TRANSITION,
-    ];
-
     /** @var string */
     protected $theme;
 
@@ -37,7 +32,7 @@ class ProjectDataStyles extends ApiEntityBase
      */
     public function getTheme(): string
     {
-        return $this->theme;
+        return $this->theme || '';
     }
 
     /**
@@ -56,7 +51,7 @@ class ProjectDataStyles extends ApiEntityBase
      */
     public function getTransition(): string
     {
-        return $this->transition;
+        return $this->transition || '';
     }
 
     /**
@@ -72,21 +67,18 @@ class ProjectDataStyles extends ApiEntityBase
 
     /**
      * @param array $projectDataStylesArrayData
-     * @throws \Exception
      */
     public function exchangeArray(array $projectDataStylesArrayData)
     {
-        foreach (self::REQUIRED_KEYS as $requiredKey) {
-            if (false === array_key_exists($requiredKey, $projectDataStylesArrayData)) {
-                throw new \Exception('Missing `' . $requiredKey . '` in project data styles array data');
-            }
+        if (true === array_key_exists(self::KEY_THEME, $projectDataStylesArrayData)) {
+            $projectDataStylesTheme = $projectDataStylesArrayData[self::KEY_THEME];
+            $this->setTheme($projectDataStylesTheme);
         }
 
-        $projectDataStylesTheme = $projectDataStylesArrayData[self::KEY_THEME];
-        $projectDataStylesTransition = $projectDataStylesArrayData[self::KEY_TRANSITION];
-
-        $this->setTheme($projectDataStylesTheme);
-        $this->setTransition($projectDataStylesTransition);
+        if (true === array_key_exists(self::KEY_TRANSITION, $projectDataStylesArrayData)) {
+            $projectDataStylesTransition = $projectDataStylesArrayData[self::KEY_TRANSITION];
+            $this->setTransition($projectDataStylesTransition);
+        }
     }
 
     /**
