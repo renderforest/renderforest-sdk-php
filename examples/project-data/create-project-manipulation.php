@@ -38,8 +38,15 @@ $videoCropParams->setVolume($videoCropParamsVolume);
 $videoArea->setVideoCropParams($videoCropParams);
 $textArea->setValue('example');
 
-$allSounds = $renderforestClient->getAllSounds(100);
-$sound = $allSounds->getSoundById(1980240);
+$sound = new Renderforest\Sound\UserSound();
+$sound->setFileSize(198658);
+$sound->setDuration(12);
+$sound->setId(1);
+$sound->setPath('http://techslides.com/demos/samples/sample.mp3');
+$sound->setTitle('sample.mp3');
+$sound->setUserId('1469277');
+$sound->setVoiceOver(false);
+
 $projectData
     ->getSounds()
     ->add($sound);
