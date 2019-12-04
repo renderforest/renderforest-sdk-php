@@ -10,6 +10,7 @@ use Renderforest\ProjectData\ProjectDataFont\ProjectDataFontCollectionGroup;
 use Renderforest\ProjectData\Screen\Collection\ScreenCollection;
 use Renderforest\ProjectData\Screen\Entity\Screen;
 use Renderforest\ProjectData\Sound\Collection\SoundCollection;
+use Renderforest\Sound\UserSound;
 
 /**
  * Class ProjectData
@@ -342,10 +343,21 @@ class ProjectData extends ApiEntityBase
     }
 
     /**
+     * @return SoundCollection
+     */
+    public function insertUniqueSound(UserSound $sound): ProjectData
+    {
+        $collection = new SoundCollection();
+        $this->sounds = $collection->add($sound);
+
+        return $this;
+    }
+
+    /**
      * @param SoundCollection $sounds
      * @return ProjectData
      */
-    public function setSounds(SoundCollection $sounds): ProjectData
+    private function setSounds(SoundCollection $sounds): ProjectData
     {
         $this->sounds = $sounds;
 
