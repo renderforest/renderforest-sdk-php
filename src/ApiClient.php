@@ -55,12 +55,6 @@ class ApiClient
     const SUPPORT_API_PATH_PREFIX = '/api/v1';
     const SUPPORT_API_PATH = self::SUPPORT_API_PATH_PREFIX . '/supports/ticket';
 
-    const SOUNDS_API_PATH_PREFIX = '/api/v1';
-    const SOUNDS_API_PATH = self::SOUNDS_API_PATH_PREFIX . '/sounds';
-
-    const SOUNDS_RECOMMENDED_API_PATH_PREFIX = '/api/v1';
-    const SOUNDS_RECOMMENDED_API_PATH = self::SOUNDS_RECOMMENDED_API_PATH_PREFIX . '/sounds/recommended';
-
     const CURRENT_USER_API_PATH_PREFIX = '/api/v1';
     const CURRENT_USER_API_PATH = self::CURRENT_USER_API_PATH_PREFIX . '/users/current';
 
@@ -885,110 +879,6 @@ class ApiClient
     }
 
     /**
-     * @param int $duration
-     * @return SoundCollection
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    private function getAllSounds(int $duration): SoundCollection
-    {
-        $soundCollection = $this->getSounds($duration, null);
-
-        return $soundCollection;
-    }
-
-    /**
-     * @param int $duration
-     * @return SoundCollection
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    private static function getAllSoundsLimited(int $duration): SoundCollection
-    {
-        $soundCollection = self::getSoundsLimited($duration, null);
-
-        return $soundCollection;
-    }
-
-    /**
-     * @param int $duration
-     * @param int $templateId
-     * @return SoundCollection
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    private function getRecommendedSounds(int $duration, int $templateId): SoundCollection
-    {
-        $soundCollection = $this->getSounds($duration, $templateId);
-
-        return $soundCollection;
-    }
-
-    /**
-     * @param int $duration
-     * @param int $templateId
-     * @return SoundCollection
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    private static function getRecommendedSoundsLimited(int $duration, int $templateId): SoundCollection
-    {
-        $soundCollection = self::getSoundsLimited($duration, $templateId);
-
-        return $soundCollection;
-    }
-
-    /**
-     * @param int $duration
-     * @param int|null $templateId
-     * @return SoundCollection
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    private function getSounds(int $duration, int $templateId = null): SoundCollection
-    {
-        $endpoint = self::SOUNDS_API_PATH;
-        $uri = self::API_ENDPOINT . self::SOUNDS_API_PATH;
-
-        $queryParams = [
-            'duration' => $duration,
-        ];
-
-        if (false === is_null($templateId)) {
-            $endpoint = self::SOUNDS_RECOMMENDED_API_PATH;
-            $uri = self::API_ENDPOINT . self::SOUNDS_RECOMMENDED_API_PATH;
-
-            $queryParams = [
-                'duration' => $duration,
-                'templateId' => $templateId,
-            ];
-        }
-
-        $queryString = http_build_query($queryParams);
-        $uri .= '?' . $queryString;
-
-        $options = [
-            'method' => 'GET',
-            'headers' => [
-                'Accept' => 'application/json',
-                'User-Agent' => self::USER_AGENT,
-            ],
-            'endpoint' => $endpoint,
-            'uri' => $uri,
-        ];
-
-        $options = $this->setAuthorization($options);
-
-        $response = $this->httpClient->request(
-            $options['method'],
-            $options['uri'],
-            $options
-        );
-
-        $json = $response->getBody()->getContents();
-
-        $soundCollection = new SoundCollection();
-        $soundCollection->exchangeJson($json);
-
-        return $soundCollection;
-    }
-
-    /**
      * @param int $templateId
      * @return FontCollection
      * @throws \GuzzleHttp\Exception\GuzzleException
@@ -1030,63 +920,6 @@ class ApiClient
 
         return $fontCollection;
     }
-
-    /**
-     * @param int $duration
-     * @param int|null $templateId
-     * @param bool $authorized
-     * @return SoundCollection
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    private static function getSoundsLimited(int $duration, int $templateId = null): SoundCollection
-    {
-        $endpoint = self::SOUNDS_API_PATH;
-        $uri = self::API_ENDPOINT . self::SOUNDS_API_PATH;
-
-        $queryParams = [
-            'duration' => $duration,
-        ];
-
-        if (false === is_null($templateId)) {
-            $endpoint = self::SOUNDS_RECOMMENDED_API_PATH;
-            $uri = self::API_ENDPOINT . self::SOUNDS_RECOMMENDED_API_PATH;
-
-            $queryParams = [
-                'duration' => $duration,
-                'templateId' => $templateId,
-            ];
-        }
-
-
-        $queryString = http_build_query($queryParams);
-        $uri .= '?' . $queryString;
-
-        $options = [
-            'method' => 'GET',
-            'headers' => [
-                'Accept' => 'application/json',
-                'User-Agent' => self::USER_AGENT,
-            ],
-            'endpoint' => $endpoint,
-            'uri' => $uri,
-        ];
-
-        $httpClient = new Client();
-
-        $response = $httpClient->request(
-            $options['method'],
-            $options['uri'],
-            $options
-        );
-
-        $json = $response->getBody()->getContents();
-
-        $soundCollection = new SoundCollection();
-        $soundCollection->exchangeJson($json);
-
-        return $soundCollection;
-    }
-
 
     /**
      * @param SupportTicket $supportTicket
