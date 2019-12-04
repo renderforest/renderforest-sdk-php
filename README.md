@@ -14,7 +14,6 @@ With our SDK you can use following resources:
 * [Project-data](doc/project-data-api/PROJECT_DATA_API.md)
   - [Screens](doc/project-data-api/SCREENS_API.md)
   - [Areas](doc/project-data-api/AREAS_API.md)
-* [Sounds](doc/SOUNDS_API.md)
 * [Supports](doc/SUPPORTS_API.md)
 * [Templates](doc/TEMPLATES_API.md)
 * [Users](doc/USERS_API.md)

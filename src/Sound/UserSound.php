@@ -27,12 +27,9 @@ class UserSound extends AbstractSound
 
     const REQUIRED_KEYS = [
         self::KEY_ID,
-        self::KEY_DURATION,
         self::KEY_FILE_SIZE,
         self::KEY_PATH,
-        self::KEY_TITLE,
         self::KEY_USER_ID,
-        self::KEY_VOICE_OVER,
     ];
 
     /** @var int */
@@ -41,55 +38,69 @@ class UserSound extends AbstractSound
     /** @var int */
     protected $userId;
 
-    /** @var bool */
-    protected $voiceOver;
+     /** @var bool */
+     protected $voiceOver;
+
+     /**
+      * @return int
+      */
+     public function getFileSize(): int
+     {
+         return $this->fileSize;
+     }
+ 
+     /**
+      * @param int $fileSize
+      */
+     private function setFileSize(int $fileSize)
+     {
+         $this->fileSize = $fileSize;
+     }
+ 
+     /**
+      * @return int
+      */
+     public function getUserId(): int
+     {
+         return $this->userId;
+     }
+ 
+     /**
+      * @param int $userId
+      */
+     private function setUserId(int $userId)
+     {
+         $this->userId = $userId;
+     }
+ 
+     /**
+      * @return bool
+      */
+     public function isVoiceOver(): bool
+     {
+         return $this->voiceOver;
+     }
+ 
+     /**
+      * @param bool $voiceOver
+      */
+     private function setVoiceOver(bool $voiceOver)
+     {
+         $this->voiceOver = $voiceOver;
+     }
 
     /**
-     * @return int
+     * @param array $sound
      */
-    public function getFileSize(): int
+    public function set(array $sound)
     {
-        return $this->fileSize;
-    }
-
-    /**
-     * @param int $fileSize
-     */
-    private function setFileSize(int $fileSize)
-    {
-        $this->fileSize = $fileSize;
-    }
-
-    /**
-     * @return int
-     */
-    public function getUserId(): int
-    {
-        return $this->userId;
-    }
-
-    /**
-     * @param int $userId
-     */
-    private function setUserId(int $userId)
-    {
-        $this->userId = $userId;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isVoiceOver(): bool
-    {
-        return $this->voiceOver;
-    }
-
-    /**
-     * @param bool $voiceOver
-     */
-    private function setVoiceOver(bool $voiceOver)
-    {
-        $this->voiceOver = $voiceOver;
+        $this->setId(1);
+        $this->setTitle('Sound Via URL');
+        $this->setVoiceOver('0');
+        $this->setUserId($sound[self::KEY_USER_ID]);
+        $this->setPath($sound[self::KEY_PATH]);
+        $this->setDuration($sound[self::KEY_DURATION]);
+        $this->setFileSize($sound[self::KEY_FILE_SIZE]);
     }
 
     /**
