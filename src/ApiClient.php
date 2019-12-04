@@ -889,7 +889,7 @@ class ApiClient
      * @return SoundCollection
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getAllSounds(int $duration): SoundCollection
+    private function getAllSounds(int $duration): SoundCollection
     {
         $soundCollection = $this->getSounds($duration, null);
 
@@ -901,7 +901,7 @@ class ApiClient
      * @return SoundCollection
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public static function getAllSoundsLimited(int $duration): SoundCollection
+    private static function getAllSoundsLimited(int $duration): SoundCollection
     {
         $soundCollection = self::getSoundsLimited($duration, null);
 
@@ -914,7 +914,7 @@ class ApiClient
      * @return SoundCollection
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getRecommendedSounds(int $duration, int $templateId): SoundCollection
+    private function getRecommendedSounds(int $duration, int $templateId): SoundCollection
     {
         $soundCollection = $this->getSounds($duration, $templateId);
 
@@ -927,7 +927,7 @@ class ApiClient
      * @return SoundCollection
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public static function getRecommendedSoundsLimited(int $duration, int $templateId): SoundCollection
+    private static function getRecommendedSoundsLimited(int $duration, int $templateId): SoundCollection
     {
         $soundCollection = self::getSoundsLimited($duration, $templateId);
 
