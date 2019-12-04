@@ -9,7 +9,7 @@ $newProjectId = $renderforestClient->addProject(701);
 
 $duplicatedProject = $renderforestClient->duplicateProject($newProjectId);
 
-$projectData = $renderforestClient->getProjectData($duplicatedProject);
+$projectData = $renderforestClient->getProjectData(23170456);
 
 $firstScreen = $projectData->getScreenByOrder(0);
 $firstScreen->setDuration(5);
@@ -39,18 +39,17 @@ $videoArea->setVideoCropParams($videoCropParams);
 $textArea->setValue('example');
 
 $sound = new Renderforest\Sound\UserSound();
-$sound->setFileSize(198658);
-$sound->setDuration(12);
-$sound->setId(1);
-$sound->setPath('http://techslides.com/demos/samples/sample.mp3');
-$sound->setTitle('sample.mp3');
-$sound->setUserId('1469277');
-$sound->setVoiceOver(false);
+$sound->set([
+  'userId' => '1469277',
+  'path' => 'http://techslides.com/demos/samples/sample.mp3',
+  'duration' => 12,
+  'filesize' => 198658
+]);
 
 $projectData
     ->getSounds()
     ->add($sound);
 
-$renderforestClient->updateProjectData(23167004, $projectData);
+$renderforestClient->updateProjectData(23170456, $projectData);
 
 $renderforestClient->renderProject($duplicatedProject, 360);
