@@ -311,7 +311,7 @@ class Screen extends EntityBase
      * @param bool $characterBasedDuration
      * @return Screen
      */
-    public function setCharacterBasedDuration(bool $characterBasedDuration): Screen
+    private function setCharacterBasedDuration(bool $characterBasedDuration): Screen
     {
         $this->characterBasedDuration = $characterBasedDuration;
 
@@ -476,7 +476,7 @@ class Screen extends EntityBase
      * @param int $iconAdjustable
      * @return Screen
      */
-    public function setIconAdjustable(int $iconAdjustable): Screen
+    private function setIconAdjustable(int $iconAdjustable): Screen
     {
         $this->iconAdjustable = $iconAdjustable;
 
@@ -495,7 +495,7 @@ class Screen extends EntityBase
      * @param bool|null $isFull
      * @return Screen
      */
-    public function setIsFull($isFull): Screen
+    private function setIsFull($isFull): Screen
     {
         $this->isFull = $isFull;
 
@@ -514,7 +514,7 @@ class Screen extends EntityBase
      * @param int|null $maxDuration
      * @return Screen
      */
-    public function setMaxDuration($maxDuration): Screen
+    private function setMaxDuration($maxDuration): Screen
     {
         $this->maxDuration = $maxDuration;
 

@@ -174,7 +174,7 @@ class ProjectData extends ApiEntityBase
      * @param int $duration
      * @return ProjectData
      */
-    public function setDuration(int $duration): ProjectData
+    private function setDuration(int $duration): ProjectData
     {
         $this->duration = $duration;
 
@@ -184,7 +184,7 @@ class ProjectData extends ApiEntityBase
     /**
      * @return int
      */
-    public function getFps(): int
+    private function getFps(): int
     {
         return $this->fps;
     }
@@ -193,7 +193,7 @@ class ProjectData extends ApiEntityBase
      * @param int $fps
      * @return ProjectData
      */
-    public function setFps(int $fps): ProjectData
+    private function setFps(int $fps): ProjectData
     {
         $this->fps = $fps;
 
@@ -222,7 +222,7 @@ class ProjectData extends ApiEntityBase
     /**
      * @return bool
      */
-    public function isExtendableScreens(): bool
+    private function isExtendableScreens(): bool
     {
         return $this->extendableScreens;
     }
@@ -231,7 +231,7 @@ class ProjectData extends ApiEntityBase
      * @param bool $extendableScreens
      * @return ProjectData
      */
-    public function setExtendableScreens(bool $extendableScreens): ProjectData
+    private function setExtendableScreens(bool $extendableScreens): ProjectData
     {
         $this->extendableScreens = $extendableScreens;
 
@@ -298,7 +298,7 @@ class ProjectData extends ApiEntityBase
     /**
      * @return string|null
      */
-    public function getProjectVersion()
+    private function getProjectVersion()
     {
         return $this->projectVersion;
     }
