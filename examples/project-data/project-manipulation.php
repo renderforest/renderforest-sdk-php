@@ -9,7 +9,7 @@ $newProjectId = $renderforestClient->addProject(701);
 
 $duplicatedProject = $renderforestClient->duplicateProject($newProjectId);
 
-$projectData = $renderforestClient->getProjectData(23170456);
+$projectData = $renderforestClient->getProjectData($duplicatedProject);
 
 $firstScreen = $projectData->getScreenByOrder(0);
 $firstScreen->setDuration(5);
@@ -50,6 +50,6 @@ $projectData
     ->getSounds()
     ->add($sound);
 
-$renderforestClient->updateProjectData(23170456, $projectData);
+$renderforestClient->updateProjectData($duplicatedProject, $projectData);
 
 $renderforestClient->renderProject($duplicatedProject, 360);
