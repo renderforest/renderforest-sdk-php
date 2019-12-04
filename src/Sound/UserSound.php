@@ -95,8 +95,8 @@ class UserSound extends AbstractSound
     public function set(array $sound)
     {
         $this->setId(1);
-        $this->setTitle('1');
-        $this->setVoiceOver('1');
+        $this->setTitle('Sound Via URL');
+        $this->setVoiceOver('0');
         $this->setUserId($sound[self::KEY_USER_ID]);
         $this->setPath($sound[self::KEY_PATH]);
         $this->setDuration($sound[self::KEY_DURATION]);
