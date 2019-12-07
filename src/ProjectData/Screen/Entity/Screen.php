@@ -186,7 +186,7 @@ class Screen extends EntityBase
      */
     public function setLowerThirdSettings(int $start, int $duration): Screen
     {
-        if (1 === $this->lowerThirdAdjustable) {
+        if (true === $this->lowerThirdAdjustable) {
             $this->lowerThirdStart = $start;
             $this->lowerThirdDuration = $duration;
         } else {
@@ -194,6 +194,14 @@ class Screen extends EntityBase
         }
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    private function getLowerThirdAdjustable()
+    {
+        return $this->lowerThirdAdjustable;
     }
 
     /**
@@ -484,10 +492,10 @@ class Screen extends EntityBase
     }
 
     /**
-     * @param int $lowerThirdAdjustable
+     * @param bool $lowerThirdAdjustable
      * @return Screen
      */
-    private function setLowerThirdAdjustable(int $lowerThirdAdjustable): Screen
+    private function setLowerThirdAdjustable(bool $lowerThirdAdjustable): Screen
     {
         $this->lowerThirdAdjustable = $lowerThirdAdjustable;
 
@@ -774,13 +782,16 @@ class Screen extends EntityBase
             self::KEY_GIF_PATH => $this->getGifPath(),
             self::KEY_GIF_THUMBNAIL_PATH => $this->getGifThumbnailPath(),
             self::KEY_HIDDEN => $this->getHidden(),
-            self::KEY_MAX_DURATION => $this->getMaxDuration(),
             self::KEY_ORDER => $this->getOrder(),
             self::KEY_PATH => $this->getPath(),
             self::KEY_TAGS => $this->getTags(),
             self::KEY_TYPE => $this->getType(),
             self::KEY_AREAS => $this->areas->getArrayCopy(),
         ];
+
+        if (false === is_null($this->getMaxDuration())) {
+            $arrayCopy[self::KEY_MAX_DURATION] = $this->getMaxDuration();
+        }
 
         if (false === is_null($this->getTitle())) {
             $arrayCopy[self::KEY_TITLE] = $this->getTitle();
@@ -792,6 +803,10 @@ class Screen extends EntityBase
 
         if (false === is_null($this->getIconAdjustable())) {
             $arrayCopy[self::KEY_ICON_ADJUSTABLE] = $this->getIconAdjustable();
+        }
+
+        if (false === is_null($this->getLowerThirdAdjustable())) {
+            $arrayCopy[self::KEY_LOWER_THIRD_ADJUSTABLE] = $this->getLowerThirdAdjustable();
         }
 
         if (
