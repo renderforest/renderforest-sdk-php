@@ -86,10 +86,17 @@ class ProjectDataStyles extends ApiEntityBase
      */
     public function getArrayCopy(): array
     {
-        $arrayCopy = [
-            self::KEY_THEME => $this->getTheme(),
-            self::KEY_TRANSITION => $this->getTransition(),
-        ];
+        $arrayCopy = [];
+        $theme = $this->getTheme();
+        $transition = $this->getTransition();
+        
+        if ($theme !== '') {
+            $arrayCopy[self::KEY_THEME] = $theme;
+        }
+
+        if ($transition) {
+            $arrayCopy[self::KEY_TRANSITION] = $transition;
+        }
 
         return $arrayCopy;
     }
