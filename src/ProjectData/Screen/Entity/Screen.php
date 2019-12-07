@@ -186,7 +186,7 @@ class Screen extends EntityBase
      */
     public function setLowerThirdSettings(int $start, int $duration): Screen
     {
-        if (true === $this->lowerThirdAdjustable) {
+        if (1 === $this->lowerThirdAdjustable) {
             $this->lowerThirdStart = $start;
             $this->lowerThirdDuration = $duration;
         } else {
@@ -484,6 +484,39 @@ class Screen extends EntityBase
     }
 
     /**
+     * @param int $lowerThirdAdjustable
+     * @return Screen
+     */
+    private function setLowerThirdAdjustable(int $lowerThirdAdjustable): Screen
+    {
+        $this->lowerThirdAdjustable = $lowerThirdAdjustable;
+
+        return $this;
+    }
+
+    /**
+     * @param int $lowerThirdStart
+     * @return Screen
+     */
+    private function setLowerThirdStart(int $lowerThirdStart): Screen
+    {
+        $this->lowerThirdStart = $lowerThirdStart;
+
+        return $this;
+    }
+
+    /**
+     * @param int $lowerThirdDuration
+     * @return Screen
+     */
+    private function setLowerThirdDuration(int $lowerThirdDuration): Screen
+    {
+        $this->lowerThirdDuration = $lowerThirdDuration;
+
+        return $this;
+    }
+
+    /**
      * @return bool|null
      */
     public function getIsFull()
@@ -679,6 +712,19 @@ class Screen extends EntityBase
 
         if (array_key_exists(self::KEY_ICON_ADJUSTABLE, $screenArrayData)) {
             $this->setIconAdjustable($screenArrayData[self::KEY_ICON_ADJUSTABLE]);
+        }
+
+        if (array_key_exists(self::KEY_LOWER_THIRD_ADJUSTABLE, $screenArrayData)) {
+            $this->setLowerThirdAdjustable($screenArrayData[self::KEY_LOWER_THIRD_ADJUSTABLE]);
+        }
+
+
+        if (array_key_exists(self::KEY_LOWER_THIRD_START, $screenArrayData)) {
+            $this->setLowerThirdStart($screenArrayData[self::KEY_LOWER_THIRD_START]);
+        }
+
+        if (array_key_exists(self::KEY_LOWER_THIRD_DURATION, $screenArrayData)) {
+            $this->setLowerThirdDuration($screenArrayData[self::KEY_LOWER_THIRD_DURATION]);
         }
 
         if (array_key_exists(self::KEY_IS_FULL, $screenArrayData)) {
