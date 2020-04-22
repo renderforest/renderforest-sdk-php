@@ -785,7 +785,6 @@ class Screen extends EntityBase
             self::KEY_ORDER => $this->getOrder(),
             self::KEY_PATH => $this->getPath(),
             self::KEY_TAGS => $this->getTags(),
-            self::KEY_TYPE => $this->getType(),
             self::KEY_AREAS => $this->areas->getArrayCopy(),
         ];
 
@@ -820,6 +819,10 @@ class Screen extends EntityBase
 
         if (false === is_null($this->selectedDuration)) {
             $arrayCopy[self::KEY_SELECTED_DURATION] = $this->selectedDuration;
+        }
+
+        if (false === is_null($this->type)) {
+            $arrayCopy[self::KEY_TYPE] = $this->type;
         }
 
         return $arrayCopy;

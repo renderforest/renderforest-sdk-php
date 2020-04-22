@@ -30,6 +30,7 @@ class ApiClient
     const USER_AGENT = 'renderforest/sdk-php/' . self::SDK_VERSION;
 
     const API_ENDPOINT = 'https://api.renderforest.com';
+    const PREVIEW_API_ENDPOINT = 'https://preview.renderforest.com';
 
     const PROJECTS_API_PATH_PREFIX = '/api/v1';
     const PROJECTS_API_PATH = self::PROJECTS_API_PATH_PREFIX . '/projects';
@@ -84,6 +85,18 @@ class ApiClient
 
     const FONTS_API_PATH_PREFIX = '/api/v1';
     const FONTS_API_PATH = self::FONTS_API_PATH_PREFIX . '/fonts';
+
+    const SOUNDS_API_PATH_PREFIX = '/api/v1';
+    const SOUNDS_API_PATH = self::SOUNDS_API_PATH_PREFIX . '/sounds';
+
+    const COMPANY_SOUNDS_API_PATH_PREFIX = '/api/v1';
+    const COMPANY_SOUNDS_API_PATH = self::COMPANY_SOUNDS_API_PATH_PREFIX . '/sounds/library';
+
+    const RECOMMENDED_SOUNDS_API_PATH_PREFIX = '/api/v1';
+    const RECOMMENDED_SOUNDS_API_PATH = self::RECOMMENDED_SOUNDS_API_PATH_PREFIX . '/sounds/recommended';
+
+    const PREVIEW_API_PATH_PREFIX = '/api/v1';
+    const PREVIEW_API_PATH = self::PREVIEW_API_PATH_PREFIX . '/preview/generate';
 
 
     /** @var string */
@@ -921,6 +934,229 @@ class ApiClient
         return $fontCollection;
     }
 
+     /**
+     * @param int $duration
+     * @return SoundCollection
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getAllSounds(int $duration = null): SoundCollection
+    {
+        $endpoint = self::SOUNDS_API_PATH;
+        $uri = self::API_ENDPOINT . self::SOUNDS_API_PATH;
+
+        if (false === is_null($duration)) {
+            $queryParams = [
+                'duration' => $duration,
+            ];
+    
+            $queryString = http_build_query($queryParams);
+            $uri .= '?' . $queryString;
+        }      
+
+        $options = [
+            'method' => 'GET',
+            'headers' => [
+                'Accept' => 'application/json',
+                'User-Agent' => self::USER_AGENT,
+            ],
+            'endpoint' => $endpoint,
+            'uri' => $uri,
+        ];
+
+        $options = $this->setAuthorization($options);
+
+        $response = $this->httpClient->request(
+            $options['method'],
+            $options['uri'],
+            $options
+        );
+
+        $json = $response->getBody()->getContents();
+
+        $SoundCollection = new SoundCollection();
+        $SoundCollection->exchangeJson($json);
+
+        return $SoundCollection;
+    }
+
+    /**
+     * @param int $duration
+     * @return SoundCollection
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public static function getCompanySoundsLimited(int $duration = null): SoundCollection
+    {
+        $endpoint = self::SOUNDS_API_PATH;
+        $uri = self::API_ENDPOINT . self::SOUNDS_API_PATH;
+
+        if (false === is_null($duration)) {
+            $queryParams = [
+                'duration' => $duration,
+            ];
+    
+            $queryString = http_build_query($queryParams);
+            $uri .= '?' . $queryString;
+        }  
+
+        $options = [
+            'method' => 'GET',
+            'headers' => [
+                'Accept' => 'application/json',
+                'User-Agent' => self::USER_AGENT,
+            ],
+            'endpoint' => $endpoint,
+            'uri' => $uri,
+        ];
+
+        $httpClient = new Client();
+
+        $response = $httpClient->request(
+            $options['method'],
+            $options['uri'],
+            $options
+        );
+
+        $json = $response->getBody()->getContents();
+
+        $SoundCollection = new SoundCollection();
+        $SoundCollection->exchangeJson($json);
+
+        return $SoundCollection;
+    }
+
+    /**
+     * @param int $duration
+     * @return SoundCollection
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getCompanySounds(int $duration = null): SoundCollection
+    {
+        $endpoint = self::COMPANY_SOUNDS_API_PATH;
+        $uri = self::API_ENDPOINT . self::COMPANY_SOUNDS_API_PATH;
+
+        if (false === is_null($duration)) {
+            $queryParams = [
+                'duration' => $duration,
+            ];
+    
+            $queryString = http_build_query($queryParams);
+            $uri .= '?' . $queryString;
+        }      
+
+        $options = [
+            'method' => 'GET',
+            'headers' => [
+                'Accept' => 'application/json',
+                'User-Agent' => self::USER_AGENT,
+            ],
+            'endpoint' => $endpoint,
+            'uri' => $uri,
+        ];
+
+        $options = $this->setAuthorization($options);
+
+        $response = $this->httpClient->request(
+            $options['method'],
+            $options['uri'],
+            $options
+        );
+
+        $json = $response->getBody()->getContents();
+
+        $SoundCollection = new SoundCollection();
+        $SoundCollection->exchangeJson($json);
+
+        return $SoundCollection;
+    }
+
+    /**
+     * @param int $duration
+     * @return SoundCollection
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public static function getRecommendedSoundsLimited(int $templateId, int $duration): SoundCollection
+    {
+        $endpoint = self::RECOMMENDED_SOUNDS_API_PATH;
+        $uri = self::API_ENDPOINT . self::RECOMMENDED_SOUNDS_API_PATH;
+
+            $queryParams = [
+                'templateId' => $templateId,
+                'duration' => $duration
+            ];
+    
+            $queryString = http_build_query($queryParams);
+            $uri .= '?' . $queryString;
+
+        $options = [
+            'method' => 'GET',
+            'headers' => [
+                'Accept' => 'application/json',
+                'User-Agent' => self::USER_AGENT,
+            ],
+            'endpoint' => $endpoint,
+            'uri' => $uri,
+        ];
+
+        $httpClient = new Client();
+
+        $response = $httpClient->request(
+            $options['method'],
+            $options['uri'],
+            $options
+        );
+
+        $json = $response->getBody()->getContents();
+
+        $SoundCollection = new SoundCollection();
+        $SoundCollection->exchangeJson($json);
+
+        return $SoundCollection;
+    }
+
+    /**
+     * @param int $duration
+     * @return SoundCollection
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getRecommendedSounds(int $templateId, int $duration): SoundCollection
+    {
+        $endpoint = self::RECOMMENDED_SOUNDS_API_PATH;
+        $uri = self::API_ENDPOINT . self::RECOMMENDED_SOUNDS_API_PATH;
+
+        $queryParams = [
+            'templateId' => $templateId,
+            'duration' => $duration
+        ];
+
+        $queryString = http_build_query($queryParams);
+        $uri .= '?' . $queryString;     
+
+        $options = [
+            'method' => 'GET',
+            'headers' => [
+                'Accept' => 'application/json',
+                'User-Agent' => self::USER_AGENT,
+            ],
+            'endpoint' => $endpoint,
+            'uri' => $uri,
+        ];
+
+        $options = $this->setAuthorization($options);
+
+        $response = $this->httpClient->request(
+            $options['method'],
+            $options['uri'],
+            $options
+        );
+
+        $json = $response->getBody()->getContents();
+
+        $SoundCollection = new SoundCollection();
+        $SoundCollection->exchangeJson($json);
+
+        return $SoundCollection;
+    }
+
     /**
      * @param SupportTicket $supportTicket
      * @return SupportTicketResponse
@@ -992,6 +1228,44 @@ class ApiClient
         $projectData->exchangeJson($json);
 
         return $projectData;
+    }
+
+    /**
+     * @param ProjectData $projectData
+     * @return str
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getScreenSnapshot(ProjectData $projectData): string {
+        $endpoint = self::PREVIEW_API_PATH;
+        $uri = self::PREVIEW_API_ENDPOINT . self::PREVIEW_API_PATH;
+
+        $options = [
+            'method' => 'POST',
+            'headers' => [
+                'Accept' => 'application/json',
+                'User-Agent' => self::USER_AGENT,
+            ],
+            'endpoint' => $endpoint,
+            'uri' => $uri,
+            'json' => [
+                'projectData' => $projectData->getArrayCopyFull(),
+            ]
+        ];
+
+        $options = $this->setAuthorization($options);
+
+        $response = $this->httpClient->request(
+            $options['method'],
+            $options['uri'],
+            $options
+        );
+
+        $jsonResponse = $response->getBody()->getContents();
+        $arrayResponse = \GuzzleHttp\json_decode($jsonResponse, true);
+
+        $previewUrl = $arrayResponse['data'];
+
+        return $previewUrl;
     }
 
     /**

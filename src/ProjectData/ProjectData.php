@@ -30,11 +30,8 @@ class ProjectData extends ApiEntityBase
     const KEY_PROJECT_VERSION = 'projectVersion';
     const KEY_SCREENS = 'screens';
     const KEY_SOUNDS = 'sounds';
-    const KEY_THEME_VARIABLE_NAME = 'themeVariableName';
-    const KEY_THEME_VARIABLE_VALUE = 'themeVariableValue';
     const KEY_TEMPLATE_VERSION = 'templateVersion';
     const KEY_TITLE = 'title';
-    const KEY_VOICE_SOUND_ID = 'voiceSoundId';
     const KEY_GENERATOR = 'generator';
 
     const KEY_STYLES = 'styles';
@@ -88,20 +85,11 @@ class ProjectData extends ApiEntityBase
     /** @var SoundCollection */
     protected $sounds;
 
-    /** @var string|null */
-    protected $themeVariableName;
-
-    /** @var string|null */
-    protected $themeVariableValue;
-
     /** @var int|null */
     protected $templateVersion;
 
     /** @var string */
     protected $title;
-
-    /** @var int|null */
-    protected $voiceSoundId;
 
     /** @var string|null */
     protected $generator;
@@ -156,7 +144,7 @@ class ProjectData extends ApiEntityBase
      * @param int|null $currentScreenId
      * @return ProjectData
      */
-    private function setCurrentScreenId($currentScreenId): ProjectData
+    public function setCurrentScreenId($currentScreenId): ProjectData
     {
         $this->currentScreenId = $currentScreenId;
 
@@ -365,44 +353,6 @@ class ProjectData extends ApiEntityBase
     }
 
     /**
-     * @return string|null
-     */
-    public function getThemeVariableName()
-    {
-        return $this->themeVariableName;
-    }
-
-    /**
-     * @param string|null $themeVariableName
-     * @return ProjectData
-     */
-    public function setThemeVariableName($themeVariableName): ProjectData
-    {
-        $this->themeVariableName = $themeVariableName;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getThemeVariableValue()
-    {
-        return $this->themeVariableValue;
-    }
-
-    /**
-     * @param string|null $themeVariableValue
-     * @return ProjectData
-     */
-    public function setThemeVariableValue($themeVariableValue): ProjectData
-    {
-        $this->themeVariableValue = $themeVariableValue;
-
-        return $this;
-    }
-
-    /**
      * @return int|null
      */
     public function getTemplateVersion()
@@ -436,25 +386,6 @@ class ProjectData extends ApiEntityBase
     public function setTitle(string $title): ProjectData
     {
         $this->title = $title;
-
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getVoiceSoundId()
-    {
-        return $this->voiceSoundId;
-    }
-
-    /**
-     * @param int|null $voiceSoundId
-     * @return ProjectData
-     */
-    public function setVoiceSoundId($voiceSoundId): ProjectData
-    {
-        $this->voiceSoundId = $voiceSoundId;
 
         return $this;
     }
@@ -713,24 +644,20 @@ class ProjectData extends ApiEntityBase
             }
         }
 
-        if (array_key_exists(self::KEY_THEME_VARIABLE_NAME, $projectDataArrayData)) {
-            $this->setThemeVariableName($projectDataArrayData[self::KEY_THEME_VARIABLE_NAME]);
-        }
-
-        if (array_key_exists(self::KEY_THEME_VARIABLE_VALUE, $projectDataArrayData)) {
-            $this->setThemeVariableValue($projectDataArrayData[self::KEY_THEME_VARIABLE_VALUE]);
-        }
-
         if (array_key_exists(self::KEY_TITLE, $projectDataArrayData)) {
             $this->setTitle($projectDataArrayData[self::KEY_TITLE]);
         }
 
-        if (array_key_exists(self::KEY_VOICE_SOUND_ID, $projectDataArrayData)) {
-            $this->setVoiceSoundId($projectDataArrayData[self::KEY_VOICE_SOUND_ID]);
-        }
-
         if (array_key_exists(self::KEY_GENERATOR, $projectDataArrayData)) {
             $this->setGenerator($projectDataArrayData[self::KEY_GENERATOR]);
+        }
+
+        if (array_key_exists(self::KEY_TEMPLATE_VERSION, $projectDataArrayData)) {
+            $this->setTemplateVersion($projectDataArrayData[self::KEY_TEMPLATE_VERSION]);
+        }
+
+        if (array_key_exists(self::KEY_PROJECT_VERSION, $projectDataArrayData)) {
+            $this->setProjectVersion($projectDataArrayData[self::KEY_PROJECT_VERSION]);
         }
     }
 
@@ -750,7 +677,7 @@ class ProjectData extends ApiEntityBase
     /**
      * @return array
      */
-    public function getArrayCopy(): array
+    public function getArrayCopyFull(): array
     {
         $arrayCopy = [
             self::KEY_TEMPLATE_ID => $this->getTemplateId(),
@@ -765,11 +692,8 @@ class ProjectData extends ApiEntityBase
             self::KEY_PROJECT_VERSION => $this->getProjectVersion(),
             self::KEY_SCREENS => $this->screens->getArrayCopy(),
             self::KEY_SOUNDS => $this->sounds->getArrayCopy(),
-            self::KEY_THEME_VARIABLE_NAME => $this->getThemeVariableName(),
-            self::KEY_THEME_VARIABLE_VALUE => $this->getThemeVariableValue(),
             self::KEY_TEMPLATE_VERSION => $this->getTemplateVersion(),
             self::KEY_TITLE => $this->getTitle(),
-            self::KEY_VOICE_SOUND_ID => $this->getVoiceSoundId(),
             self::KEY_GENERATOR => $this->getGenerator(),
         ];
 
@@ -786,8 +710,18 @@ class ProjectData extends ApiEntityBase
         }
 
         if (false === is_null($this->fonts)) {
-            $arrayCopy[self::KEY_FONTS] = $this->fonts->getArrayCopy();
+            $F[self::KEY_FONTS] = $this->fonts->getArrayCopy();
         }
+
+        return $arrayCopy;
+        }
+
+    /**
+     * @return array
+     */
+    public function getArrayCopy(): array
+    {
+        $arrayCopy = $this->getArrayCopyFull();
 
         foreach (array_keys($arrayCopy) as $key) {
             if (false === in_array($key, self::WRITABLE_KEYS)) {
