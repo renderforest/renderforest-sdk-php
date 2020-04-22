@@ -1,14 +1,8 @@
 {
   "name": "renderforest/sdk-php",
   "description": "Renderforest SDK for PHP",
-  "version": "0.4.6",
+  "version": "0.5.0",
   "homepage": "https://github.com/renderforest/renderforest-sdk-php",
-  "authors": [
-    {
-      "name": "Narek Hovhannisyan",
-      "email": "narekgilmour@gmail.com"
-    }
-  ],
   "keywords": [
     "animation maker",
     "api",
