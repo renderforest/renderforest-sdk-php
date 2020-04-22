@@ -90,11 +90,11 @@ class ProjectDataStyles extends ApiEntityBase
         $theme = $this->getTheme();
         $transition = $this->getTransition();
         
-        if ($theme !== '') {
+        if (false === is_null($theme) && $theme !== '') {
             $arrayCopy[self::KEY_THEME] = $theme;
         }
 
-        if ($transition) {
+        if (false === is_null($transition) && $transition !== '') {
             $arrayCopy[self::KEY_TRANSITION] = $transition;
         }
 
