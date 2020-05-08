@@ -48,6 +48,7 @@ $sound->set([
 
 $projectData
     ->getSounds()
+    ->removeSounds()
     ->add($sound);
 
 $renderforestClient->updateProjectData($duplicatedProject, $projectData);
