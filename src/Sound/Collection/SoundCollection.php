@@ -48,6 +48,16 @@ class SoundCollection extends CollectionBase
     }
 
     /**
+     * @return SoundCollection
+     */
+    public function removeSounds(): SoundCollection
+    {
+        $this->sounds = [];
+
+        return $this;
+    }
+
+    /**
      * @param string $soundCollectionJson
      * @throws \Exception
      */
