@@ -3,6 +3,7 @@
 namespace Renderforest;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use Renderforest\Font\Collection\FontCollection;
 use Renderforest\Project\Collection\ProjectCollection;
 use Renderforest\Project\Project;
@@ -161,7 +162,7 @@ class ApiClient
     /**
      * @param int $templateId
      * @return int
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function addProject(int $templateId): int
     {
@@ -202,7 +203,7 @@ class ApiClient
      * @param int $projectId
      * @param string|null $customTitle
      * @return int
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function updateProject(
         int $projectId,
@@ -248,7 +249,7 @@ class ApiClient
     /**
      * @param int $projectId
      * @return int
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function deleteSpecificProject(int $projectId): int
     {
@@ -286,7 +287,7 @@ class ApiClient
      * @param int $projectId
      * @param int|null $quality
      * @return int
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function deleteSpecificProjectVideos(int $projectId, int $quality = null): int
     {
@@ -334,7 +335,7 @@ class ApiClient
      * @param int $projectId
      * @param int $templatePresetId
      * @return int
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function applyTemplatePresetOnProject(int $projectId, int $templatePresetId): int
     {
@@ -381,7 +382,7 @@ class ApiClient
     /**
      * @param int $projectId
      * @return int
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function duplicateProject(int $projectId): int
     {
@@ -425,7 +426,7 @@ class ApiClient
      * @param int $quality
      * @param string|null $watermarkImageUrl
      * @return int
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function renderProject(
         int $projectId,
@@ -481,7 +482,7 @@ class ApiClient
      *
      * @param string|null $languageIsoCode
      * @return CategoryCollection
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public static function getTemplatesCategories(string $languageIsoCode = null): CategoryCollection
     {
@@ -526,7 +527,7 @@ class ApiClient
     /**
      * @param int $templateId
      * @return CustomColorCollection
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public static function getTemplateRecommendedCustomColors(int $templateId): CustomColorCollection
     {
@@ -567,7 +568,7 @@ class ApiClient
     /**
      * @param int $templateId
      * @return TemplatePresetCollection
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public static function getTemplatePresets(int $templateId): TemplatePresetCollection
     {
@@ -608,7 +609,7 @@ class ApiClient
     /**
      * @param int $templateId
      * @return TemplateTheme
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public static function getTemplateTheme(int $templateId): TemplateTheme
     {
@@ -649,7 +650,7 @@ class ApiClient
     /**
      * @param int $templateId
      * @return PluggableScreensGroupCollection
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public static function getTemplatePluggableScreens(int $templateId): PluggableScreensGroupCollection
     {
@@ -690,7 +691,7 @@ class ApiClient
     /**
      * @param int $templateId
      * @return TemplateTransitions
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public static function getTemplateTransitions(int $templateId): TemplateTransitions
     {
@@ -731,7 +732,7 @@ class ApiClient
     /**
      * @param int $templateId
      * @return ColorPresetCollection
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public static function getTemplateColorPresets(int $templateId): ColorPresetCollection
     {
@@ -770,16 +771,44 @@ class ApiClient
     }
 
     /**
+     * @param int|null $categoryId
+     * @param bool|null $isEqualizer
+     * @param int|null $limit
+     * @param int|null $offset
      * @return TemplateCollection
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
-    public static function getAllTemplates(): TemplateCollection
-    {
-        // @todo query params
-        // ?categoryId=3&equalizer=false&limit=4&offset=10
+    public static function getAllTemplates(
+        ?int $categoryId = null,
+        ?bool $isEqualizer = null,
+        ?int $limit = null,
+        ?int $offset = null
+    ): TemplateCollection {
+        $queryParams = [];
+        if (false === is_null($categoryId)) {
+            $queryParams['categoryId'] = $categoryId;
+        }
+
+        if (false === is_null($isEqualizer)) {
+            $queryParams['equalizer'] = $isEqualizer ? 'true' : 'false';
+        }
+
+        if (false === is_null($limit)) {
+            $queryParams['limit'] = $limit;
+        }
+
+        if (false === is_null($offset)) {
+            $queryParams['offset'] = $offset;
+        }
 
         $endpoint = self::TEMPLATES_API_PATH_PREFIX;
         $uri = self::API_ENDPOINT . self::TEMPLATES_API_PATH;
+
+        if (count($queryParams)) {
+            $queryString = http_build_query($queryParams);
+
+            $uri = $uri . '?' . $queryString;
+        }
 
         $options = [
             'method' => 'GET',
@@ -811,7 +840,7 @@ class ApiClient
      * @param int $templateId
      * @param string|null $languageIsoCode
      * @return TemplateExtended
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public static function getTemplate(
         int $templateId,
@@ -858,7 +887,7 @@ class ApiClient
 
     /**
      * @return User
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function getCurrentUser(): User
     {
@@ -894,7 +923,7 @@ class ApiClient
     /**
      * @param int $templateId
      * @return FontCollection
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function getTemplateAvailableFonts(int $templateId): FontCollection
     {
@@ -937,7 +966,7 @@ class ApiClient
      /**
      * @param int $duration
      * @return SoundCollection
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function getAllSounds(int $duration = null): SoundCollection
     {
@@ -982,7 +1011,7 @@ class ApiClient
     /**
      * @param int $duration
      * @return SoundCollection
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public static function getCompanySoundsLimited(int $duration = null): SoundCollection
     {
@@ -1027,7 +1056,7 @@ class ApiClient
     /**
      * @param int $duration
      * @return SoundCollection
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function getCompanySounds(int $duration = null): SoundCollection
     {
@@ -1072,7 +1101,7 @@ class ApiClient
     /**
      * @param int $duration
      * @return SoundCollection
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public static function getRecommendedSoundsLimited(int $templateId, int $duration): SoundCollection
     {
@@ -1116,7 +1145,7 @@ class ApiClient
     /**
      * @param int $duration
      * @return SoundCollection
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function getRecommendedSounds(int $templateId, int $duration): SoundCollection
     {
@@ -1160,7 +1189,7 @@ class ApiClient
     /**
      * @param SupportTicket $supportTicket
      * @return SupportTicketResponse
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function createSupportTicket(SupportTicket $supportTicket): SupportTicketResponse
     {
@@ -1197,7 +1226,7 @@ class ApiClient
     /**
      * @param int $projectId
      * @return ProjectData
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function getProjectData(int $projectId): ProjectData
     {
@@ -1233,7 +1262,7 @@ class ApiClient
     /**
      * @param ProjectData $projectData
      * @return str
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function getScreenSnapshot(ProjectData $projectData): string {
         $endpoint = self::PREVIEW_API_PATH;
@@ -1271,7 +1300,7 @@ class ApiClient
     /**
      * @param int $templateId
      * @return ProjectData
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public static function getTrialProject(int $templateId): ProjectData
     {
@@ -1319,7 +1348,7 @@ class ApiClient
      * @param string $orderBy
      * @param string|null $search
      * @return ProjectCollection
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function getAllProjects(
         int $limit = null,
@@ -1385,7 +1414,7 @@ class ApiClient
     /**
      * @param int $projectId
      * @return Project
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function getProject(int $projectId): Project
     {
