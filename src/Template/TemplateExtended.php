@@ -3,7 +3,10 @@
 namespace Renderforest\Template;
 
 use Renderforest\Base\EntityBase;
+use Renderforest\Template\CategoryExtended\CategoryExtended;
 use Renderforest\Template\CategoryExtended\Collection\CategoryExtendedCollection;
+use Renderforest\Template\Duration\Collection\DurationCollection;
+use Renderforest\Template\Duration\Duration;
 
 /**
  * Class TemplateExtended
@@ -25,8 +28,6 @@ class TemplateExtended extends EntityBase
      *  }
      */
 
-
-
     const KEY_ID = 'id';
     const KEY_DESCRIPTION = 'description';
     const KEY_DURATION = 'duration';
@@ -36,6 +37,7 @@ class TemplateExtended extends EntityBase
     const KEY_VIDEO_URL = 'videoUrl';
     const KEY_VIDEO = 'video';
     const KEY_CATEGORIES = 'categories';
+    const KEY_DURATIONS = 'durations';
 
     const REQUIRED_KEYS = [
         self::KEY_ID,
@@ -47,6 +49,7 @@ class TemplateExtended extends EntityBase
         self::KEY_VIDEO_URL,
         self::KEY_VIDEO,
         self::KEY_CATEGORIES,
+        self::KEY_DURATIONS,
     ];
 
     /** @var int */
@@ -76,6 +79,9 @@ class TemplateExtended extends EntityBase
     /** @var CategoryExtendedCollection */
     protected $categories;
 
+    /** @var DurationCollection */
+    protected $durations;
+
     /**
      * @return int
      */
@@ -86,10 +92,13 @@ class TemplateExtended extends EntityBase
 
     /**
      * @param int $id
+     * @return TemplateExtended
      */
-    private function setId(int $id)
+    private function setId(int $id): TemplateExtended
     {
         $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -102,10 +111,13 @@ class TemplateExtended extends EntityBase
 
     /**
      * @param string $description
+     * @return TemplateExtended
      */
-    private function setDescription(string $description)
+    private function setDescription(string $description): TemplateExtended
     {
         $this->description = $description;
+
+        return $this;
     }
 
     /**
@@ -118,10 +130,13 @@ class TemplateExtended extends EntityBase
 
     /**
      * @param int $duration
+     * @return TemplateExtended
      */
-    private function setDuration(int $duration)
+    private function setDuration(int $duration): TemplateExtended
     {
         $this->duration = $duration;
+
+        return $this;
     }
 
     /**
@@ -134,10 +149,13 @@ class TemplateExtended extends EntityBase
 
     /**
      * @param int $rendCount
+     * @return TemplateExtended
      */
-    private function setRendCount(int $rendCount)
+    private function setRendCount(int $rendCount): TemplateExtended
     {
         $this->rendCount = $rendCount;
+
+        return $this;
     }
 
     /**
@@ -150,10 +168,13 @@ class TemplateExtended extends EntityBase
 
     /**
      * @param string $thumbnail
+     * @return TemplateExtended
      */
-    private function setThumbnail(string $thumbnail)
+    private function setThumbnail(string $thumbnail): TemplateExtended
     {
         $this->thumbnail = $thumbnail;
+
+        return $this;
     }
 
     /**
@@ -166,10 +187,13 @@ class TemplateExtended extends EntityBase
 
     /**
      * @param string $title
+     * @return TemplateExtended
      */
-    private function setTitle(string $title)
+    private function setTitle(string $title): TemplateExtended
     {
         $this->title = $title;
+
+        return $this;
     }
 
     /**
@@ -182,10 +206,13 @@ class TemplateExtended extends EntityBase
 
     /**
      * @param string $videoUrl
+     * @return TemplateExtended
      */
-    private function setVideoUrl(string $videoUrl)
+    private function setVideoUrl(string $videoUrl): TemplateExtended
     {
         $this->videoUrl = $videoUrl;
+
+        return $this;
     }
 
     /**
@@ -198,14 +225,17 @@ class TemplateExtended extends EntityBase
 
     /**
      * @param bool $video
+     * @return TemplateExtended
      */
-    private function setVideo(bool $video)
+    private function setVideo(bool $video): TemplateExtended
     {
         $this->video = $video;
+
+        return $this;
     }
 
     /**
-     * @return CategoryExtendedCollection
+     * @return CategoryExtendedCollection|CategoryExtended[]
      */
     public function getCategories(): CategoryExtendedCollection
     {
@@ -214,10 +244,32 @@ class TemplateExtended extends EntityBase
 
     /**
      * @param CategoryExtendedCollection $categories
+     * @return TemplateExtended
      */
-    private function setCategories(CategoryExtendedCollection $categories)
+    private function setCategories(CategoryExtendedCollection $categories): TemplateExtended
     {
         $this->categories = $categories;
+
+        return $this;
+    }
+
+    /**
+     * @return DurationCollection|Duration[]
+     */
+    public function getDurations(): DurationCollection
+    {
+        return $this->durations;
+    }
+
+    /**
+     * @param DurationCollection $durations
+     * @return TemplateExtended
+     */
+    public function setDurations(DurationCollection $durations): TemplateExtended
+    {
+        $this->durations = $durations;
+
+        return $this;
     }
 
     /**
@@ -267,6 +319,13 @@ class TemplateExtended extends EntityBase
         $categoryCollection->exchangeArray($categoriesArrayData);
 
         $this->setCategories($categoryCollection);
+
+        $durationsArrayData = $templateArrayData[self::KEY_DURATIONS];
+
+        $durationCollection = new DurationCollection();
+        $durationCollection->exchangeArray($durationsArrayData);
+
+        $this->setDurations($durationCollection);
     }
 
     /**

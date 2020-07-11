@@ -11,12 +11,12 @@ use Renderforest\Base\EntityBase;
 class CategoryExtended extends EntityBase
 {
     const KEY_ID = 'id';
-    const KEY_PROJECT_ID = 'projectId';
+    const KEY_PARENT_ID = 'parentId';
     const KEY_TITLE = 'title';
 
     const REQUIRED_KEYS = [
         self::KEY_ID,
-        self::KEY_PROJECT_ID,
+        self::KEY_PARENT_ID,
         self::KEY_TITLE,
     ];
 
@@ -24,7 +24,7 @@ class CategoryExtended extends EntityBase
     protected $id;
 
     /** @var int */
-    protected $projectId;
+    protected $parentId;
 
     /** @var string */
     protected $title;
@@ -48,17 +48,17 @@ class CategoryExtended extends EntityBase
     /**
      * @return int
      */
-    public function getProjectId(): int
+    public function getParentId(): int
     {
-        return $this->projectId;
+        return $this->parentId;
     }
 
     /**
-     * @param int $projectId
+     * @param int $parentId
      */
-    private function setProjectId(int $projectId)
+    private function setParentId(int $parentId)
     {
-        $this->projectId = $projectId;
+        $this->parentId = $parentId;
     }
 
     /**
@@ -89,11 +89,11 @@ class CategoryExtended extends EntityBase
         }
 
         $categoryId = $categoryArrayData[self::KEY_ID];
-        $categoryProjectId = $categoryArrayData[self::KEY_PROJECT_ID];
+        $categoryParentId = $categoryArrayData[self::KEY_PARENT_ID];
         $categoryTitle = $categoryArrayData[self::KEY_TITLE];
 
         $this->setId($categoryId);
-        $this->setProjectId($categoryProjectId);
+        $this->setParentId($categoryParentId);
         $this->setTitle($categoryTitle);
     }
 
@@ -102,12 +102,10 @@ class CategoryExtended extends EntityBase
      */
     public function getArrayCopy(): array
     {
-        $arrayCopy = [
+        return [
             self::KEY_ID => $this->getId(),
-            self::KEY_PROJECT_ID => $this->getProjectId(),
+            self::KEY_PARENT_ID => $this->getParentId(),
             self::KEY_TITLE => $this->getTitle(),
         ];
-
-        return $arrayCopy;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Renderforest\Template\Category\Collection;
 
+use Exception;
 use Renderforest\Base\CollectionBase;
 use Renderforest\Template\Category\Category;
 
@@ -87,9 +88,9 @@ class CategoryCollection extends CollectionBase
     /**
      * @param int $categoryId
      * @return Category
-     * @throws \Exception
+     * @throws Exception
      */
-    public function getCategoryById(int $categoryId)
+    public function getCategoryById(int $categoryId): Category
     {
         if (false === array_key_exists($categoryId, $this->categoriesAssocArray)) {
             throw new \Exception(
