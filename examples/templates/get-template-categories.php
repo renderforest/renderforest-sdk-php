@@ -2,7 +2,7 @@
 
 require '../../vendor/autoload.php';
 
-$templateCategories = \Renderforest\ApiClient::getTemplateCategories('ru');
+$templateCategories = \Renderforest\ApiClient::getTemplateCategories('en');
 
 echo 'Count - ' . count($templateCategories) . PHP_EOL;
 echo PHP_EOL;
@@ -14,7 +14,6 @@ foreach ($templateCategories as $templateCategory) {
 
     foreach ($templateCategory->getSubCategoriesCollection() as $templateSubCategory) {
         echo '-- ' . 'ID - ' . $templateSubCategory->getId() . PHP_EOL;
-        echo '-- ' . 'Parent ID - ' . $templateSubCategory->getParentId() . PHP_EOL;
         echo '-- ' . 'Title - ' . $templateSubCategory->getTitle() . PHP_EOL;
     }
 

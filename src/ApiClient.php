@@ -11,6 +11,7 @@ use Renderforest\ProjectData\ProjectData;
 use Renderforest\Sound\Collection\SoundCollection;
 use Renderforest\Support\SupportTicket;
 use Renderforest\Support\SupportTicketResponse;
+use Renderforest\Template\Category\Category;
 use Renderforest\Template\Category\Collection\CategoryCollection;
 use Renderforest\Template\Collection\TemplateCollection;
 use Renderforest\Template\ColorPreset\Collection\ColorPresetCollection;
@@ -481,10 +482,10 @@ class ApiClient
      * @todo validate language code, supported codes - ar, de, en, es, fr, pt, ru, tr
      *
      * @param string|null $languageIsoCode
-     * @return CategoryCollection
+     * @return CategoryCollection|Category[]
      * @throws GuzzleException
      */
-    public static function getTemplatesCategories(string $languageIsoCode = null): CategoryCollection
+    public static function getTemplateCategories(string $languageIsoCode = null): CategoryCollection
     {
         $endpoint = self::TEMPLATE_CATEGORIES_API_PATH;
         $uri = self::API_ENDPOINT . self::TEMPLATE_CATEGORIES_API_PATH;
