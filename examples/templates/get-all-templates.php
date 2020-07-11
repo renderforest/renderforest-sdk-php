@@ -2,7 +2,12 @@
 
 require '../../vendor/autoload.php';
 
-$templates = \Renderforest\ApiClient::getAllTemplates();
+$templates = \Renderforest\ApiClient::getAllTemplates(
+    3,
+    false,
+    4,
+    10
+);
 
 echo 'Count - ' . count($templates) . PHP_EOL;
 echo PHP_EOL;
