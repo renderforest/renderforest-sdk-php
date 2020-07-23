@@ -15,9 +15,10 @@ use Renderforest\Template\Category\Category;
 use Renderforest\Template\Category\Collection\CategoryCollection;
 use Renderforest\Template\Collection\TemplateCollection;
 use Renderforest\Template\ColorPreset\Collection\ColorPresetCollection;
-use Renderforest\Template\CustomColor\Collection\CustomColorCollection;
+use Renderforest\Template\CustomColor\Collection\CustomColorCollectionGroup;
 use Renderforest\Template\PluggableScreensGroup\Collection\PluggableScreensGroupCollection;
 use Renderforest\Template\TemplateExtended;
+use Renderforest\Template\TemplatePreset\Collection\TemplatePresetCollection;
 use Renderforest\Template\TemplateTheme;
 use Renderforest\Template\TemplateTransitions;
 use Renderforest\User\User;
@@ -527,11 +528,12 @@ class ApiClient
 
     /**
      * @param int $templateId
-     * @return CustomColorCollection
+     * @return CustomColorCollectionGroup
      * @throws GuzzleException
      */
-    public static function getTemplateRecommendedCustomColors(int $templateId): CustomColorCollection
-    {
+    public static function getTemplateRecommendedCustomColors(
+        int $templateId
+    ): CustomColorCollectionGroup {
         $endpoint = self::TEMPLATE_RECOMMENDED_CUSTOM_COLORS_API_PATH;
 
         $templateRecommendedCustomColorsApiPath = sprintf(
@@ -560,10 +562,10 @@ class ApiClient
 
         $json = $response->getBody()->getContents();
 
-        $customColorCollection = new CustomColorCollection();
-        $customColorCollection->exchangeJson($json);
+        $customColorCollectionGroup = new CustomColorCollectionGroup();
+        $customColorCollectionGroup->exchangeJson($json);
 
-        return $customColorCollection;
+        return $customColorCollectionGroup;
     }
 
     /**

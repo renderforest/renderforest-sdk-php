@@ -46,18 +46,6 @@ class CustomColorCollection extends CollectionBase
     }
 
     /**
-     * @param string $customColorCollectionJson
-     */
-    public function exchangeJson(string $customColorCollectionJson)
-    {
-        $customColorCollectionArrayData = json_decode($customColorCollectionJson, true);
-
-        $customColorCollectionArrayData = $customColorCollectionArrayData['data'][0];
-
-        $this->exchangeArray($customColorCollectionArrayData);
-    }
-
-    /**
      * @param array $customColorCollectionArrayData
      */
     public function exchangeArray(array $customColorCollectionArrayData)
@@ -82,24 +70,5 @@ class CustomColorCollection extends CollectionBase
         }
 
         return $arrayCopy;
-    }
-
-    /**
-     * @param int $customColorId
-     * @return CustomColor
-     * @throws \Exception
-     */
-    public function getCustomColorById(int $customColorId)
-    {
-        if (false === array_key_exists($customColorId, $this->customColorsAssocArray)) {
-            throw new \Exception(
-                sprintf(
-                    'Custom Color with ID: %d was not found.',
-                    $customColorId
-                )
-            );
-        }
-
-        return $this->customColorsAssocArray[$customColorId];
     }
 }
