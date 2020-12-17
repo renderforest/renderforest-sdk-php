@@ -76,6 +76,15 @@ foreach ($projectData->getScreens() as $screen) {
             echo '-- -- ' . 'Thumbnail Path - ' . $area->getThumbnailPath() . PHP_EOL;
 
             $imageCropParams = $area->getImageCropParams();
+            $colorFilters = $area->getColorFilters();
+
+            echo '-- -- ' . 'Color Filters:' . PHP_EOL;
+            echo '-- -- -- ' . 'Brightness - ' . $colorFilters->getBrightness() . PHP_EOL;
+            echo '-- -- -- ' . 'Contrast - ' . $colorFilters->getContrast() . PHP_EOL;
+            echo '-- -- -- ' . 'Grayscale - ' . $colorFilters->getGrayscale() . PHP_EOL;
+            echo '-- -- -- ' . 'Huerotate - ' . $colorFilters->getHuerotate() . PHP_EOL;
+            echo '-- -- -- ' . 'Saturate - ' . $colorFilters->getSaturate() . PHP_EOL;
+            echo '-- -- -- ' . 'Sepia - ' . $colorFilters->getSepia() . PHP_EOL;
         } elseif ($area instanceof \Renderforest\ProjectData\Screen\Area\Entity\VideoArea) {
             /** @var \Renderforest\ProjectData\Screen\Area\Entity\VideoArea $area */
 

@@ -10,6 +10,7 @@ use Renderforest\ProjectData\Screen\Area\ImageCropParams\Entity\ImageCropParams;
  */
 class ImageArea extends AbstractArea
 {
+    const KEY_COLOR_FILTERS = 'colorFilters';
     const KEY_ORIGINAL_HEIGHT = 'originalHeight';
     const KEY_ORIGINAL_WIDTH = 'originalWidth';
     const KEY_MIME_TYPE = 'mimeType';
@@ -21,6 +22,7 @@ class ImageArea extends AbstractArea
 
     const REQUIRED_KEYS = [
         self::KEY_ID,
+        self::KEY_COLOR_FILTERS,
         self::KEY_CORDS,
         self::KEY_HEIGHT,
         self::KEY_WIDTH,
@@ -57,6 +59,9 @@ class ImageArea extends AbstractArea
 
     /** @var ImageCropParams|null */
     protected $imageCropParams;
+
+    /** @var ImageColorFilters|null */
+    protected $colorFilters;
 
     /**
      * ImageArea constructor.
@@ -239,6 +244,25 @@ class ImageArea extends AbstractArea
     }
 
     /**
+     * @return ImageColorFilters|null
+     */
+    public function getColorFilters(): ?ImageColorFilters
+    {
+        return $this->colorFilters;
+    }
+
+    /**
+     * @param ImageColorFilters|null $colorFilters
+     * @return ImageArea
+     */
+    public function setColorFilters(?ImageColorFilters $colorFilters): ImageArea
+    {
+        $this->colorFilters = $colorFilters;
+
+        return $this;
+    }
+
+    /**
      * @param array $imageAreaArrayData
      * @throws \Exception
      */
@@ -291,6 +315,16 @@ class ImageArea extends AbstractArea
             }
         }
 
+        if (array_key_exists(self::KEY_COLOR_FILTERS, $imageAreaArrayData)) {
+            $colorFiltersData = $imageAreaArrayData[self::KEY_COLOR_FILTERS];
+
+            if (false === is_null($colorFiltersData)) {
+                $imageColorFilters = new ImageColorFilters();
+                $imageColorFilters->exchangeArray($colorFiltersData);
+                $this->setColorFilters($imageColorFilters);
+            }
+        }
+
         parent::exchangeArray($imageAreaArrayData);
     }
 
@@ -327,6 +361,10 @@ class ImageArea extends AbstractArea
 
         if (false === is_null($this->getImageCropParams())) {
             $arrayCopy[self::KEY_IMAGE_CROP_PARAMS] = $this->getImageCropParams()->getArrayCopy();
+        }
+
+        if (false === is_null($this->getColorFilters())) {
+            $arrayCopy[self::KEY_COLOR_FILTERS] = $this->getColorFilters()->getArrayCopy();
         }
 
         $arrayCopy = array_merge($arrayCopy, parent::getArrayCopy());
