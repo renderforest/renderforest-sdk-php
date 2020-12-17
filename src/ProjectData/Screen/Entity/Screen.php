@@ -698,6 +698,9 @@ class Screen extends EntityBase
         $screenDuration = $screenArrayData[self::KEY_DURATION];
         $this->duration = $screenDuration;
 
+        $screenSelectedDuration = $screenArrayData[self::KEY_SELECTED_DURATION];
+        $this->selectedDuration = $screenSelectedDuration;
+
         $screenExtraVideoSecond = $screenArrayData[self::KEY_EXTRA_VIDEO_SECOND];
         $this->setExtraVideoSecond($screenExtraVideoSecond);
 
