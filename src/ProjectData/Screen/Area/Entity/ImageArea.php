@@ -11,8 +11,6 @@ use Renderforest\ProjectData\Screen\Area\ImageCropParams\Entity\ImageCropParams;
 class ImageArea extends AbstractArea
 {
     const KEY_COLOR_FILTERS = 'colorFilters';
-    const KEY_ORIGINAL_HEIGHT = 'originalHeight';
-    const KEY_ORIGINAL_WIDTH = 'originalWidth';
     const KEY_MIME_TYPE = 'mimeType';
     const KEY_FILE_NAME = 'fileName';
     const KEY_WEBP_PATH = 'webpPath';

@@ -8,6 +8,7 @@ use Renderforest\Font\Collection\FontCollection;
 use Renderforest\Project\Collection\ProjectCollection;
 use Renderforest\Project\Project;
 use Renderforest\ProjectData\ProjectData;
+use Renderforest\ProjectData\Screen\Entity\Screen;
 use Renderforest\Sound\Collection\SoundCollection;
 use Renderforest\Support\SupportTicket;
 use Renderforest\Support\SupportTicketResponse;
@@ -124,12 +125,29 @@ class ApiClient
         $this->httpClient = new Client();
     }
 
+    /**
+     * @param int $projectId
+     * @param ProjectData $projectData
+     * @return int
+     * @throws GuzzleException
+     */
     public function updateProjectData(
         int $projectId,
         ProjectData $projectData
     ) {
         $endpoint = self::PROJECT_DATA_API_PATH;
         $uri = self::API_ENDPOINT . self::PROJECT_DATA_API_PATH . '/' . $projectId;
+
+        $screenIds = [];
+        /** @var Screen[] $screens */
+        $screens = $projectData->getScreens();
+        foreach ($screens as $screen) {
+            $screenIds[] = $screen->getId();
+        }
+
+        if (false === in_array($projectData->getCurrentScreenId(), $screenIds)) {
+            $projectData->setCurrentScreenId($screenIds[0]);
+        }
 
         $options = [
             'method' => 'PATCH',
@@ -1264,7 +1282,7 @@ class ApiClient
 
     /**
      * @param ProjectData $projectData
-     * @return str
+     * @return string
      * @throws GuzzleException
      */
     public function getScreenSnapshot(ProjectData $projectData): string {
