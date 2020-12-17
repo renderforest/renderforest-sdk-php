@@ -21,6 +21,7 @@ class ProjectData extends ApiEntityBase
     const KEY_TEMPLATE_ID = 'templateId';
     const KEY_CURRENT_SCREEN_ID = 'currentScreenId';
     const KEY_DURATION = 'duration';
+    const KEY_EDITING_MODE = 'editingMode';
     const KEY_FPS = 'fps';
     const KEY_EQUALIZER = 'equalizer';
     const KEY_EXTENDABLE_SCREENS = 'extendableScreens';
@@ -40,6 +41,7 @@ class ProjectData extends ApiEntityBase
 
     const WRITABLE_KEYS = [
         self::KEY_CURRENT_SCREEN_ID,
+        self::KEY_EDITING_MODE,
         self::KEY_MUTE_MUSIC,
         self::KEY_SOUNDS,
         self::KEY_PROJECT_COLORS,
@@ -47,6 +49,13 @@ class ProjectData extends ApiEntityBase
         self::KEY_STYLES,
         self::KEY_VOICE_OVER,
         self::KEY_FONTS,
+    ];
+
+    const EDITING_MODE_SIMPLE = 'simple';
+    const EDITING_MODE_ADVANCED = 'advanced';
+    const EDITING_MODES = [
+        self::EDITING_MODE_SIMPLE,
+        self::EDITING_MODE_ADVANCED,
     ];
 
     /** @var int */
@@ -57,6 +66,9 @@ class ProjectData extends ApiEntityBase
 
     /** @var int */
     protected $duration;
+
+    /** @var string */
+    protected $editingMode;
 
     /** @var int */
     protected $fps;
@@ -166,6 +178,25 @@ class ProjectData extends ApiEntityBase
     private function setDuration(int $duration): ProjectData
     {
         $this->duration = $duration;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEditingMode(): string
+    {
+        return $this->editingMode;
+    }
+
+    /**
+     * @param string $editingMode
+     * @return ProjectData
+     */
+    public function setEditingMode(string $editingMode): ProjectData
+    {
+        $this->editingMode = $editingMode;
 
         return $this;
     }
@@ -554,6 +585,10 @@ class ProjectData extends ApiEntityBase
             $this->setCurrentScreenId($projectDataArrayData[self::KEY_CURRENT_SCREEN_ID]);
         }
 
+        if (array_key_exists(self::KEY_EDITING_MODE, $projectDataArrayData)) {
+            $this->setEditingMode($projectDataArrayData[self::KEY_EDITING_MODE]);
+        }
+
         $duration = $projectDataArrayData[self::KEY_DURATION];
         $this->setDuration($duration);
 
@@ -683,6 +718,7 @@ class ProjectData extends ApiEntityBase
             self::KEY_TEMPLATE_ID => $this->getTemplateId(),
             self::KEY_CURRENT_SCREEN_ID => $this->getCurrentScreenId(),
             self::KEY_DURATION => $this->getDuration(),
+            self::KEY_EDITING_MODE => $this->getEditingMode(),
             self::KEY_FPS => $this->getFps(),
             self::KEY_EQUALIZER => $this->isEqualizer(),
             self::KEY_EXTENDABLE_SCREENS => $this->isExtendableScreens(),
