@@ -36,28 +36,4 @@ $projectDataVoiceOver = new \Renderforest\ProjectData\ProjectDataVoiceOver();
 $projectDataVoiceOver->setPath('https://example.com/sample-low.mp3');
 $projectData->setVoiceOver($projectDataVoiceOver);
 
-$newScreen = new \Renderforest\ProjectData\Screen\Entity\Screen();
-
-$newScreen
-    ->setId(2125621)
-    ->setCharacterBasedDuration(true)
-    ->setCompositionName('191_man_Angry_2')
-    ->setDuration(5)
-    ->setExtraVideoSecond(0)
-    ->setIconAdjustable(0)
-    ->setGifPath('https://example.com/191_man_Angry_2_1.gif')
-    ->setGifBigPath('https://example.com/191_man_Angry_2_1.gif')
-    ->setGifThumbnailPath('https://example.com/191_man_Angry_2_n.jpg')
-    ->setHidden(false)
-    ->setMaxDuration(15)
-    ->setOrder(1900)
-    ->setPath('https://example.com/191_man_Angry_2_n.jpg')
-    ->setTags('business, computer, chair, desk, laptop, occupation, office, worker, arms, boss, boy, businessman,chef, company, employer, professional')
-    ->setType(1);
-
-
-$projectData
-    ->getScreens()
-    ->add($newScreen);
-
 $renderforestClient->updateProjectData(16165971, $projectData);
