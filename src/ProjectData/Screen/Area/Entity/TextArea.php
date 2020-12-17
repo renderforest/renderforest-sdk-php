@@ -16,6 +16,8 @@ class TextArea extends AbstractArea
         self::KEY_CORDS,
         self::KEY_HEIGHT,
         self::KEY_WIDTH,
+        self::KEY_ORIGINAL_HEIGHT,
+        self::KEY_ORIGINAL_WIDTH,
         self::KEY_ORDER,
         self::KEY_WORD_COUNT,
         self::KEY_TITLE,
@@ -24,6 +26,12 @@ class TextArea extends AbstractArea
 
     /** @var string */
     protected $type = self::AREA_TYPE_TEXT;
+
+    /** @var int */
+    protected $originalHeight;
+
+    /** @var int */
+    protected $originalWidth;
 
     /** @var bool|null */
     protected $removed;
@@ -103,6 +111,44 @@ class TextArea extends AbstractArea
     }
 
     /**
+     * @return int
+     */
+    public function getOriginalHeight(): int
+    {
+        return $this->originalHeight;
+    }
+
+    /**
+     * @param int $originalHeight
+     * @return TextArea
+     */
+    public function setOriginalHeight(int $originalHeight): TextArea
+    {
+        $this->originalHeight = $originalHeight;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOriginalWidth(): int
+    {
+        return $this->originalWidth;
+    }
+
+    /**
+     * @param int $originalWidth
+     * @return TextArea
+     */
+    public function setOriginalWidth(int $originalWidth): TextArea
+    {
+        $this->originalWidth = $originalWidth;
+
+        return $this;
+    }
+
+    /**
      * @param array $textAreaArrayData
      * @throws \Exception
      */
@@ -113,6 +159,12 @@ class TextArea extends AbstractArea
                 throw new \Exception('Missing `' . $requiredKey . '` in text area array data');
             }
         }
+
+        $originalHeight = $textAreaArrayData[self::KEY_ORIGINAL_HEIGHT];
+        $this->setOriginalHeight($originalHeight);
+
+        $originalWidth = $textAreaArrayData[self::KEY_ORIGINAL_WIDTH];
+        $this->setOriginalWidth($originalWidth);
 
         if (array_key_exists(self::KEY_REMOVED, $textAreaArrayData)) {
             $this->setRemoved($textAreaArrayData[self::KEY_REMOVED]);
@@ -136,6 +188,8 @@ class TextArea extends AbstractArea
     {
         $arrayCopy = [
             self::KEY_TYPE => self::AREA_TYPE_TEXT,
+            self::KEY_ORIGINAL_HEIGHT => $this->getOriginalHeight(),
+            self::KEY_ORIGINAL_WIDTH => $this->getOriginalWidth(),
         ];
 
         if (false === is_null($this->getRemoved())) {

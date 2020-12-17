@@ -25,6 +25,8 @@ abstract class AbstractArea extends EntityBase
     const KEY_CORDS = 'cords';
     const KEY_HEIGHT = 'height';
     const KEY_WIDTH = 'width';
+    const KEY_ORIGINAL_HEIGHT = 'originalHeight';
+    const KEY_ORIGINAL_WIDTH = 'originalWidth';
     const KEY_ORDER = 'order';
     const KEY_WORD_COUNT = 'wordCount';
     const KEY_TITLE = 'title';
