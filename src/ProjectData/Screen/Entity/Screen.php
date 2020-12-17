@@ -698,12 +698,12 @@ class Screen extends EntityBase
         $screenDuration = $screenArrayData[self::KEY_DURATION];
         $this->duration = $screenDuration;
 
-        $screenSelectedDuration = $screenArrayData[self::KEY_SELECTED_DURATION];
-        $this->selectedDuration = $screenSelectedDuration;
+        if (array_key_exists(self::KEY_SELECTED_DURATION, $screenArrayData)) {
+            $this->selectedDuration = $screenArrayData[self::KEY_SELECTED_DURATION];
+        }
 
         $screenExtraVideoSecond = $screenArrayData[self::KEY_EXTRA_VIDEO_SECOND];
         $this->setExtraVideoSecond($screenExtraVideoSecond);
-
 
         if (array_key_exists(self::KEY_GIF_BIG_PATH, $screenArrayData)) {
             $this->setGifBigPath($screenArrayData[self::KEY_GIF_BIG_PATH]);
