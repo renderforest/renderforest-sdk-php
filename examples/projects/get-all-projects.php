@@ -9,7 +9,7 @@ $renderforestClient = new \Renderforest\ApiClient(
 
 $projects = $renderforestClient->getAllProjects(
     3,
-    1,
+    0,
     true,
     'ASC',
     'date'

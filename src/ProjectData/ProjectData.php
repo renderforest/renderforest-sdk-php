@@ -173,7 +173,7 @@ class ProjectData extends ApiEntityBase
     /**
      * @return int
      */
-    private function getFps(): int
+    public function getFps(): int
     {
         return $this->fps;
     }
@@ -211,7 +211,7 @@ class ProjectData extends ApiEntityBase
     /**
      * @return bool
      */
-    private function isExtendableScreens(): bool
+    public function isExtendableScreens(): bool
     {
         return $this->extendableScreens;
     }
@@ -714,7 +714,7 @@ class ProjectData extends ApiEntityBase
         }
 
         return $arrayCopy;
-        }
+    }
 
     /**
      * @return array
