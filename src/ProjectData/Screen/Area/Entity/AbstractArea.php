@@ -159,7 +159,7 @@ abstract class AbstractArea extends EntityBase
      * @param int $order
      * @return $this
      */
-    private function setOrder(int $order)
+    public function setOrder(int $order)
     {
         $this->order = $order;
 

@@ -43,9 +43,36 @@ class AreaCollection extends CollectionBase
     {
         $this->iteratorItems[] = $area;
         $this->areas[] = $area;
-        $this->areasAssocArray[$area->getOrder()] = $area;
+
+        $currentOrderings = array_keys($this->areasAssocArray);
+        if (array_key_exists($area->getOrder(), $currentOrderings)) {
+            $maxOrdering = max($currentOrderings);
+            $this->areasAssocArray[$maxOrdering + 1] = $area;
+        } else {
+            $this->areasAssocArray[$area->getOrder()] = $area;
+        }
+
+        $this->normalizeOrdering();
 
         return $this;
+    }
+
+    private function normalizeOrdering()
+    {
+        $fixedItems = [];
+        $currentItems = $this->areasAssocArray;
+        ksort($currentItems);
+
+        $startOrdering = 0;
+        foreach ($currentItems as $item) {
+            $item->setOrder($startOrdering);
+            $fixedItems[$startOrdering] = $item;
+            $startOrdering++;
+        }
+
+        $this->areasAssocArray = $fixedItems;
+        $this->iteratorItems = array_values($fixedItems);
+        $this->areas = array_values($fixedItems);
     }
 
     /**
