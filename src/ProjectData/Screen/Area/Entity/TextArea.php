@@ -111,16 +111,16 @@ class TextArea extends AbstractArea
     /**
      * @return int
      */
-    public function getOriginalHeight(): int
+    public function getOriginalHeight(): ?int
     {
         return $this->originalHeight;
     }
 
     /**
-     * @param int $originalHeight
+     * @param ?int $originalHeight
      * @return TextArea
      */
-    public function setOriginalHeight(int $originalHeight): TextArea
+    public function setOriginalHeight(?int $originalHeight): TextArea
     {
         $this->originalHeight = $originalHeight;
 
@@ -130,16 +130,16 @@ class TextArea extends AbstractArea
     /**
      * @return int
      */
-    public function getOriginalWidth(): int
+    public function getOriginalWidth(): ?int
     {
         return $this->originalWidth;
     }
 
     /**
-     * @param int $originalWidth
+     * @param ?int $originalWidth
      * @return TextArea
      */
-    public function setOriginalWidth(int $originalWidth): TextArea
+    public function setOriginalWidth(?int $originalWidth): TextArea
     {
         $this->originalWidth = $originalWidth;
 
