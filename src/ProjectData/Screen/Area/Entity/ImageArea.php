@@ -20,7 +20,6 @@ class ImageArea extends AbstractArea
 
     const REQUIRED_KEYS = [
         self::KEY_ID,
-        self::KEY_COLOR_FILTERS,
         self::KEY_CORDS,
         self::KEY_HEIGHT,
         self::KEY_WIDTH,
