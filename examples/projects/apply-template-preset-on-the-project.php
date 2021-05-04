@@ -7,9 +7,10 @@ $renderforestClient = new \Renderforest\ApiClient(
     'your-client-id'
 );
 
-$projectId = $renderforestClient->applyTemplatePresetOnProject(
-    16297523,
-    294
+$projectData = $renderforestClient->applyTemplatePresetOnProject(
+    15990207,
+    701,
+    3
 );
 
 echo 'Project ID - ' . $projectId . PHP_EOL;
