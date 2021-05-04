@@ -45,9 +45,6 @@ class ApiClient
     const DELETE_PROJECT_VIDEOS_API_PATH_PREFIX = '/api/v1';
     const DELETE_PROJECT_VIDEOS_API_PATH = self::DELETE_PROJECT_VIDEOS_API_PATH_PREFIX . '/projects/%d/videos/%d';
 
-    const APPLY_TEMPLATE_PRESET_PROJECT_API_PATH_PREFIX = '/api/v1';
-    const APPLY_TEMPLATE_PRESET_PROJECT_API_PATH = self::APPLY_TEMPLATE_PRESET_PROJECT_API_PATH_PREFIX . '/projects/%d/apply-template-preset';
-
     const RENDER_PROJECT_API_PATH_PREFIX = '/api/v1';
     const RENDER_PROJECT_API_PATH = self::RENDER_PROJECT_API_PATH_PREFIX . '/projects/%d/render';
 
@@ -353,49 +350,48 @@ class ApiClient
 
     /**
      * @param int $projectId
-     * @param int $templatePresetId
+     * @param int $templateId
+     * @param int $presetId
      * @return int
      * @throws GuzzleException
      */
-    public function applyTemplatePresetOnProject(int $projectId, int $templatePresetId): int
+    public function applyTemplatePresetOnProject(int $projectId, int $templateId, int $presetId): int
     {
-        $endpoint = self::APPLY_TEMPLATE_PRESET_PROJECT_API_PATH;
-
-        $applyTemplatePresetOnProjectApiPath = sprintf(
-            self::APPLY_TEMPLATE_PRESET_PROJECT_API_PATH,
-            $projectId
-        );
-        $uri = self::API_ENDPOINT . $applyTemplatePresetOnProjectApiPath;
-
-        $postData = [
-            'presetId' => $templatePresetId,
+        $endpoint = self::TRIAL_PROJECT_API_PATH;
+        $uri = self::API_ENDPOINT . self::TRIAL_PROJECT_API_PATH;
+    
+        $queryParams = [
+            'templateId' => $templateId,
+            'presetId' => $presetId
         ];
-
+    
+        $queryString = http_build_query($queryParams);
+        $uri .= '?' . $queryString;
+    
         $options = [
-            'method' => 'POST',
+            'method' => 'GET',
             'headers' => [
                 'Accept' => 'application/json',
                 'User-Agent' => self::USER_AGENT,
             ],
             'endpoint' => $endpoint,
             'uri' => $uri,
-            'json' => $postData,
         ];
-
-        $options = $this->setAuthorization($options);
-
-        $response = $this->httpClient->request(
+    
+        $httpClient = new Client();
+    
+        $response = $httpClient->request(
             $options['method'],
             $options['uri'],
             $options
         );
+    
+        $json = $response->getBody()->getContents();
 
-        $jsonResponse = $response->getBody()->getContents();
-        $arrayResponse = \GuzzleHttp\json_decode($jsonResponse, true);
+        $projectData = new ProjectData();
+        $projectData->exchangeJson($json);
 
-        $data = $arrayResponse['data'];
-        $projectId = intval($data['projectId']);
-
+        $projectId = $this->updateProjectData($projectId, $projectData);
         return $projectId;
     }
 
