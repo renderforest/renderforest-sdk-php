@@ -9,8 +9,6 @@ $renderforestClient = new \Renderforest\ApiClient(
 
 $projectData = $renderforestClient->getProjectData(16165971);
 
-$projectData->setMuteMusic(false);
-
 $projectData
     ->getScreenByOrder(1)
     ->getAreaByOrder(1)
