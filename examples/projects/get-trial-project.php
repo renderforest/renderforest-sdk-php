@@ -11,7 +11,8 @@ echo 'FPS - ' . $trialProject->getFps() . PHP_EOL;
 echo 'Is Equalizer - ' . ($trialProject->isEqualizer() ? 'True' : 'False') . PHP_EOL;
 echo 'Is Extendable Screens - ' . ($trialProject->isExtendableScreens() ? 'True' : 'False') . PHP_EOL;
 echo 'Is Lego - ' . ($trialProject->isLego() ? 'True' : 'False') . PHP_EOL;
-echo 'Is Mute Music - ' . ($trialProject->isMuteMusic() ? 'True' : 'False') . PHP_EOL;
+echo 'Has Sfx - ' . ($trialProject->hasSfx() ? 'True' : 'False') . PHP_EOL;
+echo 'Is Mute Sfx - ' . ($trialProject->isMuteSfx() ? 'True' : 'False') . PHP_EOL;
 
 echo 'Project Colors: ' . PHP_EOL;
 foreach ($trialProject->getProjectColors() as $projectColor) {
