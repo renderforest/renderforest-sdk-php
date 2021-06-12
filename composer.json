@@ -1,7 +1,7 @@
 {
   "name": "renderforest/sdk-php",
   "description": "Renderforest SDK for PHP",
-  "version": "0.5.5",
+  "version": "0.5.6",
   "homepage": "https://github.com/renderforest/renderforest-sdk-php",
   "keywords": [
     "animation maker",
