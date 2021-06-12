@@ -26,7 +26,8 @@ class ProjectData extends ApiEntityBase
     const KEY_EQUALIZER = 'equalizer';
     const KEY_EXTENDABLE_SCREENS = 'extendableScreens';
     const KEY_IS_LEGO = 'isLego';
-    const KEY_MUTE_MUSIC = 'muteMusic';
+    const KEY_MUTE_SFX = 'muteSfx';
+    const KEY_HAS_SFX = 'hasSfx';
     const KEY_PROJECT_COLORS = 'projectColors';
     const KEY_PROJECT_VERSION = 'projectVersion';
     const KEY_SCREENS = 'screens';
@@ -42,7 +43,7 @@ class ProjectData extends ApiEntityBase
     const WRITABLE_KEYS = [
         self::KEY_CURRENT_SCREEN_ID,
         self::KEY_EDITING_MODE,
-        self::KEY_MUTE_MUSIC,
+        self::KEY_MUTE_SFX,
         self::KEY_SOUNDS,
         self::KEY_PROJECT_COLORS,
         self::KEY_SCREENS,
@@ -83,7 +84,10 @@ class ProjectData extends ApiEntityBase
     protected $isLego;
 
     /** @var bool */
-    protected $muteMusic;
+    protected $muteSfx;
+
+    /** @var bool */
+    protected $hasSfx;
 
     /** @var ColorCollection */
     protected $projectColors;
@@ -267,6 +271,25 @@ class ProjectData extends ApiEntityBase
     }
 
     /**
+     * @return bool
+     */
+    public function hasSfx(): bool
+    {
+        return $this->hasSfx;
+    }
+
+    /**
+     * @param bool $hasSfx
+     * @return ProjectData
+     */
+    public function setHasSfx(bool $hasSfx): ProjectData
+    {
+        $this->hasSfx = $hasSfx;
+
+        return $this;
+    }
+
+    /**
      * @param bool $isLego
      * @return ProjectData
      */
@@ -280,18 +303,22 @@ class ProjectData extends ApiEntityBase
     /**
      * @return bool
      */
-    public function isMuteMusic(): bool
+    public function isMuteSfx(): bool
     {
-        return $this->muteMusic;
+        return $this->muteSfx;
     }
 
     /**
-     * @param bool $muteMusic
+     * @param bool $muteSfx
      * @return ProjectData
      */
-    public function setMuteMusic(bool $muteMusic): ProjectData
+    public function setMuteSfx(bool $muteSfx): ProjectData
     {
-        $this->muteMusic = $muteMusic;
+        if (true === $this->hasSfx) {
+            $this->muteSfx = $muteSfx;
+        } else {
+            $this->muteSfx = false;
+        }
 
         return $this;
     }
@@ -604,8 +631,11 @@ class ProjectData extends ApiEntityBase
         $isLego = $projectDataArrayData[self::KEY_IS_LEGO];
         $this->setIsLego($isLego);
 
-        $muteMusic = $projectDataArrayData[self::KEY_MUTE_MUSIC];
-        $this->setMuteMusic($muteMusic);
+        $hasSfx = $projectDataArrayData[self::KEY_HAS_SFX];
+        $this->setHasSfx($hasSfx);
+
+        $muteSfx = $projectDataArrayData[self::KEY_MUTE_SFX];
+        $this->setMuteSfx($muteSfx);
 
         if (array_key_exists(self::KEY_PROJECT_COLORS, $projectDataArrayData)) {
             $projectColorsArrayData = $projectDataArrayData[self::KEY_PROJECT_COLORS];
@@ -723,7 +753,8 @@ class ProjectData extends ApiEntityBase
             self::KEY_EQUALIZER => $this->isEqualizer(),
             self::KEY_EXTENDABLE_SCREENS => $this->isExtendableScreens(),
             self::KEY_IS_LEGO => $this->isLego(),
-            self::KEY_MUTE_MUSIC => $this->isMuteMusic(),
+            self::KEY_HAS_SFX => $this->hasSfx(),
+            self::KEY_MUTE_SFX => $this->isMuteSfx(),
             self::KEY_PROJECT_COLORS => $this->projectColors->getArrayCopy(),
             self::KEY_PROJECT_VERSION => $this->getProjectVersion(),
             self::KEY_SCREENS => $this->screens->getArrayCopy(),
