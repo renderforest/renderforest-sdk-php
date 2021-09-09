@@ -7,7 +7,9 @@ $renderforestClient = new \Renderforest\ApiClient(
     'your-client-id'
 );
 
-$sounds = $renderforestClient->getAllSounds();
+$duration = 60;
+
+$sounds = $renderforestClient->getAllSounds($duration);
 
 echo 'Count - ' . count($sounds) . PHP_EOL;
 echo PHP_EOL;
