@@ -168,18 +168,18 @@ class ProjectData extends ApiEntityBase
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getDuration(): int
+    public function getDuration(): float
     {
         return $this->duration;
     }
 
     /**
-     * @param int $duration
+     * @param float $duration
      * @return ProjectData
      */
-    private function setDuration(int $duration): ProjectData
+    private function setDuration(float $duration): ProjectData
     {
         $this->duration = $duration;
 
