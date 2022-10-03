@@ -43,7 +43,7 @@ $sound->set([
   'userId' => '1469277',
   'path' => 'http://techslides.com/demos/samples/sample.mp3',
   'duration' => 12,
-  'filesize' => 198658
+  'fileSize' => 198658
 ]);
 
 $projectData

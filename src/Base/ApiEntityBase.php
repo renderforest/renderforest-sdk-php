@@ -2,7 +2,7 @@
 
 namespace Renderforest\Base;
 
-use Zend\Stdlib\ArraySerializableInterface;
+use Laminas\Stdlib\ArraySerializableInterface;
 
 /**
  * Class EntityBase
