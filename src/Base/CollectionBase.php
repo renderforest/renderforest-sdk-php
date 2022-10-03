@@ -2,7 +2,7 @@
 
 namespace Renderforest\Base;
 
-use Zend\Stdlib\ArraySerializableInterface;
+use Laminas\Stdlib\ArraySerializableInterface;
 
 /**
  * Class CollectionBase
@@ -33,12 +33,12 @@ abstract class CollectionBase implements ArraySerializableInterface, \Countable,
         return count($this->iteratorItems);
     }
 
-    public function current()
+    public function current(): mixed
     {
         return $this->iteratorItems[$this->iteratorPosition];
     }
 
-    public function next()
+    public function next(): void
     {
         ++$this->iteratorPosition;
     }
@@ -59,7 +59,7 @@ abstract class CollectionBase implements ArraySerializableInterface, \Countable,
         return isset($this->iteratorItems[$this->iteratorPosition]);
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         $this->iteratorPosition = 0;
     }
