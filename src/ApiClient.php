@@ -99,6 +99,8 @@ class ApiClient
     const PREVIEW_API_PATH_PREFIX = '/api/v1';
     const PREVIEW_API_PATH = self::PREVIEW_API_PATH_PREFIX . '/preview/generate';
 
+    const GENERATE_LEGO_SCREENS_PREVIEWS_API_PATH_PREFIX = '/api/v1';
+    const GENERATE_LEGO_SCREENS_PREVIEWS_API_PATH = self::GENERATE_LEGO_SCREENS_PREVIEWS_API_PATH_PREFIX . '/projects/%d/preview-lego-render';
 
     /** @var string */
     protected $apiKey;
@@ -1462,6 +1464,45 @@ class ApiClient
         $project->exchangeJson($json);
 
         return $project;
+    }
+
+    /**
+     * @param int $projectId
+     * @param array $params
+     * @return string
+     * @throws GuzzleException
+     */
+    public function generateLegoScreensPreviews(int $projectId, array $params): string
+    {
+        $endpoint = sprintf(self::GENERATE_LEGO_SCREENS_PREVIEWS_API_PATH, $projectId);
+        $uri = self::API_ENDPOINT . $endpoint;
+
+        $options = [
+            'method' => 'POST',
+            'headers' => [
+                'Accept' => 'application/json',
+                'User-Agent' => self::USER_AGENT,
+            ],
+            'endpoint' => $endpoint,
+            'uri' => $uri,
+            'json' => [
+                'quality' => $params['quality'],
+                'screenIds' => $params['screenIds'],
+            ],
+        ];
+
+        $options = $this->setAuthorization($options);
+
+        $response = $this->httpClient->request(
+            $options['method'],
+            $options['uri'],
+            $options
+        );
+
+        $jsonResponse = $response->getBody()->getContents();
+        $arrayResponse = \GuzzleHttp\json_decode($jsonResponse, true);
+
+        return $arrayResponse['data'];
     }
 
     /**

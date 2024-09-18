@@ -13,6 +13,7 @@
   - [Duplicate the Project](#duplicate-the-project)
   - [Render the Project](#render-the-project)
   - [Get rendering status](#get-rendering-status)
+  - [Generate Lego Screens Previews](#generate-lego-screens-previews)
 
 ### Get All Projects
 
@@ -250,5 +251,35 @@ $queueId = $renderforestClient->renderProject(
 ### Get rendering status
 
 (Coming soon)
+
+### Generate Lego Screens Previews
+
+Generates previews for lego screens of a project.
+
+```php
+<?php
+
+require '../../vendor/autoload.php';
+
+$renderforestClient = new \Renderforest\ApiClient(
+    'your-api-key',
+    'your-client-id'
+);
+
+$projectId = 12345; // Replace with your actual project ID
+$params = [
+    'quality' => 0, // 0, 360, 720, 1080
+    'screenIds' => [1, 2, 3], // Replace with actual screen IDs
+];
+
+$previewUrl = $renderforestClient->generateLegoScreensPreviews($projectId, $params);
+```
+
+- The `quality` parameter is an integer:
+  - 0 for video with watermark
+  - 720 for video without watermark
+- The `screenIds` parameter is an array of screen IDs for which you want to generate previews.
+
+[See generate lego screens previews example](/examples/projects/generate-lego-screens-previews.php)
 
 **[⬆ back to the top](#projects-api)**
