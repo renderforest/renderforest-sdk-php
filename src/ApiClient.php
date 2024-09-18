@@ -102,6 +102,9 @@ class ApiClient
     const GENERATE_LEGO_SCREENS_PREVIEWS_API_PATH_PREFIX = '/api/v1';
     const GENERATE_LEGO_SCREENS_PREVIEWS_API_PATH = self::GENERATE_LEGO_SCREENS_PREVIEWS_API_PATH_PREFIX . '/projects/%d/preview-lego-render';
 
+    const CANCEL_LEGO_PREVIEW_API_PATH_PREFIX = '/api/v1';
+    const CANCEL_LEGO_PREVIEW_API_PATH = self::CANCEL_LEGO_PREVIEW_API_PATH_PREFIX . '/projects/%d/cancel-preview';
+
     /** @var string */
     protected $apiKey;
 
@@ -1488,6 +1491,44 @@ class ApiClient
             'json' => [
                 'quality' => $params['quality'],
                 'screenIds' => $params['screenIds'],
+            ],
+        ];
+
+        $options = $this->setAuthorization($options);
+
+        $response = $this->httpClient->request(
+            $options['method'],
+            $options['uri'],
+            $options
+        );
+
+        $jsonResponse = $response->getBody()->getContents();
+        $arrayResponse = \GuzzleHttp\json_decode($jsonResponse, true);
+
+        return $arrayResponse['data'];
+    }
+
+    /**
+     * @param int $projectId
+     * @param array $queueIds
+     * @return array
+     * @throws GuzzleException
+     */
+    public function cancelLegoPreview(int $projectId, array $queueIds): array
+    {
+        $endpoint = sprintf(self::CANCEL_LEGO_PREVIEW_API_PATH, $projectId);
+        $uri = self::API_ENDPOINT . $endpoint;
+
+        $options = [
+            'method' => 'POST',
+            'headers' => [
+                'Accept' => 'application/json',
+                'User-Agent' => self::USER_AGENT,
+            ],
+            'endpoint' => $endpoint,
+            'uri' => $uri,
+            'json' => [
+                'queueIds' => $queueIds,
             ],
         ];
 
