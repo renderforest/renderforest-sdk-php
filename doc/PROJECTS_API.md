@@ -15,6 +15,7 @@
   - [Get rendering status](#get-rendering-status)
   - [Generate Lego Screens Previews](#generate-lego-screens-previews)
   - [Cancel Lego Preview](#cancel-lego-preview)
+  - [Get Project Preview URLs](#get-project-preview-urls)
 
 ### Get All Projects
 
@@ -303,6 +304,34 @@ $queueIds = [67890, 67891]; // Replace with actual queue IDs
 try {
     $result = $renderforestClient->cancelLegoPreview($projectId, $queueIds);
     echo "Cancel Lego Preview Result: " . print_r($result, true) . PHP_EOL;
+} catch (\GuzzleHttp\Exception\GuzzleException $e) {
+    echo "Error: " . $e->getMessage() . PHP_EOL;
+}
+```
+
+### Get Project Preview URLs
+
+Retrieves preview URLs for a specific project.
+
+```php
+<?php
+
+require '../../vendor/autoload.php';
+
+$renderforestClient = new \Renderforest\ApiClient(
+    'your-api-key',
+    'your-client-id'
+);
+
+$projectId = 12345; // Replace with your actual project ID
+$params = [
+    'quality' => 720,
+];
+
+try {
+    $previewUrls = $renderforestClient->getProjectPreviewUrls($projectId, $params);
+    echo "Project Preview URLs: " . PHP_EOL;
+    print_r($previewUrls);
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
     echo "Error: " . $e->getMessage() . PHP_EOL;
 }
