@@ -3,19 +3,20 @@
 require '../../vendor/autoload.php';
 
 $renderforestClient = new \Renderforest\ApiClient(
-    'your-api-key',
-    'your-client-id'
+
+    // "your_api_key",
+    // "your_client_id"
 );
 
-$projectId = 12345; // Replace with your actual project ID
+$projectId = 88172301;
 $params = [
     'quality' => 0,
-    'screenIds' => [1, 2, 3], // Replace with actual screen IDs
+    'screenIds' => [99938256],
 ];
 
 try {
-    $previewUrl = $renderforestClient->generateLegoScreensPreviews($projectId, $params);
-    echo "Preview URL: " . $previewUrl . PHP_EOL;
-} catch (\GuzzleHttp\Exception\GuzzleException $e) {
+    $result = $renderforestClient->generateLegoScreensPreviews($projectId, $params);
+    echo "Result: " . print_r($result, true) . PHP_EOL;
+} catch (\Exception $e) {
     echo "Error: " . $e->getMessage() . PHP_EOL;
 }

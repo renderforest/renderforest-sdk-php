@@ -1475,10 +1475,10 @@ class ApiClient
     /**
      * @param int $projectId
      * @param array $params
-     * @return string
+     * @return array
      * @throws GuzzleException
      */
-    public function generateLegoScreensPreviews(int $projectId, array $params): string
+    public function generateLegoScreensPreviews(int $projectId, array $params): array
     {
         $endpoint = sprintf(self::GENERATE_LEGO_SCREENS_PREVIEWS_API_PATH, $projectId);
         $uri = self::API_ENDPOINT . $endpoint;
@@ -1508,7 +1508,11 @@ class ApiClient
         $jsonResponse = $response->getBody()->getContents();
         $arrayResponse = \GuzzleHttp\json_decode($jsonResponse, true);
 
-        return $arrayResponse['data'];
+        if (isset($arrayResponse['data']) && is_array($arrayResponse['data'])) {
+            return $arrayResponse['data'];
+        }
+
+        throw new \RuntimeException('Unexpected response format from the API');
     }
 
     /**
@@ -1560,6 +1564,12 @@ class ApiClient
         $endpoint = sprintf(self::PROJECT_PREVIEW_URLS_API_PATH, $projectId);
         $uri = self::API_ENDPOINT . $endpoint;
 
+        // Add query parameters to the URI
+        if (!empty($params)) {
+            $queryString = http_build_query($params);
+            $uri .= '?' . $queryString;
+        }
+
         $options = [
             'method' => 'GET',
             'headers' => [
@@ -1568,7 +1578,6 @@ class ApiClient
             ],
             'endpoint' => $endpoint,
             'uri' => $uri,
-            'query' => $params,
         ];
 
         $options = $this->setAuthorization($options);
@@ -1600,13 +1609,14 @@ class ApiClient
         $headers['clientid'] = $clientId;
         $headers['timestamp'] = $this->dateNow();
         $parsedUrl = parse_url(isset($opts['uri']) ? $opts['uri'] : '');
+        $path = isset($parsedUrl['path']) ? $parsedUrl['path'] : '';
         $query = isset($parsedUrl['query']) ? $parsedUrl['query'] : '';
-        $path = $query ? $parsedUrl['path'] . '?' . $query : $parsedUrl['path'];
+        $fullPath = $query ? $path . '?' . $query : $path;
 
         $headers['authorization'] = $this->generateHash([
             'clientId' => $clientId,
-            'path' => $path ? $path : '',
-            'qs' => $query ? $query : '',
+            'path' => $fullPath,
+            'qs' => $query,
             'body' => isset($opts['json']) ? json_encode($opts['json'], JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) : '{}',
             'nonce' => $headers['nonce'],
             'timestamp' => $headers['timestamp']

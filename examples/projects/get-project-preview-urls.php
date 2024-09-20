@@ -3,11 +3,11 @@
 require '../../vendor/autoload.php';
 
 $renderforestClient = new \Renderforest\ApiClient(
-    'your-api-key',
-    'your-client-id'
+    "fbcc4dc6a09e47ffdb3852311116b6fb",
+    "735823"
 );
 
-$projectId = 12345; // Replace with your actual project ID
+$projectId = 88172301; // Replace with your actual project ID
 $params = [
     'quality' => 720,
 ];
