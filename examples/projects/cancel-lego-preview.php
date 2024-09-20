@@ -7,8 +7,8 @@ $renderforestClient = new \Renderforest\ApiClient(
     'your-client-id'
 );
 
-$projectId = 12345; // Replace with your actual project ID
-$queueIds = [67890, 67891]; // Replace with actual queue IDs
+$projectId = 88172301; // Replace with your actual project ID
+$queueIds = [102032941, 102032942]; // Replace with actual queue IDs
 
 try {
     $result = $renderforestClient->cancelLegoPreview($projectId, $queueIds);
