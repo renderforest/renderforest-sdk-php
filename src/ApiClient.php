@@ -99,6 +99,14 @@ class ApiClient
     const PREVIEW_API_PATH_PREFIX = '/api/v1';
     const PREVIEW_API_PATH = self::PREVIEW_API_PATH_PREFIX . '/preview/generate';
 
+    const GENERATE_LEGO_SCREENS_PREVIEWS_API_PATH_PREFIX = '/api/v1';
+    const GENERATE_LEGO_SCREENS_PREVIEWS_API_PATH = self::GENERATE_LEGO_SCREENS_PREVIEWS_API_PATH_PREFIX . '/projects/%d/preview-lego-render';
+
+    const CANCEL_LEGO_PREVIEW_API_PATH_PREFIX = '/api/v1';
+    const CANCEL_LEGO_PREVIEW_API_PATH = self::CANCEL_LEGO_PREVIEW_API_PATH_PREFIX . '/projects/%d/cancel-preview';
+
+    const PROJECT_PREVIEW_URLS_API_PATH_PREFIX = '/api/v1';
+    const PROJECT_PREVIEW_URLS_API_PATH = self::PROJECT_PREVIEW_URLS_API_PATH_PREFIX . '/projects/%d/preview-urls';
 
     /** @var string */
     protected $apiKey;
@@ -1465,6 +1473,128 @@ class ApiClient
     }
 
     /**
+     * @param int $projectId
+     * @param array $params
+     * @return array
+     * @throws GuzzleException
+     */
+    public function generateLegoScreensPreviews(int $projectId, array $params): array
+    {
+        $endpoint = sprintf(self::GENERATE_LEGO_SCREENS_PREVIEWS_API_PATH, $projectId);
+        $uri = self::API_ENDPOINT . $endpoint;
+
+        $options = [
+            'method' => 'POST',
+            'headers' => [
+                'Accept' => 'application/json',
+                'User-Agent' => self::USER_AGENT,
+            ],
+            'endpoint' => $endpoint,
+            'uri' => $uri,
+            'json' => [
+                'quality' => $params['quality'],
+                'screenIds' => $params['screenIds'],
+            ],
+        ];
+
+        $options = $this->setAuthorization($options);
+
+        $response = $this->httpClient->request(
+            $options['method'],
+            $options['uri'],
+            $options
+        );
+
+        $jsonResponse = $response->getBody()->getContents();
+        $arrayResponse = \GuzzleHttp\json_decode($jsonResponse, true);
+
+        if (isset($arrayResponse['data']) && is_array($arrayResponse['data'])) {
+            return $arrayResponse['data'];
+        }
+
+        throw new \RuntimeException('Unexpected response format from the API');
+    }
+
+    /**
+     * @param int $projectId
+     * @param array $queueIds
+     * @return array
+     * @throws GuzzleException
+     */
+    public function cancelLegoPreview(int $projectId, array $queueIds): array
+    {
+        $endpoint = sprintf(self::CANCEL_LEGO_PREVIEW_API_PATH, $projectId);
+        $uri = self::API_ENDPOINT . $endpoint;
+
+        $options = [
+            'method' => 'POST',
+            'headers' => [
+                'Accept' => 'application/json',
+                'User-Agent' => self::USER_AGENT,
+            ],
+            'endpoint' => $endpoint,
+            'uri' => $uri,
+            'json' => [
+                'queueIds' => $queueIds,
+            ],
+        ];
+
+        $options = $this->setAuthorization($options);
+
+        $response = $this->httpClient->request(
+            $options['method'],
+            $options['uri'],
+            $options
+        );
+
+        $jsonResponse = $response->getBody()->getContents();
+        $arrayResponse = \GuzzleHttp\json_decode($jsonResponse, true);
+
+        return $arrayResponse['data'];
+    }
+
+    /**
+     * @param int $projectId
+     * @param array $params
+     * @return array
+     * @throws GuzzleException
+     */
+    public function getProjectPreviewUrls(int $projectId, array $params): array
+    {
+        $endpoint = sprintf(self::PROJECT_PREVIEW_URLS_API_PATH, $projectId);
+        $uri = self::API_ENDPOINT . $endpoint;
+
+        // Add query parameters to the URI
+        if (!empty($params)) {
+            $queryString = http_build_query($params);
+            $uri .= '?' . $queryString;
+        }
+
+        $options = [
+            'method' => 'GET',
+            'headers' => [
+                'Accept' => 'application/json',
+                'User-Agent' => self::USER_AGENT,
+            ],
+            'endpoint' => $endpoint,
+            'uri' => $uri,
+        ];
+
+        $options = $this->setAuthorization($options);
+
+        $response = $this->httpClient->request(
+            $options['method'],
+            $options['uri'],
+            $options
+        );
+
+        $jsonResponse = $response->getBody()->getContents();
+        $arrayResponse = \GuzzleHttp\json_decode($jsonResponse, true);
+
+        return $arrayResponse['data'];
+    }
+
+    /**
      * @param $options
      * @return array
      */
@@ -1479,13 +1609,14 @@ class ApiClient
         $headers['clientid'] = $clientId;
         $headers['timestamp'] = $this->dateNow();
         $parsedUrl = parse_url(isset($opts['uri']) ? $opts['uri'] : '');
+        $path = isset($parsedUrl['path']) ? $parsedUrl['path'] : '';
         $query = isset($parsedUrl['query']) ? $parsedUrl['query'] : '';
-        $path = $query ? $parsedUrl['path'] . '?' . $query : $parsedUrl['path'];
+        $fullPath = $query ? $path . '?' . $query : $path;
 
         $headers['authorization'] = $this->generateHash([
             'clientId' => $clientId,
-            'path' => $path ? $path : '',
-            'qs' => $query ? $query : '',
+            'path' => $fullPath,
+            'qs' => $query,
             'body' => isset($opts['json']) ? json_encode($opts['json'], JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) : '{}',
             'nonce' => $headers['nonce'],
             'timestamp' => $headers['timestamp']
