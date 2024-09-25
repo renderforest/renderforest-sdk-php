@@ -1,7 +1,7 @@
 {
   "name": "renderforest/sdk-php",
   "description": "Renderforest SDK for PHP",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "homepage": "https://github.com/renderforest/renderforest-sdk-php",
   "keywords": [
     "animation maker",
@@ -18,9 +18,9 @@
     "video maker"
   ],
   "require": {
-    "php": ">=8.1.11",
-    "guzzlehttp/guzzle": "^7.0",
-    "laminas/laminas-stdlib": "3.13.0",
+    "php": ">=8.3",
+    "guzzlehttp/guzzle": "^7.7",
+    "laminas/laminas-stdlib": "^3.17",
     "ext-json": "*"
   },
  "autoload": {
