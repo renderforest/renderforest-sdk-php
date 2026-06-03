@@ -10,6 +10,7 @@ use Renderforest\Project\Project;
 use Renderforest\ProjectData\ProjectData;
 use Renderforest\ProjectData\Screen\Entity\Screen;
 use Renderforest\Sound\Collection\SoundCollection;
+use Renderforest\Sound\Sound;
 use Renderforest\Support\SupportTicket;
 use Renderforest\Support\SupportTicketResponse;
 use Renderforest\Template\Category\Category;
@@ -89,6 +90,9 @@ class ApiClient
 
     const SOUNDS_API_PATH_PREFIX = '/api/v1';
     const SOUNDS_API_PATH = self::SOUNDS_API_PATH_PREFIX . '/sounds';
+
+    const SOUND_BY_ID_API_PATH_PREFIX = '/api/v1';
+    const SOUND_BY_ID_API_PATH = self::SOUND_BY_ID_API_PATH_PREFIX . '/sounds/%d';
 
     const COMPANY_SOUNDS_API_PATH_PREFIX = '/api/v1';
     const COMPANY_SOUNDS_API_PATH = self::COMPANY_SOUNDS_API_PATH_PREFIX . '/sounds/library';
@@ -1031,6 +1035,50 @@ class ApiClient
         $SoundCollection->exchangeJson($json);
 
         return $SoundCollection;
+    }
+
+    /**
+     * Retrieves a single library sound by its id (authorization is required).
+     *
+     * Unlike `getAllSounds`, this resolves the sound directly by id, so it is
+     * not affected by the paginated sounds listing and works for any library
+     * sound id.
+     *
+     * @param int $soundId
+     * @return Sound
+     * @throws GuzzleException
+     */
+    public function getSoundById(int $soundId): Sound
+    {
+        $endpoint = self::SOUNDS_API_PATH;
+        $uri = self::API_ENDPOINT . sprintf(self::SOUND_BY_ID_API_PATH, $soundId);
+
+        $options = [
+            'method' => 'GET',
+            'headers' => [
+                'Accept' => 'application/json',
+                'User-Agent' => self::USER_AGENT,
+            ],
+            'endpoint' => $endpoint,
+            'uri' => $uri,
+        ];
+
+        $options = $this->setAuthorization($options);
+
+        $response = $this->httpClient->request(
+            $options['method'],
+            $options['uri'],
+            $options
+        );
+
+        $json = $response->getBody()->getContents();
+
+        $soundArrayData = json_decode($json, true)['data'];
+
+        $sound = new Sound();
+        $sound->exchangeArray($soundArrayData);
+
+        return $sound;
     }
 
     /**
