@@ -3,6 +3,7 @@
 **For detailed usage please see examples for each method.**
 
 - [Get All Sounds](#get-all-sounds)
+- [Get Sound By Id](#get-sound-by-id)
 - [Get Company's Library Sounds](#get-companys-library-sounds)
 - [Get Recommended Sounds](#get-recommended-sounds)
 
@@ -27,6 +28,29 @@ $sounds = $renderforestClient->getAllSounds(15);
 - **Remember** — any given value of the duration greater than 180 will be overridden by 180!
 
 [See get all sounds example](/examples/sounds/get-all-sounds.php)
+
+### Get Sound By Id
+
+Retrieves a single library sound by its id (authorization is required).
+
+Resolves the sound directly by id, so — unlike fetching the whole list with
+`getAllSounds` and looking the sound up locally — it is not affected by the
+paginated sounds listing and works for any library sound id.
+
+```php
+<?php
+
+require '../../vendor/autoload.php';
+
+$renderforestClient = new \Renderforest\ApiClient(
+    'your-api-key',
+    'your-client-id'
+);
+
+$sound = $renderforestClient->getSoundById(1980240);
+```
+
+[See get sound by id example](/examples/sounds/get-sound-by-id.php)
 
 ### Get Company's Library Sounds
 

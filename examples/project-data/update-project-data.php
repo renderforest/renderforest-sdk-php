@@ -15,8 +15,7 @@ $projectData
     ->setValue('https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4');
 
 // add sound
-$allSounds = $renderforestClient->getAllSounds(100);
-$sound = $allSounds->getSoundById(1980240);
+$sound = $renderforestClient->getSoundById(1980240);
 $projectData
     ->getSounds()
     ->add($sound);
