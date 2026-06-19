@@ -993,23 +993,39 @@ class ApiClient
     }
 
      /**
+     * Retrieves sounds (authorization is required).
+     *
+     * The sounds endpoint is paginated — pass `$limit` (1-50) and `$offset` to
+     * page through the results.
+     *
      * @param int $duration
+     * @param int $limit Number of sounds to return (1-50).
+     * @param int $offset Number of sounds to skip.
      * @return SoundCollection
      * @throws GuzzleException
      */
-    public function getAllSounds(int $duration = null): SoundCollection
+    public function getAllSounds(int $duration = null, int $limit = null, int $offset = null): SoundCollection
     {
         $endpoint = self::SOUNDS_API_PATH;
         $uri = self::API_ENDPOINT . self::SOUNDS_API_PATH;
 
+        $queryParams = [];
+
         if (false === is_null($duration)) {
-            $queryParams = [
-                'duration' => $duration,
-            ];
-    
-            $queryString = http_build_query($queryParams);
-            $uri .= '?' . $queryString;
-        }      
+            $queryParams['duration'] = $duration;
+        }
+
+        if (false === is_null($limit)) {
+            $queryParams['limit'] = $limit;
+        }
+
+        if (false === is_null($offset)) {
+            $queryParams['offset'] = $offset;
+        }
+
+        if (count($queryParams) > 0) {
+            $uri .= '?' . http_build_query($queryParams);
+        }
 
         $options = [
             'method' => 'GET',
